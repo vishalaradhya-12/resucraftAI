@@ -1,0 +1,19 @@
+{
+  "name": "resucraft-ai-engine",
+  "version": "1.0.0",
+  "description": "NextGen ATS Resume Creation and Optimization Engine wrt Job Description",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 3000",
+    "dev": "python3 -m http.server 3000"
+  },
+  "keywords": [
+    "ats",
+    "resume-builder",
+    "job-description",
+    "google-xyz-formula",
+    "career-engine"
+  ],
+  "author": "ResuCraft AI",
+  "license": "MIT"
+}

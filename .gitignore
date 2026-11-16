@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local scratch files
+scratch/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local env files
+.env
+.env.local

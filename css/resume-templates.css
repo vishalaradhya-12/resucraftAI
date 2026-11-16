@@ -1,0 +1,744 @@
+/* ==========================================================================
+   ResuCraft AI — Resume Templates & Print Engine
+   Templates: Modern Tech, Executive, Harvard Minimal, Nordic Clean
+   ========================================================================== */
+
+/* Universal Document Wrapper */
+.resume-document {
+  width: 100%;
+  max-width: 794px; /* Standard A4 width at 96 DPI */
+  min-height: 1122px; /* Standard A4 height */
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 44px 50px;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+/* Core Keywords & Competencies Highlighting */
+strong.kw-bold,
+.kw-bold,
+strong.phrase-bold,
+.phrase-bold,
+strong.metric-bold,
+.metric-bold {
+  font-weight: 700 !important;
+  color: #0f172a;
+}
+
+/* Matched JD Keyword Highlighter */
+mark.kw-matched {
+  background: rgba(16, 185, 129, 0.16);
+  color: #065f46;
+  font-weight: 700;
+  padding: 0 1px;
+  border-radius: 2px;
+  border-bottom: 1.5px solid #10b981;
+  text-decoration: none;
+}
+
+/* Font Size Scales */
+.resume-document.size-small {
+  font-size: 11.5px;
+  line-height: 1.42;
+  padding: 34px 40px;
+}
+.resume-document.size-small .candidate-name { font-size: 20px; }
+.resume-document.size-small .section-title { font-size: 13px; margin-bottom: 8px; }
+.resume-document.size-small .exp-item { margin-bottom: 10px; }
+
+.resume-document.size-medium {
+  font-size: 12.5px;
+  line-height: 1.48;
+}
+.resume-document.size-medium .candidate-name { font-size: 22px; }
+.resume-document.size-medium .section-title { font-size: 14.5px; margin-bottom: 10px; }
+
+.resume-document.size-large {
+  font-size: 13.5px;
+  line-height: 1.55;
+  padding: 48px 54px;
+}
+.resume-document.size-large .candidate-name { font-size: 25px; }
+.resume-document.size-large .section-title { font-size: 16px; margin-bottom: 12px; }
+
+/* Color Themes */
+.theme-indigo { --theme-accent: #4f46e5; --theme-accent-light: #e0e7ff; --theme-text-accent: #3730a3; }
+.theme-emerald { --theme-accent: #059669; --theme-accent-light: #d1fae5; --theme-text-accent: #065f46; }
+.theme-cyan { --theme-accent: #0891b2; --theme-accent-light: #cffafe; --theme-text-accent: #155e75; }
+.theme-purple { --theme-accent: #7c3aed; --theme-accent-light: #f3e8ff; --theme-text-accent: #581c87; }
+.theme-slate { --theme-accent: #334155; --theme-accent-light: #f1f5f9; --theme-text-accent: #0f172a; }
+
+/* Common Structural Elements */
+.resume-section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-accent);
+  border-bottom: 1.5px solid var(--theme-accent);
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.summary-text {
+  color: #334155;
+  text-align: justify;
+}
+
+.exp-item, .proj-item {
+  margin-bottom: 13px;
+  page-break-inside: avoid;
+}
+
+.exp-header, .proj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.exp-role {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.exp-company {
+  font-weight: 600;
+  color: var(--theme-text-accent);
+  margin-left: 4px;
+}
+
+.exp-meta {
+  font-size: 0.92em;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.exp-bullets, .proj-bullets {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 4px;
+}
+
+.bullet-point {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 4px;
+  color: #334155;
+}
+
+.bullet-point::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--theme-accent);
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.dual-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.skill-category-row {
+  margin-bottom: 4px;
+  font-size: 0.96em;
+}
+
+.category-name {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.category-skills {
+  color: #334155;
+}
+
+.cert-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.cert-item {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 4px;
+  color: #334155;
+}
+.cert-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--theme-accent);
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   TEMPLATE 0: CLASSIC ATS (USER REFERENCE DESIGN)
+   Clean, serif-accent, 100% ATS-compliant, centered header, sharp full-width rules
+   ========================================================================== */
+.tpl-classic-ats {
+  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
+  color: #111111;
+  padding: 30px 40px;
+  box-sizing: border-box;
+}
+
+.tpl-classic-ats a {
+  color: #111111;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tpl-classic-ats a:hover {
+  color: var(--theme-accent);
+}
+
+.classic-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.classic-name {
+  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
+  font-size: 18.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #111111;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.classic-contact-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 11.2px;
+  color: #222222;
+}
+
+.classic-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.classic-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.classic-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.classic-section:last-child {
+  margin-bottom: 0;
+}
+
+.classic-section-title {
+  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #111111;
+  border-bottom: 1.2px solid #222222;
+  padding-bottom: 2px;
+  margin-bottom: 6px;
+}
+
+.classic-summary-text {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #222222;
+  text-align: justify;
+  margin: 0;
+}
+
+.classic-skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classic-skill-row {
+  font-size: 11px;
+  line-height: 1.42;
+  color: #222222;
+}
+
+.classic-cat-name {
+  font-weight: 700;
+  color: #111111;
+}
+
+.classic-cat-vals {
+  color: #222222;
+}
+
+.classic-exp-item {
+  margin-bottom: 9px;
+  page-break-inside: avoid;
+}
+
+.classic-exp-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.classic-exp-title {
+  font-size: 12.2px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.classic-exp-company-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.classic-exp-company {
+  font-size: 11.2px;
+  font-weight: 600;
+  color: #222222;
+}
+
+.classic-exp-period {
+  font-size: 11.2px;
+  color: #333333;
+}
+
+.classic-bullets {
+  list-style-type: disc;
+  margin: 3px 0 0 16px;
+  padding: 0;
+}
+
+.classic-bullet-point {
+  margin-bottom: 3px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #222222;
+  text-align: justify;
+}
+
+.classic-cert-row {
+  font-size: 11px;
+  line-height: 1.42;
+  color: #222222;
+  margin: 0;
+}
+
+.classic-edu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classic-edu-row {
+  font-size: 11px;
+  line-height: 1.42;
+  color: #222222;
+}
+
+/* ==========================================================================
+   TEMPLATE 1: TECH MODERN (Silicon Valley Standard)
+   ========================================================================== */
+.tpl-tech .resume-header {
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.tpl-tech .header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.tpl-tech .candidate-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.tpl-tech .candidate-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95em;
+  font-weight: 600;
+  color: var(--theme-accent);
+  background: var(--theme-accent-light);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.tpl-tech .header-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.9em;
+  color: #475569;
+}
+
+.tpl-tech .contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   TEMPLATE 2: EXECUTIVE (Leadership & Strategic)
+   ========================================================================== */
+.tpl-executive {
+  padding-top: 50px;
+}
+
+.tpl-executive .header-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--theme-accent);
+}
+
+.tpl-executive .resume-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 16px;
+}
+
+.tpl-executive .candidate-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.tpl-executive .candidate-title {
+  font-size: 1.1em;
+  color: var(--theme-accent);
+  font-weight: 600;
+  margin: 4px 0 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tpl-executive .header-contact {
+  font-size: 0.9em;
+  color: #64748b;
+}
+
+.tpl-executive .section-title {
+  border-bottom: 1px solid #0f172a;
+  color: #0f172a;
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   TEMPLATE 3: HARVARD / CLASSIC MINIMAL (Wall Street / Ivy ATS Standard)
+   ========================================================================== */
+.tpl-minimal {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #111827;
+}
+
+.tpl-minimal .candidate-name {
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.tpl-minimal .header-contact {
+  text-align: center;
+  font-size: 0.88em;
+  color: #374151;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #111827;
+  padding-bottom: 8px;
+}
+
+.tpl-minimal .section-title {
+  font-family: 'Georgia', serif;
+  color: #111827;
+  border-bottom: 1px solid #111827;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+}
+
+.tpl-minimal .bullet-point::before {
+  content: '•';
+  color: #111827;
+}
+
+/* ==========================================================================
+   TEMPLATE 4: NORDIC MINIMAL (2-Column Scandinavian Layout)
+   ========================================================================== */
+.tpl-nordic {
+  padding: 0;
+  overflow: hidden;
+}
+
+.nordic-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 1122px;
+}
+
+.nordic-sidebar {
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  padding: 36px 24px;
+}
+
+.nordic-sidebar .candidate-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.nordic-sidebar .candidate-title {
+  font-size: 0.9em;
+  color: var(--theme-accent);
+  font-weight: 600;
+  margin: 6px 0 20px;
+}
+
+.sidebar-block {
+  margin-bottom: 22px;
+}
+
+.sidebar-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.contact-block {
+  font-size: 0.88em;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nordic-skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.nordic-pill {
+  font-size: 0.85em;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #334155;
+}
+
+.nordic-main {
+  padding: 36px 34px;
+}
+
+/* ==========================================================================
+   PRINT ENGINE (@media print)
+   Calibrated for exact 1-page PDF export without blank pages, clipping, or weird gaps
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0 !important; /* Zero margin suppresses browser default URL header and footer */
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .app-header,
+  .left-cockpit,
+  .canvas-toolbar,
+  #toast-container {
+    display: none !important;
+  }
+
+  .studio-container,
+  .right-studio,
+  .canvas-viewport,
+  #resume-canvas-body {
+    display: block !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .resume-document {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10mm 12mm 10mm 12mm !important; /* Balanced margins filling full A4 page */
+    box-sizing: border-box !important;
+    font-size: 10.8px !important;
+    line-height: 1.44 !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Crisp, commanding recruiter bolding in printed PDF */
+  strong,
+  b,
+  .kw-bold,
+  .metric-bold,
+  .phrase-bold,
+  .classic-cat-name,
+  .classic-exp-title {
+    font-weight: 700 !important;
+    color: #000000 !important;
+  }
+
+  mark.kw-matched {
+    background: transparent !important;
+    border-bottom: none !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+  }
+
+  /* Proportional balanced section spacing filling 95% of A4 page */
+  .classic-header {
+    margin-bottom: 11px !important;
+  }
+
+  .classic-name {
+    font-size: 18px !important;
+    margin-bottom: 4px !important;
+    line-height: 1.2 !important;
+  }
+
+  .classic-contact-bar {
+    gap: 12px !important;
+    font-size: 11px !important;
+  }
+
+  .classic-section {
+    margin-bottom: 11px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .classic-section:last-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .classic-section-title {
+    font-size: 12.5px !important;
+    margin-bottom: 5px !important;
+    padding-bottom: 1.5px !important;
+  }
+
+  .classic-summary-text {
+    font-size: 10.8px !important;
+    line-height: 1.44 !important;
+  }
+
+  .classic-skills-container {
+    gap: 3px !important;
+  }
+
+  .classic-skill-row {
+    font-size: 10.8px !important;
+    line-height: 1.42 !important;
+  }
+
+  .classic-exp-item {
+    margin-bottom: 8px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .classic-exp-title {
+    font-size: 12px !important;
+  }
+
+  .classic-exp-company,
+  .classic-exp-period {
+    font-size: 11px !important;
+  }
+
+  .classic-bullets {
+    margin-top: 3px !important;
+    margin-left: 16px !important;
+  }
+
+  .classic-bullet-point {
+    margin-bottom: 2.8px !important;
+    font-size: 10.8px !important;
+    line-height: 1.42 !important;
+  }
+
+  .classic-cert-row,
+  .classic-edu-row {
+    font-size: 10.8px !important;
+    line-height: 1.4 !important;
+  }
+}

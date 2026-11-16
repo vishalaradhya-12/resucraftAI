@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResuCraft AI — NextGen ATS Resume Engine wrt Job Description</title>
+  <meta name="description" content="State of the art ATS resume tailoring engine with real-time job description analysis, keyword gap extraction, and Google XYZ bullet point optimizer.">
+
+  <!-- Open Graph / Social Share -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ResuCraft AI — Free ATS Resume Optimizer wrt Job Description">
+  <meta property="og:description" content="Paste any Job Description and get a real-time ATS match score, missing keyword radar, and 1-click Google XYZ bullet optimization. 100% free, 100% private — runs in your browser.">
+  <meta property="og:image" content="https://resucraft.ai/og-preview.png">
+  <meta property="og:url" content="https://resucraft.ai">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ResuCraft AI — Free ATS Resume Optimizer">
+  <meta name="twitter:description" content="Real-time ATS scoring, keyword gap analysis & Google XYZ bullet rewriter. No signup, no data sent to servers.">
+  <meta name="twitter:image" content="https://resucraft.ai/og-preview.png">
+  <!-- Canonical & Theme -->
+  <meta name="theme-color" content="#6366f1">
+  <link rel="canonical" href="https://resucraft.ai">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css?v=20261025_12">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261025_12">
+
+  <style>
+.quickstart-guide {
+  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06));
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+.qs-steps {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+.qs-step { display: flex; align-items: center; gap: 5px; }
+.qs-num {
+  background: #6366f1;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.qs-sep { color: rgba(99,102,241,0.5); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Navigation & Master Controls -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-icon">⚡</div>
+      <div class="brand-text">
+        <h1>ResuCraft AI</h1>
+        <span class="brand-tag">ATS Engine wrt JD</span>
+      </div>
+    </div>
+
+    <div class="header-center-controls">
+      <div class="profile-selector-box">
+        <label for="sample-profile-select">Load Benchmark Persona:</label>
+        <select id="sample-profile-select" class="form-select" style="width: auto; padding: 4px 8px; font-size: 12px;">
+          <option value="blank">➕ Start Blank Resume (Fresh Slate)</option>
+          <option value="vishal_aradhya" selected>Vishal Aradhya JC (Senior Business Analyst)</option>
+          <option value="software_engineer">Alex Morgan (Lead Full Stack / Cloud)</option>
+          <option value="ai_ml_engineer">Dr. Elena Rostova (Senior AI / LLM Systems)</option>
+          <option value="product_manager">Marcus Vance (Principal Product Manager)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="header-actions" style="flex-wrap: wrap; gap: 6px;">
+      <button id="btn-header-restore" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Restore original pristine resume (undo custom changes)">
+        ↺ Reset to Original
+      </button>
+
+      <button id="btn-copy-ats" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Copy clean plaintext for direct ATS form copy-pasting">
+        📋 Copy ATS Plaintext
+      </button>
+
+      <button id="btn-export-json" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Export profile to JSON backup">
+        💾 Export JSON
+      </button>
+
+      <label for="import-json-file" class="btn btn-secondary btn-sm" style="cursor: pointer; white-space: nowrap;" title="Import existing profile JSON">
+        📁 Import JSON
+        <input type="file" id="import-json-file" accept=".json" style="display: none;">
+      </label>
+
+      <button id="btn-print-pdf" class="btn btn-primary btn-sm" style="white-space: nowrap;" title="Print or save as pixel-perfect ATS-compliant vector PDF">
+        🖨️ Download PDF / Print
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Split Studio Layout -->
+  <main class="studio-container">
+    
+    <!-- Left Cockpit: Intelligence, NLP Analyzer & Form Editors -->
+    <aside class="left-cockpit">
+      
+      <!-- Cockpit Tabs -->
+      <nav class="cockpit-tabs-nav" aria-label="Cockpit Tabs">
+        <button class="nav-tab active" data-tab="jd-analyzer" id="tab-btn-jd">
+          🎯 JD & ATS Radar
+          <span class="tab-badge" id="tab-match-badge">Live</span>
+        </button>
+        <button class="nav-tab" data-tab="bullet-tailorer" id="tab-btn-tailor">
+          ⚡ Bullet Optimizer (XYZ)
+        </button>
+        <button class="nav-tab" data-tab="content-editor" id="tab-btn-editor">
+          ✏️ Edit Resume Content
+        </button>
+      </nav>
+
+      <div class="cockpit-content">
+
+        <!-- ================= PANEL 1: JD ANALYZER & ATS RADAR ================= -->
+        <section class="tab-panel active" id="panel-jd-analyzer">
+          
+          <!-- ATS Master Score Card -->
+          <div class="quickstart-guide">
+  <div class="qs-steps">
+    <span class="qs-step"><span class="qs-num">1</span> Paste your target Job Description below</span>
+    <span class="qs-sep">→</span>
+    <span class="qs-step"><span class="qs-num">2</span> See your live ATS score &amp; missing keywords</span>
+    <span class="qs-sep">→</span>
+    <span class="qs-step"><span class="qs-num">3</span> Click ⚡ 1-Click Auto-Add to tailor your resume</span>
+    <span class="qs-sep">→</span>
+    <span class="qs-step"><span class="qs-num">4</span> Download PDF or Copy ATS Plaintext</span>
+  </div>
+</div>
+
+          <div class="ats-master-card">
+            <div class="ats-score-row">
+              <div class="score-dial-wrapper">
+                <svg class="score-svg" viewBox="0 0 96 96">
+                  <circle class="score-circle-bg" cx="48" cy="48" r="42"></circle>
+                  <circle class="score-circle-progress" id="ats-progress-svg-circle" cx="48" cy="48" r="42"></circle>
+                </svg>
+                <div class="score-inner-text">
+                  <div class="score-number" id="ats-score-value">88%</div>
+                  <div class="score-label">ATS Match</div>
+                </div>
+              </div>
+
+              <div class="ats-meta-col">
+                <h3>Target Alignment Status</h3>
+                <div class="ats-badge-row" id="ats-score-rating">
+                  <span class="badge badge-success">⭐ ATS Ready • Top 5% Applicant</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                  Real-time algorithmic scoring based on keyword coverage, XYZ bullet metrics, and technical depth.
+                </p>
+              </div>
+            </div>
+
+            <!-- Detailed Breakdown Bars -->
+            <div class="ats-breakdown-grid">
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span>Keyword Coverage</span>
+                  <span id="cov-score-val">85%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-fill" id="cov-score-bar" style="width: 85%;"></div>
+                </div>
+              </div>
+
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span>Technical Skills Match</span>
+                  <span id="tech-score-val">90%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-fill" id="tech-score-bar" style="width: 90%;"></div>
+                </div>
+              </div>
+
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span>Quantification (XYZ Formula)</span>
+                  <span id="quant-score-val">82%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-fill" id="quant-score-bar" style="width: 82%;"></div>
+                </div>
+              </div>
+
+              <div class="meter-item">
+                <div class="meter-header">
+                  <span>Strong Action Verbs</span>
+                  <span id="verb-score-val">88%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-fill" id="verb-score-bar" style="width: 88%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- One-Click Auto-Tailor Action Command Bar -->
+          <div class="auto-tailor-banner" id="auto-tailor-banner">
+            <div class="auto-tailor-left">
+              <div class="auto-tailor-badge">⚡ 1-CLICK ATS OPTIMIZER</div>
+              <h4 id="auto-tailor-title">Auto-Add Missing JD Keywords to Resume</h4>
+              <p id="auto-tailor-desc">
+                Automatically inject missing technical skills into your Skills Matrix and weave target competencies into your Experience bullets using Google XYZ formulas.
+              </p>
+            </div>
+            <div class="auto-tailor-actions">
+              <button id="btn-auto-tailor-all" class="btn btn-primary" title="Automatically inject curated missing skills and weave domain terms into bullets">
+                ⚡ 1-Click Auto-Add All to Resume
+              </button>
+              <button id="btn-restore-resume" class="btn btn-secondary btn-sm" title="Restore original pristine resume before auto-tailoring">
+                ↺ Restore Original Resume
+              </button>
+              <button id="btn-auto-add-skills" class="btn btn-secondary btn-sm" title="Add curated missing technical skills to your Skills Matrix">
+                + Add Skills
+              </button>
+            </div>
+          </div>
+
+          <!-- Job Description Input Area -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">
+                📋 Target Job Description (JD)
+              </span>
+              <div style="display: flex; gap: 6px;">
+                <button id="btn-load-matched-jd" class="btn-micro" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;" title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">🎯 Load Target Benchmark JD</button>
+                <button id="btn-clear-jd" class="btn-micro btn-danger" title="Clear to paste any job description you are applying for">✕ Clear JD</button>
+              </div>
+            </div>
+
+            <textarea id="jd-input-text" class="form-textarea" rows="8" placeholder="Paste the complete job description (title, requirements, tech stack, responsibilities) here to analyze ATS match in real time..."></textarea>
+          </div>
+
+          <!-- Matched Keywords Matrix -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">
+                ✅ Matched JD Keywords in Resume
+              </span>
+            </div>
+            <div class="keyword-cloud-box" id="matched-keywords-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Missing Keywords Gap Radar -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">
+                ⚠️ Missing Critical Keywords (Opportunities)
+              </span>
+              <div style="display: flex; gap: 6px;">
+                <button id="btn-missing-add-all-skills" class="btn-micro" title="Add all missing skills to skills matrix">+ Add All to Skills</button>
+                <button id="btn-missing-weave-all" class="btn-micro" title="Weave into experience bullets">⚡ Weave All into Bullets</button>
+              </div>
+            </div>
+            <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
+              Click <strong>+ Add to Skills</strong> to append to your skills matrix, or <strong>⚡ Weave into Role</strong> to automatically integrate with quantifiable metrics into your experience bullets.
+            </p>
+            <div class="missing-keywords-list" id="missing-keywords-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- ================= PANEL 2: BULLET OPTIMIZER (XYZ) ================= -->
+        <section class="tab-panel" id="panel-bullet-tailorer">
+          
+          <div class="tailor-banner">
+            <h3>⚡ Google XYZ Bullet Point Rewriter</h3>
+            <p>Formula: <em>"Accomplished [X] as measured by [Y] by doing [Z]"</em>. Transforms generic bullets into high-impact, keyword-rich metrics.</p>
+          </div>
+
+          <div class="tailor-control-card">
+            <div class="form-group">
+              <label class="form-label" for="tailor-bullet-select">Select Bullet Point to Optimize:</label>
+              <select id="tailor-bullet-select" class="form-select">
+                <!-- Dynamically populated with resume bullets -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Current Bullet Text:</label>
+              <div id="tailor-original-bullet" class="orig-bullet-box">
+                Identified ₹1.2 Cr of excess inventory and working capital opportunities through SKU-level sales velocity, ageing and stock-cover analysis across 25K+ SKUs, helping merchandising teams prioritise liquidation and stock redistribution.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tailor-target-keyword">Target JD Keywords to Weave In:</label>
+              <input type="text" id="tailor-target-keyword" class="form-input" placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or leave blank to auto-use target JD terms)">
+            </div>
+
+            <button id="btn-generate-bullets" class="btn btn-primary" style="width: 100%;">
+              ✨ Generate AI-Grade XYZ Bullet Variations
+            </button>
+          </div>
+
+          <!-- Generated Variations Container -->
+          <div id="tailor-results-container">
+            <!-- Populated on click -->
+          </div>
+
+        </section>
+
+
+        <!-- ================= PANEL 3: RESUME CONTENT EDITOR ================= -->
+        <section class="tab-panel" id="panel-content-editor">
+          
+          <!-- Personal Details -->
+          <div class="editor-card">
+            <div class="editor-card-header">
+              <strong>👤 Personal Details & Contact</strong>
+            </div>
+            <div class="editor-card-grid">
+              <div>
+                <label class="form-label-sm">Full Name</label>
+                <input type="text" id="input-name" class="form-input" placeholder="Your Name">
+              </div>
+              <div>
+                <label class="form-label-sm">Target Role Title</label>
+                <input type="text" id="input-target-title" class="form-input" placeholder="Target Role Title">
+              </div>
+              <div>
+                <label class="form-label-sm">Email Address</label>
+                <input type="email" id="input-email" class="form-input" placeholder="name@domain.com">
+              </div>
+              <div>
+                <label class="form-label-sm">Phone Number</label>
+                <input type="text" id="input-phone" class="form-input" placeholder="+1 (555) 000-0000">
+              </div>
+              <div>
+                <label class="form-label-sm">Location</label>
+                <input type="text" id="input-location" class="form-input" placeholder="City, State">
+              </div>
+              <div>
+                <label class="form-label-sm">LinkedIn URL</label>
+                <input type="text" id="input-linkedin" class="form-input" placeholder="linkedin.com/in/username">
+              </div>
+              <div>
+                <label class="form-label-sm">GitHub / Repo URL</label>
+                <input type="text" id="input-github" class="form-input" placeholder="github.com/username">
+              </div>
+              <div>
+                <label class="form-label-sm">Portfolio / Website</label>
+                <input type="text" id="input-portfolio" class="form-input" placeholder="yourportfolio.dev">
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Summary -->
+          <div class="editor-card">
+            <div class="editor-card-header">
+              <strong>📝 Professional Summary</strong>
+              <button id="btn-ai-summary" class="btn-micro" title="Auto-craft tailored summary weaving target JD keywords">
+                ✨ AI Tailor Summary wrt JD
+              </button>
+            </div>
+            <textarea id="input-summary" class="form-textarea" rows="4" placeholder="Enter high-impact professional summary..."></textarea>
+          </div>
+
+          <!-- Work Experience -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">💼 Work Experience</span>
+              <button id="btn-add-experience" class="btn-micro btn-secondary">+ Add Role</button>
+            </div>
+            <div id="editor-experience-container">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Technical Skills -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">🛠️ Technical Skills by Category</span>
+            </div>
+            <div id="editor-skills-container">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">🚀 Projects & Engineering Initiatives</span>
+              <button id="btn-add-project" class="btn-micro btn-secondary">+ Add Project</button>
+            </div>
+            <div id="editor-projects-container">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">🎓 Education</span>
+              <button id="btn-add-education" class="btn-micro btn-secondary">+ Add Degree</button>
+            </div>
+            <div id="editor-education-container">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <div class="section-block">
+            <div class="section-block-header">
+              <span class="section-block-title">🏅 Certifications</span>
+              <button id="btn-add-cert" class="btn-micro btn-secondary">+ Add Certification</button>
+            </div>
+            <div id="editor-certs-container">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </aside>
+
+    <!-- Right Studio: Live WYSIWYG Resume Canvas -->
+    <section class="right-studio">
+      
+      <!-- Studio Canvas Toolbar -->
+      <div class="canvas-toolbar">
+        <div class="toolbar-left">
+          
+          <!-- Template Picker -->
+          <div class="template-picker-group">
+            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic">Classic ATS (Ref)</button>
+            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech">Tech Modern</button>
+            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive">Executive</button>
+            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal">Harvard Minimal</button>
+            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic">Nordic Clean</button>
+          </div>
+
+          <!-- Color Palettes -->
+          <div class="color-picker-group" title="Select Accent Palette">
+            <span class="color-swatch swatch-indigo active" data-theme="indigo" title="Indigo Violet"></span>
+            <span class="color-swatch swatch-emerald" data-theme="emerald" title="Emerald Slate"></span>
+            <span class="color-swatch swatch-cyan" data-theme="cyan" title="Electric Cyan"></span>
+            <span class="color-swatch swatch-purple" data-theme="purple" title="Royal Purple"></span>
+            <span class="color-swatch swatch-slate" data-theme="slate" title="Obsidian Slate"></span>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <!-- Keyword Highlight Toggle -->
+          <label class="toggle-wrapper" title="Visually highlight keywords from the target JD in the resume">
+            <span class="switch">
+              <input type="checkbox" id="toggle-kw-highlight" checked>
+              <span class="slider"></span>
+            </span>
+            <span>Highlight JD Terms</span>
+          </label>
+
+          <!-- Font Size Scaling -->
+          <select id="font-size-select" class="form-select" style="width: auto; padding: 4px 8px; font-size: 11px;">
+            <option value="small">Compact Fit (1-Page)</option>
+            <option value="medium" selected>Standard (Balanced)</option>
+            <option value="large">Spacious (2-Page)</option>
+          </select>
+
+          <!-- Page Fit Indicator -->
+          <div id="page-fit-badge">
+            <span class="page-pill page-pill-success">📄 1 Page Fit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Canvas Paper Viewport -->
+      <div class="canvas-viewport" id="canvas-scroll-container">
+        <div id="resume-canvas-body">
+          <!-- Live rendered resume document gets injected here -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Script Modules with Cache Busters -->
+  <script src="js/sample-data.js?v=20261025_12"></script>
+  <script src="js/engine.js?v=20261025_12"></script>
+  <script src="js/templates.js?v=20261025_12"></script>
+  <script src="js/app.js?v=20261025_12"></script>
+</body>
+</html>
