@@ -300,7 +300,7 @@ class ResuCraftApp {
         mainContainer.classList.add('mobile-mode-editor');
         if (segEditor) segEditor.classList.add('active');
         if (segPreview) segPreview.classList.remove('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0, 0);
       } else {
         mainContainer.classList.remove('mobile-mode-editor');
         mainContainer.classList.add('mobile-mode-preview');
@@ -308,7 +308,7 @@ class ResuCraftApp {
         if (segPreview) segPreview.classList.add('active');
         this.updateMobileCanvasScale();
         this.resetCanvasScroll();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0, 0);
       }
     };
 
@@ -1373,8 +1373,10 @@ class ResuCraftApp {
 
   resetCanvasScroll() {
     const scrollContainer = document.getElementById('canvas-scroll-container');
-    if (scrollContainer) {
-      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollContainer && window.innerWidth > 992) {
+      scrollContainer.scrollTop = 0;
+    } else {
+      window.scrollTo(0, 0);
     }
   }
 

@@ -19,7 +19,7 @@
   line-height: 1.45;
   position: relative;
   overflow: visible !important;
-  transition: all 0.25s ease;
+  transition: none !important;
 }
 
 /* Core Keywords & Competencies Highlighting */

@@ -49,6 +49,11 @@
   padding: 0;
 }
 
+html, body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+}
+
 body {
   font-family: var(--font-ui);
   background-color: var(--bg-primary);
@@ -240,6 +245,7 @@ body {
 .cockpit-content {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: 20px;
 }
 
@@ -1120,6 +1126,7 @@ input:checked + .slider:before {
 .canvas-viewport {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: 36px 20px;
   display: flex;
   justify-content: center;
@@ -1138,7 +1145,6 @@ input:checked + .slider:before {
   max-width: 820px;
   display: flex;
   justify-content: center;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: top center;
 }
 
@@ -1822,9 +1828,9 @@ html, body {
 
   .canvas-viewport {
     padding: 12px 10px 40px 10px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+    overflow: visible !important;
+    -webkit-overflow-scrolling: auto !important;
+    overscroll-behavior: none !important;
     width: 100% !important;
     box-sizing: border-box !important;
     display: block !important;
