@@ -123,7 +123,6 @@ class ResuCraftApp {
         window.resumeTemplates.setTemplate(tplName);
         this.renderResumePreview();
         this.resetCanvasScroll();
-        this.showToast(`Switched template to ${target.innerText.trim()}`);
       });
     });
 
@@ -1247,6 +1246,9 @@ class ResuCraftApp {
     // Check page fit status
     this.updatePageFitMeter();
     this.updateMobileCanvasScale();
+    requestAnimationFrame(() => {
+      this.updateMobileCanvasScale();
+    });
   }
 
   updatePageFitMeter() {
@@ -1377,6 +1379,10 @@ class ResuCraftApp {
   }
 
   setZoom(level) {
+    if (window.innerWidth <= 992) {
+      // Zoom is automatically scaled to fit viewport on mobile
+      return;
+    }
     this.zoomLevel = Math.max(50, Math.min(150, level));
     const label = document.getElementById('zoom-level-label');
     if (label) label.innerText = `${this.zoomLevel}%`;
@@ -1389,38 +1395,58 @@ class ResuCraftApp {
   }
 
   updateMobileCanvasScale() {
+    const wrapper = document.getElementById('resume-scale-wrapper');
+    const canvas = document.getElementById('resume-canvas-body');
+    const doc = canvas ? canvas.querySelector('.resume-document') : null;
+    if (!canvas || !doc) return;
+
     if (window.innerWidth <= 992) {
-      const canvas = document.getElementById('resume-canvas-body');
-      if (!canvas) return;
-
-      const viewportWidth = window.innerWidth;
-      const availableWidth = Math.max(300, viewportWidth - 20);
-      const targetScale = Math.min(1, Math.max(0.35, availableWidth / 794));
-      const scaledWidth = 794 * targetScale;
-      const leftMargin = Math.max(0, (viewportWidth - scaledWidth) / 2);
-
-      canvas.style.transformOrigin = 'top left';
-      canvas.style.transform = `scale(${targetScale})`;
+      // Reset layout styles to get accurate natural dimensions
+      canvas.style.position = 'static';
+      canvas.style.transform = 'none';
       canvas.style.width = '794px';
-      canvas.style.marginLeft = `${Math.round(leftMargin)}px`;
-      canvas.style.marginRight = '0px';
+      canvas.style.height = 'auto';
+      doc.style.height = 'auto';
 
-      const doc = canvas.querySelector('.resume-document');
-      if (doc) {
-        canvas.style.height = `${(doc.offsetHeight || 1122) * targetScale + 24}px`;
+      const unscaledWidth = 794;
+      const naturalHeight = Math.max(doc.scrollHeight, doc.offsetHeight, 1122);
+      const availWidth = Math.max(280, window.innerWidth - 20);
+      const scale = Math.min(1, availWidth / unscaledWidth);
+      const scaledWidth = Math.round(unscaledWidth * scale);
+      const scaledHeight = Math.round(naturalHeight * scale);
+
+      if (wrapper) {
+        wrapper.style.width = `${scaledWidth}px`;
+        wrapper.style.height = `${scaledHeight + 30}px`;
+        wrapper.style.margin = '0 auto';
+        wrapper.style.position = 'relative';
       }
+
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = `${unscaledWidth}px`;
+      canvas.style.height = `${naturalHeight}px`;
+      canvas.style.transformOrigin = 'top left';
+      canvas.style.transform = `scale(${scale})`;
+      canvas.style.margin = '0';
+
       const label = document.getElementById('zoom-level-label');
-      if (label) label.innerText = `${Math.round(targetScale * 100)}%`;
+      if (label) label.innerText = `${Math.round(scale * 100)}%`;
     } else {
-      const canvas = document.getElementById('resume-canvas-body');
-      if (canvas) {
-        canvas.style.transformOrigin = 'top center';
-        canvas.style.transform = `scale(${this.zoomLevel / 100})`;
-        canvas.style.width = '100%';
-        canvas.style.marginLeft = 'auto';
-        canvas.style.marginRight = 'auto';
-        canvas.style.height = 'auto';
+      if (wrapper) {
+        wrapper.style.width = 'auto';
+        wrapper.style.height = 'auto';
+        wrapper.style.margin = '0 auto';
+        wrapper.style.position = 'static';
       }
+      canvas.style.position = 'static';
+      canvas.style.transformOrigin = 'top center';
+      canvas.style.transform = `scale(${this.zoomLevel / 100})`;
+      canvas.style.width = '100%';
+      canvas.style.height = 'auto';
+      canvas.style.margin = '0 auto';
+
       const label = document.getElementById('zoom-level-label');
       if (label) label.innerText = `${this.zoomLevel}%`;
     }
@@ -1501,6 +1527,17 @@ class ResuCraftApp {
   }
 
   showToast(message, type = 'success', canUndo = false) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      document.body.appendChild(container);
+    }
+    // Clear previous toasts on mobile so they don't stack and block the viewport
+    if (window.innerWidth <= 992) {
+      container.innerHTML = '';
+    }
+
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.innerHTML = `
@@ -1508,12 +1545,6 @@ class ResuCraftApp {
       ${canUndo && this.lastReplacedBullet ? `<button id="toast-undo-btn" class="btn-micro" style="margin-left: 8px; font-weight: 700; color: #38bdf8; border-color: rgba(56,189,248,0.4);">↺ Undo</button>` : ''}
     `;
     
-    let container = document.getElementById('toast-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'toast-container';
-      document.body.appendChild(container);
-    }
     container.appendChild(toast);
 
     const undoBtn = toast.querySelector('#toast-undo-btn');
