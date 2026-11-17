@@ -289,6 +289,43 @@ class ResuCraftApp {
       });
     }
 
+    // Mobile View Segmented Switcher & Navigation
+    const mainContainer = document.getElementById('main-studio-container');
+    const segEditor = document.getElementById('btn-seg-editor');
+    const segPreview = document.getElementById('btn-seg-preview');
+
+    const setMobileView = (view) => {
+      if (!mainContainer) return;
+      if (view === 'editor') {
+        mainContainer.classList.remove('mobile-mode-preview');
+        mainContainer.classList.add('mobile-mode-editor');
+        if (segEditor) segEditor.classList.add('active');
+        if (segPreview) segPreview.classList.remove('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        mainContainer.classList.remove('mobile-mode-editor');
+        mainContainer.classList.add('mobile-mode-preview');
+        if (segEditor) segEditor.classList.remove('active');
+        if (segPreview) segPreview.classList.add('active');
+        this.updateMobileCanvasScale();
+        this.resetCanvasScroll();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    if (segEditor) segEditor.addEventListener('click', () => setMobileView('editor'));
+    if (segPreview) segPreview.addEventListener('click', () => setMobileView('preview'));
+
+    const jumpBtn = document.getElementById('btn-mobile-jump-preview');
+    if (jumpBtn) jumpBtn.addEventListener('click', () => setMobileView('preview'));
+
+    const backBtn = document.getElementById('btn-mobile-back-editor');
+    if (backBtn) backBtn.addEventListener('click', () => setMobileView('editor'));
+
+    window.addEventListener('resize', () => {
+      this.updateMobileCanvasScale();
+    });
+
     // Bind Live Content Form Inputs
     this.bindEditorInputs();
   }
@@ -392,6 +429,11 @@ class ResuCraftApp {
         scoreBadge.innerHTML = '<span class="badge badge-danger">⚠️ Low ATS Score • Missing Key Terms</span>';
       }
     }
+
+    const mobileBadge = document.getElementById('mobile-badge-score');
+    if (mobileBadge) mobileBadge.innerText = `${score}%`;
+    const mobileCtaTag = document.getElementById('mobile-cta-score-tag');
+    if (mobileCtaTag) mobileCtaTag.innerText = `ATS Score: ${score}%`;
   }
 
   renderKeywordBadges() {
@@ -1201,6 +1243,7 @@ class ResuCraftApp {
 
     // Check page fit status
     this.updatePageFitMeter();
+    this.updateMobileCanvasScale();
   }
 
   updatePageFitMeter() {
@@ -1339,6 +1382,34 @@ class ResuCraftApp {
     if (canvas) {
       canvas.style.transform = `scale(${this.zoomLevel / 100})`;
       canvas.style.transformOrigin = 'top center';
+    }
+  }
+
+  updateMobileCanvasScale() {
+    if (window.innerWidth <= 768) {
+      const canvas = document.getElementById('resume-canvas-body');
+      if (!canvas) return;
+
+      const availableWidth = window.innerWidth - 16;
+      const targetScale = Math.min(1, Math.max(0.35, availableWidth / 794));
+      canvas.style.transform = `scale(${targetScale})`;
+      canvas.style.transformOrigin = 'top center';
+
+      const doc = canvas.querySelector('.resume-document');
+      if (doc) {
+        canvas.style.height = `${(doc.offsetHeight || 1122) * targetScale + 24}px`;
+      }
+      const label = document.getElementById('zoom-level-label');
+      if (label) label.innerText = `${Math.round(targetScale * 100)}%`;
+    } else {
+      const canvas = document.getElementById('resume-canvas-body');
+      if (canvas) {
+        canvas.style.transform = `scale(${this.zoomLevel / 100})`;
+        canvas.style.transformOrigin = 'top center';
+        canvas.style.height = 'auto';
+      }
+      const label = document.getElementById('zoom-level-label');
+      if (label) label.innerText = `${this.zoomLevel}%`;
     }
   }
 

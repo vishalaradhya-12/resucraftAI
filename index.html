@@ -26,8 +26,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=20261117_v2">
-  <link rel="stylesheet" href="css/resume-templates.css?v=20261117_v2">
+  <link rel="stylesheet" href="css/styles.css?v=20261117_v3">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261117_v3">
 
   <style>
 .quickstart-guide {
@@ -89,30 +89,41 @@
 
     <div class="header-actions" style="flex-wrap: wrap; gap: 6px;">
       <button id="btn-header-restore" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Restore original pristine resume (undo custom changes)">
-        ↺ Reset to Original
+        ↺ <span class="desktop-only">Reset to Original</span><span class="mobile-only">Reset</span>
       </button>
 
       <button id="btn-copy-ats" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Copy clean plaintext for direct ATS form copy-pasting">
-        📋 Copy ATS Plaintext
+        📋 <span class="desktop-only">Copy </span>ATS<span class="desktop-only"> Plaintext</span>
       </button>
 
       <button id="btn-export-json" class="btn btn-secondary btn-sm" style="white-space: nowrap;" title="Export profile to JSON backup">
-        💾 Export JSON
+        💾 <span class="desktop-only">Export </span>JSON
       </button>
 
       <label for="import-json-file" class="btn btn-secondary btn-sm" style="cursor: pointer; white-space: nowrap;" title="Import existing profile JSON">
-        📁 Import JSON
+        📁 <span class="desktop-only">Import </span>JSON
         <input type="file" id="import-json-file" accept=".json" style="display: none;">
       </label>
 
       <button id="btn-print-pdf" class="btn btn-primary btn-sm" style="white-space: nowrap;" title="Print or save as pixel-perfect ATS-compliant vector PDF">
-        🖨️ Download PDF / Print
+        🖨️ <span class="desktop-only">Download </span>PDF<span class="desktop-only"> / Print</span>
       </button>
     </div>
   </header>
 
+  <!-- Mobile Segmented View Control (Visible only on mobile/tablet <= 992px) -->
+  <div class="mobile-segmented-bar" id="mobile-view-nav">
+    <button class="mobile-seg-btn active" id="btn-seg-editor" data-view="editor">
+      <span>🎯 1. Edit & Optimize</span>
+    </button>
+    <button class="mobile-seg-btn" id="btn-seg-preview" data-view="preview">
+      <span>📄 2. View Resume</span>
+      <span class="mobile-score-badge" id="mobile-badge-score">--</span>
+    </button>
+  </div>
+
   <!-- Main Split Studio Layout -->
-  <main class="studio-container">
+  <main class="studio-container mobile-mode-editor" id="main-studio-container">
     
     <!-- Left Cockpit: Intelligence, NLP Analyzer & Form Editors -->
     <aside class="left-cockpit">
@@ -501,11 +512,26 @@
         </section>
 
       </div>
+
+      <!-- Mobile Sticky Jump CTA to Preview -->
+      <div class="mobile-cta-wrapper">
+        <button id="btn-mobile-jump-preview" class="btn btn-primary btn-block btn-lg mobile-cta-btn">
+          <span>📄 View Tailored Resume</span>
+          <span class="mobile-cta-score-tag" id="mobile-cta-score-tag">ATS: --</span>
+        </button>
+      </div>
     </aside>
 
     <!-- Right Studio: Live WYSIWYG Resume Canvas -->
     <section class="right-studio">
       
+      <!-- Mobile Back to Editor Bar -->
+      <div class="mobile-back-bar">
+        <button id="btn-mobile-back-editor" class="btn btn-secondary btn-sm mobile-back-btn">
+          ← Back to Editor & Optimization
+        </button>
+      </div>
+
       <!-- Studio Canvas Toolbar -->
       <div class="canvas-toolbar">
         <div class="toolbar-left">
@@ -573,9 +599,9 @@
   </main>
 
   <!-- Script Modules with Cache Busters -->
-  <script src="js/sample-data.js?v=20261117_v2"></script>
-  <script src="js/engine.js?v=20261117_v2"></script>
-  <script src="js/templates.js?v=20261117_v2"></script>
-  <script src="js/app.js?v=20261117_v2"></script>
+  <script src="js/sample-data.js?v=20261117_v3"></script>
+  <script src="js/engine.js?v=20261117_v3"></script>
+  <script src="js/templates.js?v=20261117_v3"></script>
+  <script src="js/app.js?v=20261117_v3"></script>
 </body>
 </html>
