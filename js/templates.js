@@ -476,11 +476,8 @@ class ResumeTemplates {
         ${this.renderExperienceSection(data.experience, matchedKeywords, "WORK EXPERIENCE")}
         ${this.renderSkillsSection(data.skills, matchedKeywords, "TECHNICAL & PROFESSIONAL SKILLS")}
         ${this.renderProjectsSection(data.projects, matchedKeywords, "SELECTED PROJECTS")}
-
-        <div class="dual-columns">
-          ${this.renderEducationSection(data.education, "EDUCATION")}
-          ${this.renderCertificationsSection(data.certifications, "HONORS & CERTIFICATIONS")}
-        </div>
+        ${this.renderEducationSection(data.education, "EDUCATION")}
+        ${this.renderCertificationsSection(data.certifications, "HONORS & CERTIFICATIONS")}
       </div>
     `;
   }
@@ -616,11 +613,22 @@ class ResumeTemplates {
           return `
           <div class="proj-item">
             <div class="proj-header">
-              <span class="proj-name"><strong>${this.escapeHtml(proj.name || "")}</strong></span>
-              ${proj.role ? `<span class="proj-role">(${this.escapeHtml(proj.role)})</span>` : ''}
-              ${proj.tech ? `<span class="proj-tech">| <em>${this.processText(proj.tech, matchedKeywords)}</em></span>` : ''}
-              ${safeLink ? `<span class="proj-link">[<a href="${this.escapeHtml(safeLink)}" target="_blank">${this.escapeHtml(proj.link)}</a>]</span>` : ''}
+              <div class="proj-title-role">
+                <strong class="proj-name">${this.escapeHtml(proj.name || "")}</strong>
+                ${proj.role ? `<span class="proj-role"> &bull; <em>${this.escapeHtml(proj.role)}</em></span>` : ''}
+              </div>
+              ${safeLink ? `
+                <div class="proj-meta">
+                  <a href="${this.escapeHtml(safeLink)}" target="_blank" class="proj-link">${this.escapeHtml(proj.link)}</a>
+                </div>
+              ` : ''}
             </div>
+            ${proj.tech ? `
+              <div class="proj-tech-row">
+                <span class="proj-tech-label">Tech Stack:</span>
+                <span class="proj-tech-list">${this.processText(proj.tech, matchedKeywords)}</span>
+              </div>
+            ` : ''}
             ${proj.bullets && Array.isArray(proj.bullets) ? `
               <ul class="proj-bullets">
                 ${proj.bullets.map(bullet => `
@@ -642,8 +650,11 @@ class ResumeTemplates {
         <${isSidebar ? 'h3 class="sidebar-heading"' : 'h2 class="section-title"'}>${title}</${isSidebar ? 'h3' : 'h2'}>
         ${education.map(edu => `
           <div class="edu-item">
-            <div class="edu-degree"><strong>${this.escapeHtml(edu.degree || "")}</strong></div>
-            <div class="edu-inst">${this.escapeHtml(edu.institution || "")} ${edu.year ? `(${this.escapeHtml(edu.year)})` : ''}</div>
+            <div class="edu-header">
+              <strong class="edu-degree">${this.escapeHtml(edu.degree || "")}</strong>
+              ${edu.year ? `<span class="edu-year">${this.escapeHtml(edu.year)}</span>` : ''}
+            </div>
+            <div class="edu-inst">${this.escapeHtml(edu.institution || "")}</div>
             ${edu.details ? `<div class="edu-details">${this.escapeHtml(edu.details)}</div>` : ''}
           </div>
         `).join('')}
