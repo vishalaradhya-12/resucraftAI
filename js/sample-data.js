@@ -290,6 +290,18 @@ Requirements:
           "Built end-to-end MLOps pipelines using MLflow, Kubeflow, and Docker on GCP Vertex AI, cutting model training-to-deployment time from 3 weeks to 2 days.",
           "Collaborated with data engineering team to optimize distributed Spark feature extraction jobs, reducing feature store refresh latency by 55%."
         ]
+      },
+      {
+        id: "exp-ml-3",
+        title: "AI Research Scientist Intern",
+        company: "Google Research (Brain Team)",
+        location: "Mountain View, CA",
+        period: "2018 - 2019",
+        bullets: [
+          "Researched sparse attention mechanisms for large-scale transformer architectures, improving training throughput by 22% on TPU v3 clusters.",
+          "Co-authored 2 peer-reviewed papers on neural quantization and gradient compression presented at NeurIPS and ICML conferences.",
+          "Prototyped model compression pipelines in TensorFlow, cutting memory footprint by 40% with under 0.4% loss in validation accuracy."
+        ]
       }
     ],
     projects: [
@@ -301,6 +313,16 @@ Requirements:
         link: "github.com/elena-ai-systems/fastrag",
         bullets: [
           "Open-source sub-15ms embedding search and reranking engine with cross-encoder support, downloaded 40k+ times on PyPI."
+        ]
+      },
+      {
+        id: "proj-ml-2",
+        name: "TensorQuant: 4-Bit LLM Inference Acceleration Engine",
+        role: "Lead Researcher",
+        tech: "PyTorch, CUDA, AWQ Quantization, Triton, vLLM",
+        link: "github.com/elena-ai-systems/tensorquant",
+        bullets: [
+          "Engineered kernel optimizations for activation-aware 4-bit weight quantization (AWQ), doubling generation throughput across Nvidia A100 GPUs."
         ]
       }
     ],
@@ -386,6 +408,18 @@ Qualifications:
           "Ran iterative A/B testing programs analyzing product funnel metrics via Amplitude and SQL, improving user 30-day retention by 22%.",
           "Partnered closely with enterprise sales to close 14 key Fortune 1000 accounts representing $5.6M in contract value."
         ]
+      },
+      {
+        id: "exp-pm-3",
+        title: "Associate Product Manager – Developer Tools",
+        company: "Atlassian",
+        location: "San Francisco, CA",
+        period: "2015 - 2018",
+        bullets: [
+          "Owned integrations ecosystem for developer CLI tools and webhooks, expanding active 3rd-party marketplace plugins from 120 to 580+.",
+          "Collaborated with engineering to overhaul developer documentation and interactive API sandbox, decreasing developer onboarding churn by 28%.",
+          "Drove product telemetry migration to Segment and Amplitude, enabling real-time cohort retention tracking across 400K+ weekly developers."
+        ]
       }
     ],
     projects: [
@@ -397,6 +431,16 @@ Qualifications:
         link: "openapispecbuilder.io",
         bullets: [
           "Conceived and launched community developer tool helping teams generate clean OpenAPI 3.1 schemas, adopted by over 20,000 developers worldwide."
+        ]
+      },
+      {
+        id: "proj-pm-2",
+        name: "CloudPulse: Multi-Cloud SLA Analytics Console",
+        role: "Product Lead",
+        tech: "DataDog API, GraphQL, Product Strategy, Amplitude",
+        link: "cloudpulse-demo.dev",
+        bullets: [
+          "Defined product roadmap for real-time SLA degradation alerting, adopted by 40+ enterprise cloud customers to monitor 99.99% uptime compliance."
         ]
       }
     ],

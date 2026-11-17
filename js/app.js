@@ -122,6 +122,7 @@ class ResuCraftApp {
         const tplName = target.getAttribute('data-tpl');
         window.resumeTemplates.setTemplate(tplName);
         this.renderResumePreview();
+        this.resetCanvasScroll();
         this.showToast(`Switched template to ${target.innerText.trim()}`);
       });
     });
@@ -322,6 +323,7 @@ class ResuCraftApp {
       this.populateEditor();
       this.runATSAnalysis();
       this.renderResumePreview();
+      this.resetCanvasScroll();
       this.showToast('Started a blank resume — fill in your own details!');
       return;
     }
@@ -339,6 +341,7 @@ class ResuCraftApp {
     this.populateEditor();
     this.runATSAnalysis();
     this.renderResumePreview();
+    this.resetCanvasScroll();
     this.showToast(`Loaded ${this.resumeData.name}'s profile and benchmark JD`);
     this.saveSession();
   }
@@ -488,6 +491,7 @@ class ResuCraftApp {
     this.populateEditor();
     this.runATSAnalysis();
     this.renderResumePreview();
+    this.resetCanvasScroll();
     this.showToast('↺ Restored original resume! All custom modifications and added keywords reset.', 'info');
     this.saveSession();
   }
@@ -1306,6 +1310,7 @@ class ResuCraftApp {
           this.populateEditor();
           this.runATSAnalysis();
           this.renderResumePreview();
+          this.resetCanvasScroll();
           this.showToast('Successfully imported resume profile!', 'success');
           this.saveSession();
         } else {
@@ -1316,6 +1321,13 @@ class ResuCraftApp {
       }
     };
     reader.readAsText(file);
+  }
+
+  resetCanvasScroll() {
+    const scrollContainer = document.getElementById('canvas-scroll-container');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   setZoom(level) {
