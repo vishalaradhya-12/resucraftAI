@@ -11,6 +11,7 @@ class ResuCraftApp {
     this.atsResult = null;
     this.activeTab = 'jd-analyzer';
     this.zoomLevel = 100;
+    this.lastReplacedBullet = null;
 
     // Auto-restore session from localStorage
     try {
@@ -155,6 +156,39 @@ class ResuCraftApp {
       });
     }
 
+    // Zoom Controls
+    const zoomInBtn = document.getElementById('btn-zoom-in');
+    if (zoomInBtn) {
+      zoomInBtn.addEventListener('click', () => this.setZoom(this.zoomLevel + 10));
+    }
+    const zoomOutBtn = document.getElementById('btn-zoom-out');
+    if (zoomOutBtn) {
+      zoomOutBtn.addEventListener('click', () => this.setZoom(this.zoomLevel - 10));
+    }
+    const zoomFitBtn = document.getElementById('btn-zoom-fit');
+    if (zoomFitBtn) {
+      zoomFitBtn.addEventListener('click', () => this.setZoom(100));
+    }
+
+    // Accordion Headers in Content Editor
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        const sec = e.currentTarget.closest('.accordion-section');
+        if (sec) sec.classList.toggle('collapsed');
+      });
+    });
+
+    // Toggle All Accordions
+    const toggleAllAccBtn = document.getElementById('btn-toggle-all-accordions');
+    if (toggleAllAccBtn) {
+      toggleAllAccBtn.addEventListener('click', () => {
+        const sections = document.querySelectorAll('.accordion-section');
+        const anyOpen = Array.from(sections).some(s => !s.classList.contains('collapsed'));
+        sections.forEach(s => s.classList.toggle('collapsed', anyOpen));
+        toggleAllAccBtn.innerText = anyOpen ? '▸ Expand All' : '▾ Collapse All';
+      });
+    }
+
     // Print / Download PDF Button
     const printBtn = document.getElementById('btn-print-pdf');
     if (printBtn) {
@@ -269,6 +303,7 @@ class ResuCraftApp {
 
     if (tabId === 'bullet-tailorer') {
       this.populateBulletSelectDropdown();
+      this.renderKeywordSuggestions();
     }
   }
 
@@ -313,6 +348,7 @@ class ResuCraftApp {
     this.updateScoreUI();
     this.renderKeywordBadges();
     this.updateATSBreakdown();
+    this.renderKeywordSuggestions();
     this.saveSession();
   }
 
@@ -663,12 +699,28 @@ class ResuCraftApp {
 
   replaceBullet(expIdx, bIdx, newText) {
     if (this.resumeData.experience[expIdx] && this.resumeData.experience[expIdx].bullets) {
+      const previousText = this.resumeData.experience[expIdx].bullets[bIdx];
+      this.lastReplacedBullet = { expIdx, bIdx, previousText, newText };
       this.resumeData.experience[expIdx].bullets[bIdx] = newText;
       this.populateEditor();
       this.runATSAnalysis();
       this.renderResumePreview();
       this.updateTailorOriginalText();
-      this.showToast('Updated resume bullet point with XYZ formula & keywords!', 'success');
+      this.showToast('Replaced bullet with XYZ formula! Click Undo if needed.', 'success', true);
+    }
+  }
+
+  undoLastBulletReplace() {
+    if (!this.lastReplacedBullet) return;
+    const { expIdx, bIdx, previousText } = this.lastReplacedBullet;
+    if (this.resumeData.experience[expIdx] && this.resumeData.experience[expIdx].bullets) {
+      this.resumeData.experience[expIdx].bullets[bIdx] = previousText;
+      this.lastReplacedBullet = null;
+      this.populateEditor();
+      this.runATSAnalysis();
+      this.renderResumePreview();
+      this.updateTailorOriginalText();
+      this.showToast('↺ Restored previous bullet text', 'info');
     }
   }
 
@@ -716,6 +768,7 @@ class ResuCraftApp {
     this.renderEditorProjectsList();
     this.renderEditorEducationList();
     this.renderEditorCertsList();
+    this.updateAccordionBadges();
   }
 
   bindEditorInputs() {
@@ -1265,10 +1318,99 @@ class ResuCraftApp {
     reader.readAsText(file);
   }
 
-  showToast(message, type = 'success') {
+  setZoom(level) {
+    this.zoomLevel = Math.max(50, Math.min(150, level));
+    const label = document.getElementById('zoom-level-label');
+    if (label) label.innerText = `${this.zoomLevel}%`;
+
+    const canvas = document.getElementById('resume-canvas-body');
+    if (canvas) {
+      canvas.style.transform = `scale(${this.zoomLevel / 100})`;
+      canvas.style.transformOrigin = 'top center';
+    }
+  }
+
+  updateAccordionBadges() {
+    const expBadge = document.getElementById('badge-count-exp');
+    if (expBadge) {
+      const count = this.resumeData.experience ? this.resumeData.experience.length : 0;
+      expBadge.innerText = `${count} ${count === 1 ? 'Role' : 'Roles'}`;
+    }
+
+    const skillsBadge = document.getElementById('badge-count-skills');
+    if (skillsBadge) {
+      let count = 0;
+      if (this.resumeData.skills) {
+        if (Array.isArray(this.resumeData.skills)) count = this.resumeData.skills.length;
+        else count = Object.keys(this.resumeData.skills).length;
+      }
+      skillsBadge.innerText = `${count} ${count === 1 ? 'Category' : 'Categories'}`;
+    }
+
+    const projBadge = document.getElementById('badge-count-projects');
+    if (projBadge) {
+      const count = this.resumeData.projects ? this.resumeData.projects.length : 0;
+      projBadge.innerText = `${count} ${count === 1 ? 'Project' : 'Projects'}`;
+    }
+
+    const eduBadge = document.getElementById('badge-count-edu');
+    if (eduBadge) {
+      const count = this.resumeData.education ? this.resumeData.education.length : 0;
+      eduBadge.innerText = `${count} ${count === 1 ? 'Degree' : 'Degrees'}`;
+    }
+
+    const certsBadge = document.getElementById('badge-count-certs');
+    if (certsBadge) {
+      const count = this.resumeData.certifications ? this.resumeData.certifications.length : 0;
+      certsBadge.innerText = `${count} ${count === 1 ? 'Cert' : 'Certs'}`;
+    }
+  }
+
+  renderKeywordSuggestions() {
+    const container = document.getElementById('tailor-keyword-suggestions');
+    if (!container) return;
+
+    let keywords = [];
+    if (this.atsResult && this.atsResult.missingKeywords && this.atsResult.missingKeywords.length > 0) {
+      keywords = this.atsResult.missingKeywords.slice(0, 8);
+    } else if (this.atsResult && this.atsResult.foundKeywords && this.atsResult.foundKeywords.length > 0) {
+      keywords = this.atsResult.foundKeywords.slice(0, 8);
+    }
+
+    if (keywords.length === 0) {
+      container.innerHTML = '<span style="font-size: 11px; color: var(--text-dim);">No target suggestions yet. Paste a JD in Tab 1 to see instant term chips.</span>';
+      return;
+    }
+
+    container.innerHTML = `
+      <span style="font-size: 11px; color: var(--text-dim); width: 100%; margin-bottom: 2px;">Click chips to weave into target terms:</span>
+      ${keywords.map(k => `
+        <button type="button" class="kw-suggestion-chip" data-term="${this.escapeHtml(k.term || k)}">
+          + ${this.escapeHtml(k.term || k)}
+        </button>
+      `).join('')}
+    `;
+
+    container.querySelectorAll('.kw-suggestion-chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        const term = e.currentTarget.getAttribute('data-term');
+        const input = document.getElementById('tailor-target-keyword');
+        if (input) {
+          const current = input.value.trim();
+          input.value = current ? `${current}, ${term}` : term;
+          this.showToast(`Appended "${term}" to target terms!`);
+        }
+      });
+    });
+  }
+
+  showToast(message, type = 'success', canUndo = false) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.innerHTML = `<span>${message}</span>`;
+    toast.innerHTML = `
+      <span>${message}</span>
+      ${canUndo && this.lastReplacedBullet ? `<button id="toast-undo-btn" class="btn-micro" style="margin-left: 8px; font-weight: 700; color: #38bdf8; border-color: rgba(56,189,248,0.4);">↺ Undo</button>` : ''}
+    `;
     
     let container = document.getElementById('toast-container');
     if (!container) {
@@ -1278,10 +1420,18 @@ class ResuCraftApp {
     }
     container.appendChild(toast);
 
+    const undoBtn = toast.querySelector('#toast-undo-btn');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', () => {
+        this.undoLastBulletReplace();
+        toast.remove();
+      });
+    }
+
     setTimeout(() => {
       toast.classList.add('fade-out');
       setTimeout(() => toast.remove(), 400);
-    }, 3200);
+    }, canUndo ? 6000 : 3200);
   }
 
   escapeHtml(str) {

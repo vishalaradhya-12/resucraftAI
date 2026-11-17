@@ -26,8 +26,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=20261025_12">
-  <link rel="stylesheet" href="css/resume-templates.css?v=20261025_12">
+  <link rel="stylesheet" href="css/styles.css?v=20261117_01">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261117_01">
 
   <style>
 .quickstart-guide {
@@ -313,7 +313,8 @@
 
             <div class="form-group">
               <label class="form-label" for="tailor-target-keyword">Target JD Keywords to Weave In:</label>
-              <input type="text" id="tailor-target-keyword" class="form-input" placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or leave blank to auto-use target JD terms)">
+              <input type="text" id="tailor-target-keyword" class="form-input" placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or click suggestions below)">
+              <div id="tailor-keyword-suggestions" class="kw-suggestions-row"></div>
             </div>
 
             <button id="btn-generate-bullets" class="btn btn-primary" style="width: 100%;">
@@ -332,109 +333,168 @@
         <!-- ================= PANEL 3: RESUME CONTENT EDITOR ================= -->
         <section class="tab-panel" id="panel-content-editor">
           
-          <!-- Personal Details -->
-          <div class="editor-card">
-            <div class="editor-card-header">
-              <strong>👤 Personal Details & Contact</strong>
+          <div class="accordion-controls-bar">
+            <span style="font-size: 11.5px; color: var(--text-dim);">Click section headers to expand or collapse</span>
+            <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾ Collapse All</button>
+          </div>
+
+          <!-- 1. Personal Details -->
+          <div class="accordion-section" id="acc-sec-personal">
+            <div class="accordion-header" data-target="acc-body-personal">
+              <div class="accordion-header-left">
+                <span class="accordion-title">👤 Personal Details & Contact</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="accordion-chevron">▾</span>
+              </div>
             </div>
-            <div class="editor-card-grid">
-              <div>
-                <label class="form-label-sm">Full Name</label>
-                <input type="text" id="input-name" class="form-input" placeholder="Your Name">
-              </div>
-              <div>
-                <label class="form-label-sm">Target Role Title</label>
-                <input type="text" id="input-target-title" class="form-input" placeholder="Target Role Title">
-              </div>
-              <div>
-                <label class="form-label-sm">Email Address</label>
-                <input type="email" id="input-email" class="form-input" placeholder="name@domain.com">
-              </div>
-              <div>
-                <label class="form-label-sm">Phone Number</label>
-                <input type="text" id="input-phone" class="form-input" placeholder="+1 (555) 000-0000">
-              </div>
-              <div>
-                <label class="form-label-sm">Location</label>
-                <input type="text" id="input-location" class="form-input" placeholder="City, State">
-              </div>
-              <div>
-                <label class="form-label-sm">LinkedIn URL</label>
-                <input type="text" id="input-linkedin" class="form-input" placeholder="linkedin.com/in/username">
-              </div>
-              <div>
-                <label class="form-label-sm">GitHub / Repo URL</label>
-                <input type="text" id="input-github" class="form-input" placeholder="github.com/username">
-              </div>
-              <div>
-                <label class="form-label-sm">Portfolio / Website</label>
-                <input type="text" id="input-portfolio" class="form-input" placeholder="yourportfolio.dev">
+            <div class="accordion-body" id="acc-body-personal">
+              <div class="editor-card-grid">
+                <div>
+                  <label class="form-label-sm">Full Name</label>
+                  <input type="text" id="input-name" class="form-input" placeholder="Your Name">
+                </div>
+                <div>
+                  <label class="form-label-sm">Target Role Title</label>
+                  <input type="text" id="input-target-title" class="form-input" placeholder="Target Role Title">
+                </div>
+                <div>
+                  <label class="form-label-sm">Email Address</label>
+                  <input type="email" id="input-email" class="form-input" placeholder="name@domain.com">
+                </div>
+                <div>
+                  <label class="form-label-sm">Phone Number</label>
+                  <input type="text" id="input-phone" class="form-input" placeholder="+1 (555) 000-0000">
+                </div>
+                <div>
+                  <label class="form-label-sm">Location</label>
+                  <input type="text" id="input-location" class="form-input" placeholder="City, State">
+                </div>
+                <div>
+                  <label class="form-label-sm">LinkedIn URL</label>
+                  <input type="text" id="input-linkedin" class="form-input" placeholder="linkedin.com/in/username">
+                </div>
+                <div>
+                  <label class="form-label-sm">GitHub / Repo URL</label>
+                  <input type="text" id="input-github" class="form-input" placeholder="github.com/username">
+                </div>
+                <div>
+                  <label class="form-label-sm">Portfolio / Website</label>
+                  <input type="text" id="input-portfolio" class="form-input" placeholder="yourportfolio.dev">
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Professional Summary -->
-          <div class="editor-card">
-            <div class="editor-card-header">
-              <strong>📝 Professional Summary</strong>
-              <button id="btn-ai-summary" class="btn-micro" title="Auto-craft tailored summary weaving target JD keywords">
-                ✨ AI Tailor Summary wrt JD
-              </button>
+          <!-- 2. Professional Summary -->
+          <div class="accordion-section" id="acc-sec-summary">
+            <div class="accordion-header" data-target="acc-body-summary">
+              <div class="accordion-header-left">
+                <span class="accordion-title">📝 Professional Summary</span>
+              </div>
+              <div class="accordion-header-right">
+                <button id="btn-ai-summary" class="btn-micro" title="Auto-craft tailored summary weaving target JD keywords" onclick="event.stopPropagation();">
+                  ✨ AI Tailor Summary wrt JD
+                </button>
+                <span class="accordion-chevron">▾</span>
+              </div>
             </div>
-            <textarea id="input-summary" class="form-textarea" rows="4" placeholder="Enter high-impact professional summary..."></textarea>
-          </div>
-
-          <!-- Work Experience -->
-          <div class="section-block">
-            <div class="section-block-header">
-              <span class="section-block-title">💼 Work Experience</span>
-              <button id="btn-add-experience" class="btn-micro btn-secondary">+ Add Role</button>
-            </div>
-            <div id="editor-experience-container">
-              <!-- Dynamically rendered -->
+            <div class="accordion-body" id="acc-body-summary">
+              <textarea id="input-summary" class="form-textarea" rows="4" placeholder="Enter high-impact professional summary..."></textarea>
             </div>
           </div>
 
-          <!-- Technical Skills -->
-          <div class="section-block">
-            <div class="section-block-header">
-              <span class="section-block-title">🛠️ Technical Skills by Category</span>
+          <!-- 3. Work Experience -->
+          <div class="accordion-section" id="acc-sec-experience">
+            <div class="accordion-header" data-target="acc-body-experience">
+              <div class="accordion-header-left">
+                <span class="accordion-title">💼 Work Experience</span>
+                <span class="accordion-badge" id="badge-count-exp">3 Roles</span>
+              </div>
+              <div class="accordion-header-right">
+                <button id="btn-add-experience" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Role</button>
+                <span class="accordion-chevron">▾</span>
+              </div>
             </div>
-            <div id="editor-skills-container">
-              <!-- Dynamically rendered -->
-            </div>
-          </div>
-
-          <!-- Projects -->
-          <div class="section-block">
-            <div class="section-block-header">
-              <span class="section-block-title">🚀 Projects & Engineering Initiatives</span>
-              <button id="btn-add-project" class="btn-micro btn-secondary">+ Add Project</button>
-            </div>
-            <div id="editor-projects-container">
-              <!-- Dynamically rendered -->
+            <div class="accordion-body" id="acc-body-experience">
+              <div id="editor-experience-container">
+                <!-- Dynamically rendered -->
+              </div>
             </div>
           </div>
 
-          <!-- Education -->
-          <div class="section-block">
-            <div class="section-block-header">
-              <span class="section-block-title">🎓 Education</span>
-              <button id="btn-add-education" class="btn-micro btn-secondary">+ Add Degree</button>
+          <!-- 4. Technical Skills -->
+          <div class="accordion-section" id="acc-sec-skills">
+            <div class="accordion-header" data-target="acc-body-skills">
+              <div class="accordion-header-left">
+                <span class="accordion-title">🛠️ Technical Skills by Category</span>
+                <span class="accordion-badge" id="badge-count-skills">5 Categories</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="accordion-chevron">▾</span>
+              </div>
             </div>
-            <div id="editor-education-container">
-              <!-- Dynamically rendered -->
+            <div class="accordion-body" id="acc-body-skills">
+              <div id="editor-skills-container">
+                <!-- Dynamically rendered -->
+              </div>
             </div>
           </div>
 
-          <!-- Certifications -->
-          <div class="section-block">
-            <div class="section-block-header">
-              <span class="section-block-title">🏅 Certifications</span>
-              <button id="btn-add-cert" class="btn-micro btn-secondary">+ Add Certification</button>
+          <!-- 5. Projects -->
+          <div class="accordion-section" id="acc-sec-projects">
+            <div class="accordion-header" data-target="acc-body-projects">
+              <div class="accordion-header-left">
+                <span class="accordion-title">🚀 Projects & Engineering</span>
+                <span class="accordion-badge" id="badge-count-projects">1 Project</span>
+              </div>
+              <div class="accordion-header-right">
+                <button id="btn-add-project" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Project</button>
+                <span class="accordion-chevron">▾</span>
+              </div>
             </div>
-            <div id="editor-certs-container">
-              <!-- Dynamically rendered -->
+            <div class="accordion-body" id="acc-body-projects">
+              <div id="editor-projects-container">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Education -->
+          <div class="accordion-section" id="acc-sec-education">
+            <div class="accordion-header" data-target="acc-body-education">
+              <div class="accordion-header-left">
+                <span class="accordion-title">🎓 Education</span>
+                <span class="accordion-badge" id="badge-count-edu">2 Degrees</span>
+              </div>
+              <div class="accordion-header-right">
+                <button id="btn-add-education" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Degree</button>
+                <span class="accordion-chevron">▾</span>
+              </div>
+            </div>
+            <div class="accordion-body" id="acc-body-education">
+              <div id="editor-education-container">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Certifications -->
+          <div class="accordion-section" id="acc-sec-certs">
+            <div class="accordion-header" data-target="acc-body-certs">
+              <div class="accordion-header-left">
+                <span class="accordion-title">🏅 Certifications</span>
+                <span class="accordion-badge" id="badge-count-certs">1 Cert</span>
+              </div>
+              <div class="accordion-header-right">
+                <button id="btn-add-cert" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Certification</button>
+                <span class="accordion-chevron">▾</span>
+              </div>
+            </div>
+            <div class="accordion-body" id="acc-body-certs">
+              <div id="editor-certs-container">
+                <!-- Dynamically rendered -->
+              </div>
             </div>
           </div>
 
@@ -452,11 +512,11 @@
           
           <!-- Template Picker -->
           <div class="template-picker-group">
-            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic">Classic ATS (Ref)</button>
-            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech">Tech Modern</button>
-            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive">Executive</button>
-            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal">Harvard Minimal</button>
-            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic">Nordic Clean</button>
+            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic" title="Single-column reference ATS design (Taleo, Workday, SAP compliant)">Classic ATS ⭐</button>
+            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech" title="Modern layout for software & cloud engineers">Tech Modern</button>
+            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive" title="Executive leadership format with strategic capability sections">Executive</button>
+            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal" title="Ivy / Harvard standard monochrome layout">Harvard Minimal</button>
+            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic" title="Clean 2-column sidebar layout for design & networking">Nordic Clean 🎨</button>
           </div>
 
           <!-- Color Palettes -->
@@ -470,6 +530,14 @@
         </div>
 
         <div class="toolbar-right">
+          <!-- Zoom Controls -->
+          <div class="zoom-controls-group" title="Zoom Canvas View">
+            <button id="btn-zoom-out" class="zoom-btn" title="Zoom Out (−)">−</button>
+            <span id="zoom-level-label" class="zoom-level-text">100%</span>
+            <button id="btn-zoom-in" class="zoom-btn" title="Zoom In (+)">+</button>
+            <button id="btn-zoom-fit" class="zoom-btn" style="width: auto; padding: 0 6px; font-size: 11px;" title="Reset Zoom to 100%">100%</button>
+          </div>
+
           <!-- Keyword Highlight Toggle -->
           <label class="toggle-wrapper" title="Visually highlight keywords from the target JD in the resume">
             <span class="switch">
@@ -505,9 +573,9 @@
   </main>
 
   <!-- Script Modules with Cache Busters -->
-  <script src="js/sample-data.js?v=20261025_12"></script>
-  <script src="js/engine.js?v=20261025_12"></script>
-  <script src="js/templates.js?v=20261025_12"></script>
-  <script src="js/app.js?v=20261025_12"></script>
+  <script src="js/sample-data.js?v=20261117_01"></script>
+  <script src="js/engine.js?v=20261117_01"></script>
+  <script src="js/templates.js?v=20261117_01"></script>
+  <script src="js/app.js?v=20261117_01"></script>
 </body>
 </html>

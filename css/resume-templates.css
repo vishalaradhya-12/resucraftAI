@@ -44,28 +44,59 @@ mark.kw-matched {
 
 /* Font Size Scales */
 .resume-document.size-small {
-  font-size: 11.5px;
-  line-height: 1.42;
-  padding: 34px 40px;
+  font-size: 11px;
+  line-height: 1.38;
+  padding: 30px 36px;
 }
-.resume-document.size-small .candidate-name { font-size: 20px; }
-.resume-document.size-small .section-title { font-size: 13px; margin-bottom: 8px; }
-.resume-document.size-small .exp-item { margin-bottom: 10px; }
+.resume-document.size-small .candidate-name,
+.resume-document.size-small .classic-name { font-size: 19px; }
+.resume-document.size-small .section-title,
+.resume-document.size-small .classic-section-title { font-size: 11.8px; margin-bottom: 5px; padding-bottom: 2px; }
+.resume-document.size-small .exp-item,
+.resume-document.size-small .classic-exp-item { margin-bottom: 7px; }
+.resume-document.size-small .classic-section { margin-bottom: 8px; }
+.resume-document.size-small .classic-summary-text,
+.resume-document.size-small .classic-skill-row,
+.resume-document.size-small .classic-bullet-point,
+.resume-document.size-small .classic-contact-bar,
+.resume-document.size-small .classic-cert-row,
+.resume-document.size-small .classic-edu-row { font-size: 10px !important; line-height: 1.36 !important; }
+.resume-document.size-small .classic-bullets { margin-top: 2px; }
+.resume-document.size-small .classic-bullet-point { margin-bottom: 2px; }
 
 .resume-document.size-medium {
   font-size: 12.5px;
   line-height: 1.48;
 }
-.resume-document.size-medium .candidate-name { font-size: 22px; }
-.resume-document.size-medium .section-title { font-size: 14.5px; margin-bottom: 10px; }
+.resume-document.size-medium .candidate-name,
+.resume-document.size-medium .classic-name { font-size: 22px; }
+.resume-document.size-medium .section-title,
+.resume-document.size-medium .classic-section-title { font-size: 13.5px; margin-bottom: 6px; }
+.resume-document.size-medium .classic-summary-text,
+.resume-document.size-medium .classic-skill-row,
+.resume-document.size-medium .classic-bullet-point,
+.resume-document.size-medium .classic-contact-bar,
+.resume-document.size-medium .classic-cert-row,
+.resume-document.size-medium .classic-edu-row { font-size: 11px; line-height: 1.44; }
 
 .resume-document.size-large {
   font-size: 13.5px;
   line-height: 1.55;
   padding: 48px 54px;
 }
-.resume-document.size-large .candidate-name { font-size: 25px; }
-.resume-document.size-large .section-title { font-size: 16px; margin-bottom: 12px; }
+.resume-document.size-large .candidate-name,
+.resume-document.size-large .classic-name { font-size: 25px; }
+.resume-document.size-large .section-title,
+.resume-document.size-large .classic-section-title { font-size: 15px; margin-bottom: 8px; }
+.resume-document.size-large .exp-item,
+.resume-document.size-large .classic-exp-item { margin-bottom: 12px; }
+.resume-document.size-large .classic-section { margin-bottom: 14px; }
+.resume-document.size-large .classic-summary-text,
+.resume-document.size-large .classic-skill-row,
+.resume-document.size-large .classic-bullet-point,
+.resume-document.size-large .classic-contact-bar,
+.resume-document.size-large .classic-cert-row,
+.resume-document.size-large .classic-edu-row { font-size: 12px !important; line-height: 1.52 !important; }
 
 /* Color Themes */
 .theme-indigo { --theme-accent: #4f46e5; --theme-accent-light: #e0e7ff; --theme-text-accent: #3730a3; }
@@ -261,10 +292,11 @@ mark.kw-matched {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #111111;
-  border-bottom: 1.2px solid #222222;
+  color: var(--theme-accent, #111111);
+  border-bottom: 1.5px solid var(--theme-accent, #222222);
   padding-bottom: 2px;
   margin-bottom: 6px;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .classic-summary-text {
@@ -485,22 +517,23 @@ mark.kw-matched {
   font-size: 0.88em;
   color: #374151;
   margin-bottom: 18px;
-  border-bottom: 1px solid #111827;
+  border-bottom: 1.5px solid var(--theme-accent, #111827);
   padding-bottom: 8px;
 }
 
 .tpl-minimal .section-title {
   font-family: 'Georgia', serif;
-  color: #111827;
-  border-bottom: 1px solid #111827;
+  color: var(--theme-accent, #111827);
+  border-bottom: 1.5px solid var(--theme-accent, #111827);
   font-size: 13px;
   letter-spacing: 0.08em;
   font-weight: bold;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .tpl-minimal .bullet-point::before {
   content: '•';
-  color: #111827;
+  color: var(--theme-accent, #111827);
 }
 
 /* ==========================================================================
