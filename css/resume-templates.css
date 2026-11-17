@@ -13,10 +13,10 @@
   color: #1e293b;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
   border-radius: 4px;
-  padding: 44px 50px;
+  padding: 30px 40px;
   box-sizing: border-box;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.5;
+  line-height: 1.45;
   position: relative;
   overflow: visible !important;
   transition: all 0.25s ease;
@@ -67,19 +67,19 @@ mark.kw-matched {
 .resume-document.size-small .classic-bullet-point { margin-bottom: 2px; }
 
 .resume-document.size-medium {
-  font-size: 12.5px;
-  line-height: 1.48;
+  font-size: 11.2px;
+  line-height: 1.40;
 }
 .resume-document.size-medium .candidate-name,
-.resume-document.size-medium .classic-name { font-size: 22px; }
+.resume-document.size-medium .classic-name { font-size: 20px; }
 .resume-document.size-medium .section-title,
-.resume-document.size-medium .classic-section-title { font-size: 13.5px; margin-bottom: 6px; }
+.resume-document.size-medium .classic-section-title { font-size: 12.5px; margin-bottom: 5px; padding-bottom: 2px; }
 .resume-document.size-medium .classic-summary-text,
 .resume-document.size-medium .classic-skill-row,
 .resume-document.size-medium .classic-bullet-point,
 .resume-document.size-medium .classic-contact-bar,
 .resume-document.size-medium .classic-cert-row,
-.resume-document.size-medium .classic-edu-row { font-size: 11px; line-height: 1.44; }
+.resume-document.size-medium .classic-edu-row { font-size: 11px; line-height: 1.40; }
 
 .resume-document.size-large {
   font-size: 13.5px;
@@ -109,7 +109,7 @@ mark.kw-matched {
 
 /* Common Structural Elements */
 .resume-section {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .section-title {
@@ -119,8 +119,8 @@ mark.kw-matched {
   letter-spacing: 0.05em;
   color: var(--theme-accent);
   border-bottom: 1.5px solid var(--theme-accent);
-  padding-bottom: 4px;
-  margin-bottom: 10px;
+  padding-bottom: 2px;
+  margin-bottom: 6px;
 }
 
 .summary-text {
@@ -129,7 +129,7 @@ mark.kw-matched {
 }
 
 .exp-item, .proj-item {
-  margin-bottom: 13px;
+  margin-bottom: 7px;
   page-break-inside: avoid;
 }
 
@@ -224,17 +224,22 @@ mark.kw-matched {
   margin-bottom: 2px;
 }
 
+.edu-item {
+  margin-bottom: 3px;
+}
+
 .exp-bullets, .proj-bullets {
   list-style-type: none;
   padding-left: 0;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .bullet-point {
   position: relative;
   padding-left: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   color: #334155;
+  line-height: 1.38;
 }
 
 .bullet-point::before {
@@ -470,8 +475,8 @@ mark.kw-matched {
    ========================================================================== */
 .tpl-tech .resume-header {
   border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 14px;
-  margin-bottom: 16px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .tpl-tech .header-main {
@@ -516,7 +521,7 @@ mark.kw-matched {
    TEMPLATE 2: EXECUTIVE (Leadership & Strategic)
    ========================================================================== */
 .tpl-executive {
-  padding-top: 50px;
+  padding-top: 36px;
 }
 
 .tpl-executive .header-top-bar {
@@ -657,12 +662,12 @@ mark.kw-matched {
 .nordic-sidebar {
   background: #f8fafc;
   border-right: 1px solid #e2e8f0;
-  padding: 36px 24px;
+  padding: 28px 20px;
 }
 
 .nordic-sidebar .candidate-name {
   font-family: 'Outfit', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: #0f172a;
   line-height: 1.2;
@@ -672,11 +677,11 @@ mark.kw-matched {
   font-size: 0.9em;
   color: var(--theme-accent);
   font-weight: 600;
-  margin: 6px 0 20px;
+  margin: 4px 0 12px;
 }
 
 .sidebar-block {
-  margin-bottom: 22px;
+  margin-bottom: 12px;
 }
 
 .sidebar-heading {
@@ -686,8 +691,8 @@ mark.kw-matched {
   font-weight: 700;
   color: #64748b;
   border-bottom: 1px solid #cbd5e1;
-  padding-bottom: 4px;
-  margin-bottom: 8px;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
 }
 
 .contact-block {
@@ -695,26 +700,26 @@ mark.kw-matched {
   color: #475569;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .nordic-skill-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 4px;
 }
 
 .nordic-pill {
-  font-size: 0.85em;
+  font-size: 0.82em;
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  padding: 2px 7px;
+  padding: 1.5px 6px;
   border-radius: 4px;
   color: #334155;
 }
 
 .nordic-main {
-  padding: 36px 34px;
+  padding: 28px 26px;
 }
 
 /* ==========================================================================
