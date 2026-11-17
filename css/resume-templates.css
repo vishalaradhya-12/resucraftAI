@@ -556,9 +556,12 @@ mark.kw-matched {
 }
 
 .tpl-executive .section-title {
-  border-bottom: 1px solid #0f172a;
-  color: #0f172a;
+  border-bottom: 1.5px solid var(--theme-accent, #0f172a);
+  color: var(--theme-accent, #0f172a);
   letter-spacing: 0.08em;
+  padding-bottom: 3px;
+  margin-bottom: 8px;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 /* ==========================================================================
@@ -598,7 +601,8 @@ mark.kw-matched {
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.tpl-minimal .bullet-point::before {
+.tpl-minimal .bullet-point::before,
+.tpl-minimal .cert-item::before {
   content: '•';
   color: var(--theme-accent, #111827);
 }

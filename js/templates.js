@@ -414,11 +414,11 @@ class ResumeTemplates {
         <!-- Projects -->
         ${this.renderProjectsSection(data.projects, matchedKeywords)}
 
-        <!-- Education & Certifications -->
-        <div class="dual-columns">
-          ${this.renderEducationSection(data.education)}
-          ${this.renderCertificationsSection(data.certifications)}
-        </div>
+        <!-- Education -->
+        ${this.renderEducationSection(data.education)}
+
+        <!-- Certifications -->
+        ${this.renderCertificationsSection(data.certifications)}
       </div>
     `;
   }
@@ -446,11 +446,8 @@ class ResumeTemplates {
         ${this.renderExperienceSection(data.experience, matchedKeywords, "Professional Experience & Leadership")}
         ${this.renderSkillsSection(data.skills, matchedKeywords, "Core Competencies & Strategic Capabilities")}
         ${this.renderProjectsSection(data.projects, matchedKeywords, "Key Initiatives & Strategic Deliverables")}
-
-        <div class="dual-columns">
-          ${this.renderEducationSection(data.education)}
-          ${this.renderCertificationsSection(data.certifications)}
-        </div>
+        ${this.renderEducationSection(data.education)}
+        ${this.renderCertificationsSection(data.certifications)}
       </div>
     `;
   }
