@@ -410,13 +410,13 @@ class ResumeEngine {
     topKeywords.forEach((kw, index) => {
       if (index < Math.ceil(topKeywords.length * 0.35)) {
         kw.priorityTier = "knockout";
-        kw.priorityLabel = "🔴 Must-Have Knockout";
+        kw.priorityLabel = "Must-Have Knockout";
       } else if (index < Math.ceil(topKeywords.length * 0.75)) {
         kw.priorityTier = "high";
-        kw.priorityLabel = "🟠 High Priority";
+        kw.priorityLabel = "High Priority";
       } else {
         kw.priorityTier = "valued";
-        kw.priorityLabel = "🟡 Valued Competency";
+        kw.priorityLabel = "Valued Competency";
       }
     });
 

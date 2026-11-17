@@ -322,6 +322,9 @@ class ResuCraftApp {
     const backBtn = document.getElementById('btn-mobile-back-editor');
     if (backBtn) backBtn.addEventListener('click', () => setMobileView('editor'));
 
+    const mobilePdfBtn = document.getElementById('btn-mobile-download-pdf');
+    if (mobilePdfBtn) mobilePdfBtn.addEventListener('click', () => this.printResume());
+
     window.addEventListener('resize', () => {
       this.updateMobileCanvasScale();
     });
@@ -420,13 +423,13 @@ class ResuCraftApp {
 
     if (scoreBadge) {
       if (score >= 85) {
-        scoreBadge.innerHTML = '<span class="badge badge-success">⭐ ATS Ready • Top 5% Applicant</span>';
+        scoreBadge.innerHTML = '<span class="badge badge-success">ATS Ready • Top 5% Applicant</span>';
       } else if (score >= 70) {
-        scoreBadge.innerHTML = '<span class="badge badge-primary">✔ High Match • Recommended for Apply</span>';
+        scoreBadge.innerHTML = '<span class="badge badge-primary">High Match • Recommended to Apply</span>';
       } else if (score >= 50) {
-        scoreBadge.innerHTML = '<span class="badge badge-warning">⚡ Moderate Match • Needs Keywords</span>';
+        scoreBadge.innerHTML = '<span class="badge badge-warning">Moderate Match • Needs Keywords</span>';
       } else {
-        scoreBadge.innerHTML = '<span class="badge badge-danger">⚠️ Low ATS Score • Missing Key Terms</span>';
+        scoreBadge.innerHTML = '<span class="badge badge-danger">Low ATS Score • Missing Key Terms</span>';
       }
     }
 
@@ -451,7 +454,7 @@ class ResuCraftApp {
           <span class="kw-tag matched" title="${k.priorityLabel || 'Matched Skill'}">
             <span class="kw-dot"></span>
             <strong>${k.term}</strong>
-            <span class="kw-freq">${k.priorityTier === 'knockout' ? '⭐ Must-Have' : 'Matched'}</span>
+            <span class="kw-freq">${k.priorityTier === 'knockout' ? 'Must-Have' : 'Matched'}</span>
           </span>
         `).join('');
       }
@@ -460,7 +463,7 @@ class ResuCraftApp {
     // Missing Keywords
     if (missingContainer) {
       if (this.atsResult.missingKeywords.length === 0) {
-        missingContainer.innerHTML = '<p class="empty-state-text success">🎉 Outstanding! You have matched all essential keywords from this JD (100% Match).</p>';
+        missingContainer.innerHTML = '<p class="empty-state-text success">Outstanding! You have matched all essential keywords from this JD (100% Match).</p>';
       } else {
         missingContainer.innerHTML = this.atsResult.missingKeywords.map(k => `
           <div class="missing-kw-card">
@@ -471,7 +474,7 @@ class ResuCraftApp {
             </div>
             <div class="missing-actions">
               <button class="btn-micro btn-success btn-add-skill" data-kw="${k.term}" title="Add directly to Technical Skills Matrix">+ Add to Skills</button>
-              <button class="btn-micro btn-primary btn-weave-role" data-kw="${k.term}" title="Instantly weave into experience bullet with Google XYZ formula">⚡ Weave into Role</button>
+              <button class="btn-micro btn-primary btn-weave-role" data-kw="${k.term}" title="Instantly weave into experience bullet with Google XYZ formula">Weave into Role</button>
               <button class="btn-micro btn-tailor-kw" data-kw="${k.term}" title="Customize in Bullet Tailorer">Customize</button>
             </div>
           </div>
@@ -551,7 +554,7 @@ class ResuCraftApp {
     this.runATSAnalysis();
     this.renderResumePreview();
 
-    this.showToast(`🎉 1-Click Auto-Optimized! Added ${result.skillsAdded.length} curated skills & tailored experience cleanly.`);
+    this.showToast(`1-Click Auto-Optimized! Added ${result.skillsAdded.length} curated skills & tailored experience cleanly.`);
   }
 
   addAllMissingSkills() {
@@ -711,7 +714,7 @@ class ResuCraftApp {
 
     resultsContainer.innerHTML = `
       <div class="tailor-results-header">
-        <h4>⚡ AI-Optimized Google XYZ Variations wrt Target JD:</h4>
+        <h4>AI-Optimized Google XYZ Variations wrt Target JD:</h4>
         <span class="target-kw-badge">Targeting: <strong>${targetKeywords.join(', ')}</strong></span>
       </div>
       <div class="variations-grid">
@@ -725,7 +728,7 @@ class ResuCraftApp {
             <div class="var-footer">
               <span class="var-keywords">Keywords included: ${v.addedKeywords.join(', ')}</span>
               <button class="btn btn-secondary btn-sm btn-accept-bullet" data-var="${v.id}">
-                ✓ Accept & Replace in Resume
+                Accept & Replace in Resume
               </button>
             </div>
           </div>
@@ -1256,11 +1259,11 @@ class ResuCraftApp {
     const a4Height = 1122;
 
     if (docHeight <= a4Height + 40) {
-      badge.innerHTML = '<span class="page-pill page-pill-success">📄 1 Page Fit (Perfect for ATS)</span>';
+      badge.innerHTML = '<span class="page-pill page-pill-success">1 Page Fit (Perfect for ATS)</span>';
     } else if (docHeight <= a4Height * 2 + 60) {
-      badge.innerHTML = '<span class="page-pill page-pill-warning">📄📄 2 Pages (Balanced Senior Fit)</span>';
+      badge.innerHTML = '<span class="page-pill page-pill-warning">2 Pages (Balanced Senior Fit)</span>';
     } else {
-      badge.innerHTML = '<span class="page-pill page-pill-danger">📄📄+ 3+ Pages (Consider trimming bullets)</span>';
+      badge.innerHTML = '<span class="page-pill page-pill-danger">3+ Pages (Consider trimming bullets)</span>';
     }
   }
 
@@ -1270,7 +1273,7 @@ class ResuCraftApp {
     const cleanName = (this.resumeData && this.resumeData.name) ? this.resumeData.name.replace(/\s+/g, '_') : 'Resume';
     document.title = `${cleanName}_Resume`;
 
-    this.showToast('📄 Opening Print dialog. Tip: Ensure "Headers and Footers" is unchecked in print settings for a clean PDF.', 'info');
+    this.showToast('Opening Print dialog. Tip: Ensure "Headers and Footers" is unchecked in print settings for a clean PDF.', 'info');
     setTimeout(() => {
       window.print();
       setTimeout(() => {
@@ -1386,14 +1389,21 @@ class ResuCraftApp {
   }
 
   updateMobileCanvasScale() {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 992) {
       const canvas = document.getElementById('resume-canvas-body');
       if (!canvas) return;
 
-      const availableWidth = window.innerWidth - 16;
+      const viewportWidth = window.innerWidth;
+      const availableWidth = Math.max(300, viewportWidth - 20);
       const targetScale = Math.min(1, Math.max(0.35, availableWidth / 794));
+      const scaledWidth = 794 * targetScale;
+      const leftMargin = Math.max(0, (viewportWidth - scaledWidth) / 2);
+
+      canvas.style.transformOrigin = 'top left';
       canvas.style.transform = `scale(${targetScale})`;
-      canvas.style.transformOrigin = 'top center';
+      canvas.style.width = '794px';
+      canvas.style.marginLeft = `${Math.round(leftMargin)}px`;
+      canvas.style.marginRight = '0px';
 
       const doc = canvas.querySelector('.resume-document');
       if (doc) {
@@ -1404,8 +1414,11 @@ class ResuCraftApp {
     } else {
       const canvas = document.getElementById('resume-canvas-body');
       if (canvas) {
-        canvas.style.transform = `scale(${this.zoomLevel / 100})`;
         canvas.style.transformOrigin = 'top center';
+        canvas.style.transform = `scale(${this.zoomLevel / 100})`;
+        canvas.style.width = '100%';
+        canvas.style.marginLeft = 'auto';
+        canvas.style.marginRight = 'auto';
         canvas.style.height = 'auto';
       }
       const label = document.getElementById('zoom-level-label');
