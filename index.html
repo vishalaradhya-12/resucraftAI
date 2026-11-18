@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>ResuCraft AI — NextGen ATS Resume Engine wrt Job Description</title>
-  <meta name="description" content="State of the art ATS resume tailoring engine with real-time job description analysis, keyword gap extraction, and Google XYZ bullet point optimizer.">
+  <meta name="description"
+    content="State of the art ATS resume tailoring engine with real-time job description analysis, keyword gap extraction, and Google XYZ bullet point optimizer.">
 
   <!-- Open Graph / Social Share -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="ResuCraft AI — Free ATS Resume Optimizer wrt Job Description">
-  <meta property="og:description" content="Paste any Job Description and get a real-time ATS match score, missing keyword radar, and 1-click Google XYZ bullet optimization. 100% free, 100% private — runs in your browser.">
+  <meta property="og:description"
+    content="Paste any Job Description and get a real-time ATS match score, missing keyword radar, and 1-click Google XYZ bullet optimization. 100% free, 100% private — runs in your browser.">
   <meta property="og:image" content="https://resucraft.ai/og-preview.png">
   <meta property="og:url" content="https://resucraft.ai">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ResuCraft AI — Free ATS Resume Optimizer">
-  <meta name="twitter:description" content="Real-time ATS scoring, keyword gap analysis & Google XYZ bullet rewriter. No signup, no data sent to servers.">
+  <meta name="twitter:description"
+    content="Real-time ATS scoring, keyword gap analysis & Google XYZ bullet rewriter. No signup, no data sent to servers.">
   <meta name="twitter:image" content="https://resucraft.ai/og-preview.png">
   <!-- Canonical & Theme -->
   <meta name="theme-color" content="#6366f1">
@@ -23,52 +27,69 @@
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=20261118_v10">
-  <link rel="stylesheet" href="css/resume-templates.css?v=20261118_v10">
+  <link rel="stylesheet" href="css/styles.css?v=20261118_v12">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261118_v12">
 
   <style>
-.quickstart-guide {
-  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06));
-  border: 1px solid rgba(99,102,241,0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-}
-.qs-steps {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-size: 11.5px;
-  color: #94a3b8;
-}
-.qs-step { display: flex; align-items: center; gap: 5px; }
-.qs-num {
-  background: #6366f1;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.qs-sep { color: rgba(99,102,241,0.5); font-weight: 700; }
+    .quickstart-guide {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(6, 182, 212, 0.06));
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+
+    .qs-steps {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .qs-step {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .qs-num {
+      background: #6366f1;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .qs-sep {
+      color: rgba(99, 102, 241, 0.5);
+      font-weight: 700;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Top App Navigation & Master Controls -->
   <header class="app-header">
     <div class="brand-wrapper">
       <div class="brand-logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="brand-svg"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" class="brand-svg">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
       </div>
       <div class="brand-text">
         <h1>ResuCraft AI</h1>
@@ -93,8 +114,14 @@
 
     <div class="header-actions">
       <!-- Universal Resume Importer -->
-      <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow" title="Upload PDF/Word or Paste your resume to auto-load">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow"
+        title="Upload PDF/Word or Paste your resume to auto-load">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
         <span id="btn-header-import-text">📄 Use My Resume</span>
       </button>
 
@@ -102,29 +129,56 @@
         <span>❓ How It Works</span>
       </button>
 
-      <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only" title="Restore original pristine resume (undo custom changes)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only"
+        title="Restore original pristine resume (undo custom changes)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
         <span>Reset</span>
       </button>
 
-      <button id="btn-copy-ats" class="btn btn-secondary btn-sm" title="Copy clean plaintext for direct ATS form copy-pasting">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <button id="btn-copy-ats" class="btn btn-secondary btn-sm"
+        title="Copy clean plaintext for direct ATS form copy-pasting">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
         <span class="desktop-only">Copy </span>ATS<span class="desktop-only"> Plaintext</span>
       </button>
 
       <button id="btn-export-json" class="btn btn-secondary btn-sm desktop-only" title="Export profile to JSON backup">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
         <span>Export JSON</span>
       </button>
 
-      <label for="import-json-file" class="btn btn-secondary btn-sm desktop-only" style="cursor: pointer;" title="Import existing profile JSON">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      <label for="import-json-file" class="btn btn-secondary btn-sm desktop-only" style="cursor: pointer;"
+        title="Import existing profile JSON">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
         <span>Import JSON</span>
         <input type="file" id="import-json-file" accept=".json" style="display: none;">
       </label>
 
-      <button id="btn-print-pdf" class="btn btn-primary btn-sm" title="Print or save as pixel-perfect ATS-compliant vector PDF">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      <button id="btn-print-pdf" class="btn btn-primary btn-sm"
+        title="Print or save as pixel-perfect ATS-compliant vector PDF">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
         <span class="desktop-only">Download </span>PDF<span class="desktop-only"> / Print</span>
       </button>
     </div>
@@ -133,11 +187,21 @@
   <!-- Mobile Segmented View Control (Visible only on mobile/tablet <= 992px) -->
   <div class="mobile-segmented-bar" id="mobile-view-nav">
     <button class="mobile-seg-btn active" id="btn-seg-editor" data-view="editor">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
       <span>Editor</span>
     </button>
     <button class="mobile-seg-btn" id="btn-seg-preview" data-view="preview">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
       <span>Resume</span>
       <span class="mobile-score-badge" id="mobile-badge-score">--</span>
     </button>
@@ -145,10 +209,10 @@
 
   <!-- Main Split Studio Layout -->
   <main class="studio-container mobile-mode-editor" id="main-studio-container">
-    
+
     <!-- Left Cockpit: Intelligence, NLP Analyzer & Form Editors -->
     <aside class="left-cockpit">
-      
+
       <!-- 3-Step Guided Stepper -->
       <div class="cockpit-guided-stepper" id="cockpit-guided-stepper">
         <div class="cg-step" id="step-nav-resume" data-target-tab="content-editor" title="Step 1: Upload or edit your resume">
@@ -201,19 +265,19 @@
 
         <!-- ================= PANEL 1: JD ANALYZER & ATS RADAR ================= -->
         <section class="tab-panel active" id="panel-jd-analyzer">
-          
+
           <!-- ATS Master Score Card -->
           <div class="quickstart-guide desktop-only">
-  <div class="qs-steps">
-    <span class="qs-step"><span class="qs-num">1</span> Paste your target Job Description below</span>
-    <span class="qs-sep">→</span>
-    <span class="qs-step"><span class="qs-num">2</span> See your live ATS score &amp; missing keywords</span>
-    <span class="qs-sep">→</span>
-    <span class="qs-step"><span class="qs-num">3</span> Click Auto-Add to tailor your resume</span>
-    <span class="qs-sep">→</span>
-    <span class="qs-step"><span class="qs-num">4</span> Download PDF or Copy ATS Plaintext</span>
-  </div>
-</div>
+            <div class="qs-steps">
+              <span class="qs-step"><span class="qs-num">1</span> Paste your target Job Description below</span>
+              <span class="qs-sep">→</span>
+              <span class="qs-step"><span class="qs-num">2</span> See your live ATS score &amp; missing keywords</span>
+              <span class="qs-sep">→</span>
+              <span class="qs-step"><span class="qs-num">3</span> Click Auto-Add to tailor your resume</span>
+              <span class="qs-sep">→</span>
+              <span class="qs-step"><span class="qs-num">4</span> Download PDF or Copy ATS Plaintext</span>
+            </div>
+          </div>
 
           <div class="ats-master-card">
             <div class="ats-score-row">
@@ -289,17 +353,21 @@
               <div class="auto-tailor-badge">ATS 1-Click Optimizer</div>
               <h4 id="auto-tailor-title">Auto-Add Missing JD Keywords to Resume</h4>
               <p id="auto-tailor-desc" class="desktop-only">
-                Automatically inject missing technical skills into your Skills Matrix and weave target competencies into your Experience bullets using Google XYZ formulas.
+                Automatically inject missing technical skills into your Skills Matrix and weave target competencies into
+                your Experience bullets using Google XYZ formulas.
               </p>
             </div>
             <div class="auto-tailor-actions">
-              <button id="btn-auto-tailor-all" class="btn btn-primary" title="Automatically inject curated missing skills and weave domain terms into bullets">
+              <button id="btn-auto-tailor-all" class="btn btn-primary"
+                title="Automatically inject curated missing skills and weave domain terms into bullets">
                 Auto-Add All to Resume
               </button>
-              <button id="btn-restore-resume" class="btn btn-secondary btn-sm" title="Restore original pristine resume before auto-tailoring">
+              <button id="btn-restore-resume" class="btn btn-secondary btn-sm"
+                title="Restore original pristine resume before auto-tailoring">
                 Restore Original
               </button>
-              <button id="btn-auto-add-skills" class="btn btn-secondary btn-sm" title="Add curated missing technical skills to your Skills Matrix">
+              <button id="btn-auto-add-skills" class="btn btn-secondary btn-sm"
+                title="Add curated missing technical skills to your Skills Matrix">
                 + Skills Only
               </button>
             </div>
@@ -312,12 +380,17 @@
                 Target Job Description (JD)
               </span>
               <div style="display: flex; gap: 6px;">
-                <button id="btn-load-matched-jd" class="btn-micro" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;" title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">Load Benchmark JD</button>
-                <button id="btn-clear-jd" class="btn-micro btn-danger" title="Clear to paste any job description you are applying for">Clear</button>
+                <button id="btn-load-matched-jd" class="btn-micro"
+                  style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;"
+                  title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">Load Benchmark
+                  JD</button>
+                <button id="btn-clear-jd" class="btn-micro btn-danger"
+                  title="Clear to paste any job description you are applying for">Clear</button>
               </div>
             </div>
 
-            <textarea id="jd-input-text" class="form-textarea" rows="7" placeholder="Paste the complete job description (title, requirements, tech stack, responsibilities) here to analyze ATS match in real time..."></textarea>
+            <textarea id="jd-input-text" class="form-textarea" rows="7"
+              placeholder="Paste the complete job description (title, requirements, tech stack, responsibilities) here to analyze ATS match in real time..."></textarea>
           </div>
 
           <!-- Matched Keywords Matrix -->
@@ -339,12 +412,15 @@
                 Missing Critical Keywords (Opportunities)
               </span>
               <div style="display: flex; gap: 6px;">
-                <button id="btn-missing-add-all-skills" class="btn-micro" title="Add all missing skills to skills matrix">+ Add All to Skills</button>
-                <button id="btn-missing-weave-all" class="btn-micro" title="Weave into experience bullets">Weave into Bullets</button>
+                <button id="btn-missing-add-all-skills" class="btn-micro"
+                  title="Add all missing skills to skills matrix">+ Add All to Skills</button>
+                <button id="btn-missing-weave-all" class="btn-micro" title="Weave into experience bullets">Weave into
+                  Bullets</button>
               </div>
             </div>
             <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
-              Click <strong>+ Add to Skills</strong> to append to your skills matrix, or <strong>Weave into Role</strong> to automatically integrate with quantifiable metrics into your experience bullets.
+              Click <strong>+ Add to Skills</strong> to append to your skills matrix, or <strong>Weave into
+                Role</strong> to automatically integrate with quantifiable metrics into your experience bullets.
             </p>
             <div class="missing-keywords-list" id="missing-keywords-container">
               <!-- Dynamically populated -->
@@ -356,10 +432,11 @@
 
         <!-- ================= PANEL 2: BULLET OPTIMIZER (XYZ) ================= -->
         <section class="tab-panel" id="panel-bullet-tailorer">
-          
+
           <div class="tailor-banner">
             <h3>Google XYZ Bullet Point Rewriter</h3>
-            <p>Formula: <em>"Accomplished [X] as measured by [Y] by doing [Z]"</em>. Transforms generic bullets into high-impact, keyword-rich metrics.</p>
+            <p>Formula: <em>"Accomplished [X] as measured by [Y] by doing [Z]"</em>. Transforms generic bullets into
+              high-impact, keyword-rich metrics.</p>
           </div>
 
           <div class="tailor-control-card">
@@ -373,13 +450,16 @@
             <div class="form-group">
               <label class="form-label">Current Bullet Text:</label>
               <div id="tailor-original-bullet" class="orig-bullet-box">
-                Identified ₹1.2 Cr of excess inventory and working capital opportunities through SKU-level sales velocity, ageing and stock-cover analysis across 25K+ SKUs, helping merchandising teams prioritise liquidation and stock redistribution.
+                Identified ₹1.2 Cr of excess inventory and working capital opportunities through SKU-level sales
+                velocity, ageing and stock-cover analysis across 25K+ SKUs, helping merchandising teams prioritise
+                liquidation and stock redistribution.
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="tailor-target-keyword">Target JD Keywords to Weave In:</label>
-              <input type="text" id="tailor-target-keyword" class="form-input" placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or click suggestions below)">
+              <input type="text" id="tailor-target-keyword" class="form-input"
+                placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or click suggestions below)">
               <div id="tailor-keyword-suggestions" class="kw-suggestions-row"></div>
             </div>
 
@@ -398,7 +478,7 @@
 
         <!-- ================= PANEL 3: RESUME CONTENT EDITOR ================= -->
         <section class="tab-panel" id="panel-content-editor">
-          
+
           <!-- Universal Onboarding Banner -->
           <div class="resume-import-banner">
             <div class="rib-content">
@@ -418,7 +498,8 @@
 
           <div class="accordion-controls-bar">
             <span style="font-size: 11.5px; color: var(--text-dim);">Click section headers to expand or collapse</span>
-            <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾ Collapse All</button>
+            <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾
+              Collapse All</button>
           </div>
 
           <!-- 1. Personal Details -->
@@ -476,14 +557,16 @@
                 <span class="accordion-title">Professional Summary</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-ai-summary" class="btn-micro" title="Auto-craft tailored summary weaving target JD keywords" onclick="event.stopPropagation();">
+                <button id="btn-ai-summary" class="btn-micro"
+                  title="Auto-craft tailored summary weaving target JD keywords" onclick="event.stopPropagation();">
                   AI Tailor wrt JD
                 </button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
             <div class="accordion-body" id="acc-body-summary">
-              <textarea id="input-summary" class="form-textarea" rows="4" placeholder="Enter high-impact professional summary..."></textarea>
+              <textarea id="input-summary" class="form-textarea" rows="4"
+                placeholder="Enter high-impact professional summary..."></textarea>
             </div>
           </div>
 
@@ -495,7 +578,8 @@
                 <span class="accordion-badge" id="badge-count-exp">3 Roles</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-experience" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Role</button>
+                <button id="btn-add-experience" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
+                  Role</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -532,7 +616,8 @@
                 <span class="accordion-badge" id="badge-count-projects">1 Project</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-project" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Project</button>
+                <button id="btn-add-project" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
+                  Project</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -551,7 +636,8 @@
                 <span class="accordion-badge" id="badge-count-edu">2 Degrees</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-education" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Degree</button>
+                <button id="btn-add-education" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
+                  Degree</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -570,7 +656,8 @@
                 <span class="accordion-badge" id="badge-count-certs">1 Cert</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-cert" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Certification</button>
+                <button id="btn-add-cert" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
+                  Certification</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -589,7 +676,12 @@
       <div class="mobile-cta-wrapper">
         <button id="btn-mobile-jump-preview" class="btn btn-primary btn-block btn-lg mobile-cta-btn">
           <span style="display: inline-flex; align-items: center; gap: 8px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
             <span>View Resume Preview</span>
           </span>
           <span class="mobile-cta-score-tag" id="mobile-cta-score-tag">ATS: --</span>
@@ -599,14 +691,18 @@
 
     <!-- Right Studio: Live WYSIWYG Resume Canvas -->
     <section class="right-studio">
-      
+
       <!-- Mobile Back to Editor Bar -->
       <div class="mobile-back-bar">
         <button id="btn-mobile-back-editor" class="btn btn-secondary btn-sm mobile-back-btn">
           ← Back to Editor
         </button>
         <button id="btn-mobile-download-pdf" class="btn btn-primary btn-sm mobile-pdf-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
           <span>PDF</span>
         </button>
       </div>
@@ -614,14 +710,19 @@
       <!-- Studio Canvas Toolbar -->
       <div class="canvas-toolbar">
         <div class="toolbar-left">
-          
+
           <!-- Template Picker -->
           <div class="template-picker-group">
-            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic" title="Single-column reference ATS design (Taleo, Workday, SAP compliant)">Classic ATS</button>
-            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech" title="Modern layout for software & cloud engineers">Tech Modern</button>
-            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive" title="Executive leadership format with strategic capability sections">Executive</button>
-            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal" title="Ivy / Harvard standard monochrome layout">Harvard Minimal</button>
-            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic" title="Clean 2-column sidebar layout for design & networking">Nordic Clean</button>
+            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic"
+              title="Single-column reference ATS design (Taleo, Workday, SAP compliant)">Classic ATS</button>
+            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech"
+              title="Modern layout for software & cloud engineers">Tech Modern</button>
+            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive"
+              title="Executive leadership format with strategic capability sections">Executive</button>
+            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal"
+              title="Ivy / Harvard standard monochrome layout">Harvard Minimal</button>
+            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic"
+              title="Clean 2-column sidebar layout for design & networking">Nordic Clean</button>
           </div>
 
           <!-- Color Palettes -->
@@ -640,7 +741,8 @@
             <button id="btn-zoom-out" class="zoom-btn" title="Zoom Out (−)">−</button>
             <span id="zoom-level-label" class="zoom-level-text">100%</span>
             <button id="btn-zoom-in" class="zoom-btn" title="Zoom In (+)">+</button>
-            <button id="btn-zoom-fit" class="zoom-btn" style="width: auto; padding: 0 6px; font-size: 11px;" title="Reset Zoom to 100%">100%</button>
+            <button id="btn-zoom-fit" class="zoom-btn" style="width: auto; padding: 0 6px; font-size: 11px;"
+              title="Reset Zoom to 100%">100%</button>
           </div>
 
           <!-- Keyword Highlight Toggle -->
@@ -706,7 +808,8 @@
           <span class="modal-title-icon">📄</span>
           <div>
             <h3>Import Your Resume</h3>
-            <p class="modal-subtitle">Upload your existing PDF, Word document, or paste raw text. 100% private & client-side.</p>
+            <p class="modal-subtitle">Upload your existing PDF, Word document, or paste raw text. 100% private &
+              client-side.</p>
           </div>
         </div>
         <button type="button" class="modal-close-btn" id="btn-close-import-modal" title="Close">&times;</button>
@@ -714,7 +817,8 @@
 
       <!-- Modal Tabs -->
       <div class="modal-tabs">
-        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF / Word / TXT)</button>
+        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF /
+          Word / TXT)</button>
         <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text</button>
       </div>
 
@@ -726,7 +830,8 @@
             <div class="dropzone-icon">☁️</div>
             <h4>Drag & drop your resume here</h4>
             <p>Supports <strong>PDF, Word (.docx), Plain Text (.txt, .md)</strong></p>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file" style="margin-top: 10px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file"
+              style="margin-top: 10px;">
               Browse Local Files
             </button>
             <div id="dropzone-file-status" class="dropzone-status"></div>
@@ -735,8 +840,10 @@
 
         <!-- Paste Text View -->
         <div class="modal-tab-content" id="modal-content-paste">
-          <label class="form-label-sm" style="margin-bottom: 6px; display: block;">Paste your resume contents (from LinkedIn, Word, or Google Docs):</label>
-          <textarea id="import-paste-textarea" class="form-textarea" rows="11" placeholder="Paste your resume text here...&#10;&#10;John Doe&#10;Senior Software Engineer | San Francisco, CA&#10;john.doe@email.com | (555) 012-3456 | linkedin.com/in/johndoe&#10;&#10;SUMMARY&#10;Experienced engineer with 5+ years building scalable systems...&#10;&#10;EXPERIENCE&#10;Lead Developer @ TechCorp (2021 - Present)&#10;• Built scalable microservices reducing p99 latency by 40%..."></textarea>
+          <label class="form-label-sm" style="margin-bottom: 6px; display: block;">Paste your resume contents (from
+            LinkedIn, Word, or Google Docs):</label>
+          <textarea id="import-paste-textarea" class="form-textarea" rows="11"
+            placeholder="Paste your resume text here...&#10;&#10;John Doe&#10;Senior Software Engineer | San Francisco, CA&#10;john.doe@email.com | (555) 012-3456 | linkedin.com/in/johndoe&#10;&#10;SUMMARY&#10;Experienced engineer with 5+ years building scalable systems...&#10;&#10;EXPERIENCE&#10;Lead Developer @ TechCorp (2021 - Present)&#10;• Built scalable microservices reducing p99 latency by 40%..."></textarea>
         </div>
 
         <!-- Live Parser Preview / Status Box -->
@@ -841,10 +948,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
   <!-- Script Modules with Cache Busters -->
-  <script src="js/sample-data.js?v=20261118_v10"></script>
-  <script src="js/resume-parser.js?v=20261118_v10"></script>
-  <script src="js/engine.js?v=20261118_v10"></script>
-  <script src="js/templates.js?v=20261118_v10"></script>
-  <script src="js/app.js?v=20261118_v10"></script>
+  <script src="js/sample-data.js?v=20261118_v12"></script>
+  <script src="js/resume-parser.js?v=20261118_v12"></script>
+  <script src="js/engine.js?v=20261118_v12"></script>
+  <script src="js/templates.js?v=20261118_v12"></script>
+  <script src="js/app.js?v=20261118_v12"></script>
 </body>
+
 </html>

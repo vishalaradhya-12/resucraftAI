@@ -346,8 +346,10 @@ class ResuCraftApp {
         mainContainer.classList.add('mobile-mode-preview');
         if (segEditor) segEditor.classList.remove('active');
         if (segPreview) segPreview.classList.add('active');
-        this.updateMobileCanvasScale();
-        this.resetCanvasScroll();
+        requestAnimationFrame(() => {
+          this.updateMobileCanvasScale();
+          this.resetCanvasScroll();
+        });
         window.scrollTo(0, 0);
       }
     };
@@ -1668,12 +1670,19 @@ class ResuCraftApp {
     if (!canvas || !doc) return;
 
     if (window.innerWidth <= 992) {
+      // Defer measurement if currently in editor view
+      const mainContainer = document.getElementById('main-studio-container');
+      if (mainContainer && mainContainer.classList.contains('mobile-mode-editor')) {
+        return;
+      }
+
       // Reset layout styles to get accurate natural dimensions
       canvas.style.position = 'static';
       canvas.style.transform = 'none';
       canvas.style.width = '794px';
       canvas.style.height = 'auto';
       doc.style.height = 'auto';
+      doc.style.minHeight = '1122px';
 
       const unscaledWidth = 794;
       const naturalHeight = Math.max(doc.scrollHeight, doc.offsetHeight, 1122);
@@ -1684,9 +1693,10 @@ class ResuCraftApp {
 
       if (wrapper) {
         wrapper.style.width = `${scaledWidth}px`;
-        wrapper.style.height = `${scaledHeight + 30}px`;
+        wrapper.style.height = `${scaledHeight + 40}px`;
         wrapper.style.margin = '0 auto';
         wrapper.style.position = 'relative';
+        wrapper.style.overflow = 'visible';
       }
 
       canvas.style.position = 'absolute';
@@ -1697,6 +1707,9 @@ class ResuCraftApp {
       canvas.style.transformOrigin = 'top left';
       canvas.style.transform = `scale(${scale})`;
       canvas.style.margin = '0';
+
+      doc.style.minHeight = `${naturalHeight}px`;
+      doc.style.backgroundColor = '#ffffff';
 
       const label = document.getElementById('zoom-level-label');
       if (label) label.innerText = `${Math.round(scale * 100)}%`;

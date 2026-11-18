@@ -1841,6 +1841,7 @@ html, body {
     margin: 0 auto !important;
     position: relative !important;
     display: block !important;
+    overflow: visible !important;
   }
 
   /* Resume Canvas on Mobile */

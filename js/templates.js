@@ -331,9 +331,10 @@ class ResumeTemplates {
               <strong class="classic-exp-title">${this.escapeHtml(proj.name || '')}</strong>
               ${safeLink ? `<span class="classic-exp-period"><a href="${this.escapeHtml(safeLink)}" target="_blank">${this.escapeHtml(proj.link)}</a></span>` : ''}
             </div>
+            ${(proj.role || proj.tech) ? `
             <div class="classic-exp-company-row">
-              <span class="classic-exp-company">${this.escapeHtml(proj.role || 'Lead Analyst')}${proj.tech ? ' &bull; ' + this.escapeHtml(proj.tech) : ''}</span>
-            </div>
+              <span class="classic-exp-company">${this.escapeHtml(proj.role || '')}${proj.role && proj.tech ? ' &bull; ' : ''}${this.escapeHtml(proj.tech || '')}</span>
+            </div>` : ''}
             ${proj.bullets && Array.isArray(proj.bullets) ? `
               <ul class="classic-bullets">
                 ${proj.bullets.map(b => `
