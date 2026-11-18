@@ -46,7 +46,20 @@ class ResuCraftApp {
     const jdField = document.getElementById('jd-input-text');
     if (jdField && this.jdText) jdField.value = this.jdText;
     const profileSelect = document.getElementById('sample-profile-select');
-    if (profileSelect && this.currentProfileId) profileSelect.value = this.currentProfileId;
+    if (profileSelect && this.currentProfileId) {
+      if (this.currentProfileId === 'custom' && this.resumeData) {
+        let customOpt = profileSelect.querySelector('option[value="custom"]');
+        if (!customOpt) {
+          customOpt = document.createElement('option');
+          customOpt.value = 'custom';
+          profileSelect.insertBefore(customOpt, profileSelect.firstChild);
+        }
+        customOpt.disabled = false;
+        customOpt.hidden = false;
+        customOpt.innerText = `👤 ${this.resumeData.name || 'My Resume'} (Imported)`;
+      }
+      profileSelect.value = this.currentProfileId;
+    }
     this.populateEditor();
     this.runATSAnalysis();
     this.renderResumePreview();
@@ -330,6 +343,9 @@ class ResuCraftApp {
 
     // Bind Live Content Form Inputs
     this.bindEditorInputs();
+
+    // Bind Universal Resume Importer & Parser
+    this.bindResumeImporter();
   }
 
   switchTab(tabId) {
@@ -907,6 +923,206 @@ class ResuCraftApp {
         this.renderEditorCertsList();
         this.renderResumePreview();
         this.showToast('Added new certification entry');
+      });
+    }
+  }
+
+  bindResumeImporter() {
+    const modal = document.getElementById('modal-resume-import');
+    const openBtn = document.getElementById('btn-open-resume-importer');
+    const bannerOpenBtn = document.getElementById('btn-banner-import-resume');
+    const bannerBlankBtn = document.getElementById('btn-banner-blank-resume');
+    const closeBtn = document.getElementById('btn-close-import-modal');
+    const cancelBtn = document.getElementById('btn-cancel-import');
+    const tabFile = document.getElementById('modal-tab-file');
+    const tabPaste = document.getElementById('modal-tab-paste');
+    const contentFile = document.getElementById('modal-content-file');
+    const contentPaste = document.getElementById('modal-content-paste');
+    const fileDropzone = document.getElementById('resume-file-dropzone');
+    const fileInput = document.getElementById('resume-file-input');
+    const browseBtn = document.getElementById('btn-browse-resume-file');
+    const pasteTextarea = document.getElementById('import-paste-textarea');
+    const submitBtn = document.getElementById('btn-submit-import');
+    const previewBox = document.getElementById('import-preview-box');
+    const previewStats = document.getElementById('import-preview-stats');
+    const fileStatus = document.getElementById('dropzone-file-status');
+
+    let currentParsedData = null;
+
+    const openModal = () => {
+      if (modal) modal.style.display = 'flex';
+      currentParsedData = null;
+      if (submitBtn) submitBtn.disabled = true;
+      if (previewBox) previewBox.style.display = 'none';
+      if (fileStatus) fileStatus.innerText = '';
+    };
+
+    const closeModal = () => {
+      if (modal) modal.style.display = 'none';
+    };
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (bannerOpenBtn) bannerOpenBtn.addEventListener('click', openModal);
+    if (bannerBlankBtn) bannerBlankBtn.addEventListener('click', () => {
+      this.loadSampleProfile('blank');
+      const select = document.getElementById('sample-profile-select');
+      if (select) select.value = 'blank';
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Modal Tabs
+    if (tabFile && tabPaste) {
+      tabFile.addEventListener('click', () => {
+        tabFile.classList.add('active');
+        tabPaste.classList.remove('active');
+        if (contentFile) contentFile.classList.add('active');
+        if (contentPaste) contentPaste.classList.remove('active');
+      });
+
+      tabPaste.addEventListener('click', () => {
+        tabPaste.classList.add('active');
+        tabFile.classList.remove('active');
+        if (contentPaste) contentPaste.classList.add('active');
+        if (contentFile) contentFile.classList.remove('active');
+      });
+    }
+
+    const showParsedPreview = (data) => {
+      currentParsedData = data;
+      if (!data) return;
+
+      if (previewBox && previewStats) {
+        previewBox.style.display = 'block';
+        const expCount = data.experience ? data.experience.length : 0;
+        let skillCount = 0;
+        if (data.skills) {
+          if (Array.isArray(data.skills)) {
+            skillCount = data.skills.length;
+          } else {
+            Object.values(data.skills).forEach(arr => skillCount += (Array.isArray(arr) ? arr.length : 0));
+          }
+        }
+        const eduCount = data.education ? data.education.length : 0;
+        const certCount = data.certifications ? data.certifications.length : 0;
+
+        previewStats.innerHTML = `
+          <span class="stat-pill">👤 Name: <strong>${this.escapeHtml(data.name || 'Candidate')}</strong></span>
+          <span class="stat-pill">💼 Roles: <strong>${expCount}</strong></span>
+          <span class="stat-pill">⚡ Skills: <strong>${skillCount}</strong></span>
+          <span class="stat-pill">🎓 Education: <strong>${eduCount}</strong></span>
+          ${certCount > 0 ? `<span class="stat-pill">🏆 Certs: <strong>${certCount}</strong></span>` : ''}
+          ${data.email ? `<span class="stat-pill">✉️ ${this.escapeHtml(data.email)}</span>` : ''}
+        `;
+      }
+      if (submitBtn) submitBtn.disabled = false;
+    };
+
+    // File Dropzone Handling
+    if (browseBtn && fileInput) {
+      browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
+    const processFile = async (file) => {
+      if (!file) return;
+      if (fileStatus) fileStatus.innerHTML = `⏳ Reading & parsing <strong>${this.escapeHtml(file.name)}</strong>...`;
+      try {
+        if (!window.resumeParser) {
+          throw new Error('Resume parser is initializing. Please wait a moment.');
+        }
+        const text = await window.resumeParser.extractTextFromFile(file);
+        if (!text || text.trim().length < 20) {
+          throw new Error('Extracted text was too short or unreadable. Try pasting text directly.');
+        }
+        const parsed = window.resumeParser.parseText(text);
+        if (fileStatus) fileStatus.innerHTML = `✅ Successfully extracted text from <strong>${this.escapeHtml(file.name)}</strong>!`;
+        showParsedPreview(parsed);
+      } catch (err) {
+        if (fileStatus) fileStatus.innerHTML = `❌ Error: ${this.escapeHtml(err.message || 'Failed to read file')}`;
+      }
+    };
+
+    if (fileDropzone && fileInput) {
+      fileDropzone.addEventListener('click', () => fileInput.click());
+
+      fileDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileDropzone.classList.add('dragover');
+      });
+
+      fileDropzone.addEventListener('dragleave', () => {
+        fileDropzone.classList.remove('dragover');
+      });
+
+      fileDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          processFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          processFile(e.target.files[0]);
+        }
+      });
+    }
+
+    // Paste Textarea Handling
+    if (pasteTextarea) {
+      pasteTextarea.addEventListener('input', () => {
+        const text = pasteTextarea.value.trim();
+        if (text.length > 30) {
+          const parsed = window.resumeParser.parseText(text);
+          showParsedPreview(parsed);
+        } else {
+          currentParsedData = null;
+          if (submitBtn) submitBtn.disabled = true;
+          if (previewBox) previewBox.style.display = 'none';
+        }
+      });
+    }
+
+    // Submit / Load Action
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        if (!currentParsedData) return;
+        this.resumeData = currentParsedData;
+        this.currentProfileId = 'custom';
+
+        // Update profile select dropdown
+        const select = document.getElementById('sample-profile-select');
+        if (select) {
+          let customOpt = select.querySelector('option[value="custom"]');
+          if (!customOpt) {
+            customOpt = document.createElement('option');
+            customOpt.value = 'custom';
+            select.insertBefore(customOpt, select.firstChild);
+          }
+          customOpt.disabled = false;
+          customOpt.hidden = false;
+          customOpt.innerText = `👤 ${currentParsedData.name || 'My Resume'} (Imported)`;
+          select.value = 'custom';
+        }
+
+        closeModal();
+        this.populateEditor();
+        this.runATSAnalysis();
+        this.renderResumePreview();
+        this.resetCanvasScroll();
+        this.saveSession();
+        this.showToast(`🎉 Loaded ${currentParsedData.name || 'your'}'s resume! Ready to tailor with JD.`);
       });
     }
   }

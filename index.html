@@ -26,8 +26,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=20261117_v8">
-  <link rel="stylesheet" href="css/resume-templates.css?v=20261117_v8">
+  <link rel="stylesheet" href="css/styles.css?v=20261118_v9">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261118_v9">
 
   <style>
 .quickstart-guide {
@@ -78,18 +78,24 @@
 
     <div class="header-center-controls">
       <div class="profile-selector-box">
-        <label for="sample-profile-select" class="desktop-only">Benchmark Persona:</label>
+        <label for="sample-profile-select" class="desktop-only">Demo Personas:</label>
         <select id="sample-profile-select" class="form-select">
-          <option value="blank">Start Blank Resume (Fresh Slate)</option>
           <option value="vishal_aradhya" selected>Vishal Aradhya JC (Senior Business Analyst)</option>
           <option value="software_engineer">Alex Morgan (Lead Full Stack / Cloud)</option>
           <option value="ai_ml_engineer">Dr. Elena Rostova (Senior AI / LLM Systems)</option>
           <option value="product_manager">Marcus Vance (Principal Product Manager)</option>
+          <option value="blank">✨ Start Blank Resume (Clean Slate)</option>
         </select>
       </div>
     </div>
 
     <div class="header-actions">
+      <!-- Universal Resume Importer -->
+      <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow" title="Upload PDF/Word or Paste your resume to auto-load">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <span>Upload / Paste Resume</span>
+      </button>
+
       <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only" title="Restore original pristine resume (undo custom changes)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         <span>Reset</span>
@@ -353,6 +359,23 @@
         <!-- ================= PANEL 3: RESUME CONTENT EDITOR ================= -->
         <section class="tab-panel" id="panel-content-editor">
           
+          <!-- Universal Onboarding Banner -->
+          <div class="resume-import-banner">
+            <div class="rib-content">
+              <span class="rib-badge">⚡ Quick Onboarding</span>
+              <h4>Want to tailor your own resume?</h4>
+              <p>Upload your existing PDF / Word resume or paste text to auto-fill all form fields in 2 seconds.</p>
+            </div>
+            <div class="rib-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="btn-banner-import-resume">
+                📥 Upload / Paste Resume
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-banner-blank-resume">
+                ✨ Start Blank
+              </button>
+            </div>
+          </div>
+
           <div class="accordion-controls-bar">
             <span style="font-size: 11.5px; color: var(--text-dim);">Click section headers to expand or collapse</span>
             <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾ Collapse All</button>
@@ -616,10 +639,76 @@
 
   </main>
 
+  <!-- ================= UNIVERSAL RESUME IMPORTER MODAL ================= -->
+  <div class="modal-backdrop" id="modal-resume-import" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-title-icon">📄</span>
+          <div>
+            <h3>Import Your Resume</h3>
+            <p class="modal-subtitle">Upload your existing PDF, Word document, or paste raw text. 100% private & client-side.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-import-modal" title="Close">&times;</button>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div class="modal-tabs">
+        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF / Word / TXT)</button>
+        <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- File Dropzone View -->
+        <div class="modal-tab-content active" id="modal-content-file">
+          <div class="file-dropzone" id="resume-file-dropzone">
+            <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
+            <div class="dropzone-icon">☁️</div>
+            <h4>Drag & drop your resume here</h4>
+            <p>Supports <strong>PDF, Word (.docx), Plain Text (.txt, .md)</strong></p>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file" style="margin-top: 10px;">
+              Browse Local Files
+            </button>
+            <div id="dropzone-file-status" class="dropzone-status"></div>
+          </div>
+        </div>
+
+        <!-- Paste Text View -->
+        <div class="modal-tab-content" id="modal-content-paste">
+          <label class="form-label-sm" style="margin-bottom: 6px; display: block;">Paste your resume contents (from LinkedIn, Word, or Google Docs):</label>
+          <textarea id="import-paste-textarea" class="form-textarea" rows="11" placeholder="Paste your resume text here...&#10;&#10;John Doe&#10;Senior Software Engineer | San Francisco, CA&#10;john.doe@email.com | (555) 012-3456 | linkedin.com/in/johndoe&#10;&#10;SUMMARY&#10;Experienced engineer with 5+ years building scalable systems...&#10;&#10;EXPERIENCE&#10;Lead Developer @ TechCorp (2021 - Present)&#10;• Built scalable microservices reducing p99 latency by 40%..."></textarea>
+        </div>
+
+        <!-- Live Parser Preview / Status Box -->
+        <div id="import-preview-box" class="import-preview-card" style="display: none;">
+          <div class="import-preview-header">
+            <span class="preview-badge-status" id="preview-status-badge">✅ Resume Parsed Successfully</span>
+          </div>
+          <div class="import-preview-stats" id="import-preview-stats">
+            <!-- Dynamic stats injected here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-import">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-submit-import" disabled>
+          <span>⚡ Load into ResuCraft</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Third-Party PDF & Word Client-Side Extraction Engines -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
   <!-- Script Modules with Cache Busters -->
-  <script src="js/sample-data.js?v=20261117_v8"></script>
-  <script src="js/engine.js?v=20261117_v8"></script>
-  <script src="js/templates.js?v=20261117_v8"></script>
-  <script src="js/app.js?v=20261117_v8"></script>
+  <script src="js/sample-data.js?v=20261118_v9"></script>
+  <script src="js/resume-parser.js?v=20261118_v9"></script>
+  <script src="js/engine.js?v=20261118_v9"></script>
+  <script src="js/templates.js?v=20261118_v9"></script>
+  <script src="js/app.js?v=20261118_v9"></script>
 </body>
 </html>
