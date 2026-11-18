@@ -99,6 +99,47 @@ class ResumeParser {
       .trim();
   }
 
+  preCleanText(text) {
+    if (!text) return '';
+    return text
+      .replace(/[\u00a0\u200b\u200e\u200f]/g, ' ')
+      // Fix spaced 4-digit years from PDF kerning (e.g. "202 3" -> "2023", "20 19" -> "2019")
+      .replace(/\b(19|20)(\d)\s+(\d{2})\b/g, '$1$2$3')
+      .replace(/\b(19|20)(\d{2})\s+(\d)\b/g, '$1$2$3')
+      .replace(/\b(19|20)\s+(\d{2})\b/g, '$1$2')
+      .replace(/\b(19|20)\s+(\d)\s+(\d)\b/g, '$1$2$3')
+      .replace(/((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?)\s+(\d{2,3})\s+(\d{1,2})/gi, '$1 $2$3')
+      // Fix hyphen line breaks: "Book -\n in" -> "Book-in", "End - to - End" -> "End-to-End"
+      .replace(/([a-zA-Z0-9])\s*-\s*\n\s*([a-zA-Z0-9])/g, '$1-$2')
+      // Fix multi-word hyphenated joins
+      .replace(/\b(Book)\s*-\s*(in)\b/gi, '$1-$2')
+      .replace(/\b(Post)\s*-\s*(Marketing)\b/gi, '$1-$2')
+      .replace(/\b(Cross)\s*-\s*(functional)\b/gi, '$1-$2')
+      .replace(/\b(End)\s*-\s*to\s*-\s*(End)\b/gi, '$1-to-$2')
+      .replace(/\b(WHO)\s*-\s*(DD)\b/gi, '$1-$2')
+      .replace(/\b(follow)\s*-\s*(up)\b/gi, '$1-$2')
+      .replace(/\b(dose)\s*-\s*(response)\b/gi, '$1-$2')
+      // Trailing single lowercase letter kerning split (e.g. 'completenes s' -> 'completeness', 'Pharmacolog y' -> 'Pharmacology')
+      // Excludes 'a' to preserve valid English phrases like 'have a car' or 'with a team'
+      .replace(/\b([a-zA-Z]{4,})\s+([b-z])\b/g, '$1$2')
+      // Leading single uppercase letter kerning split (e.g. 'C ricket' -> 'Cricket')
+      .replace(/\b([A-Z])\s+([a-z]{3,})\b/g, '$1$2')
+      // Known justified PDF fragments
+      .replace(/\b(Redo)\s+(care)\b/gi, '$1$2')
+      .replace(/\b(Ph)\s+(armacy)\b/gi, '$1$2')
+      .replace(/\b(an)\s+(d)\b/gi, '$1$2')
+      .replace(/\b(Certificat)\s+(ion)\b/gi, '$1$2')
+      .replace(/\b(Trave)\s+(lling)\b/gi, '$1$2')
+      .replace(/\b(Lt)\s+(d)\b/gi, '$1$2')
+      // Fix uppercase name breaks: "Vivek A RADHYA" -> "Vivek ARADHYA"
+      .replace(/\b([A-Z])\s+([A-Z]{3,})\b/g, '$1$2')
+      // Fix spaced LinkedIn URLs
+      .replace(/linkedin\.com\/in\/([a-zA-Z0-9_-]+)\s*-\s*([a-zA-Z0-9_-]+)/gi, 'linkedin.com/in/$1-$2')
+      // Join line-broken conjunctions / ampersands in lists
+      .replace(/(&|and)\s*\n\s*([a-zA-Z])/g, '$1 $2')
+      .replace(/\s+([,.:;!?%])/g, '$1');
+  }
+
   /**
    * Normalizes Unicode bullet symbols into standard bullet representation
    */
@@ -208,7 +249,8 @@ class ResumeParser {
   parseText(text) {
     if (!text || typeof text !== 'string') return null;
 
-    const normalized = this.normalizeBullets(text);
+    const cleaned = this.preCleanText(text);
+    const normalized = this.normalizeBullets(cleaned);
     const rawLines = normalized
       .replace(/\r\n/g, '\n')
       .replace(/\r/g, '\n')
@@ -238,54 +280,76 @@ class ResumeParser {
 
     // Contact extraction patterns
     const emailRe = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/;
-    const phoneRe = /(?:(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,5}[-.\s]?\d{4,5})/;
+    const phoneRe = /(?:\+?\d{1,3}[\s-]?)?(?:\(?\d{2,4}\)?[\s.-]?\d{3,5}[\s.-]?\d{4,5}|\d{10}|\d{5}[\s-]?\d{5})/;
     const linkedinRe = /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i;
     const githubRe = /(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/i;
 
-    // Scan first 8 lines for candidate identity and contact info
-    const headerLines = rawLines.slice(0, 8);
-    for (let i = 0; i < headerLines.length; i++) {
-      const line = headerLines[i];
+    const isNameInvalid = (n) => {
+      return !n || /^(?:professional\s+|executive\s+|career\s+)?(?:summary|profile|statement|objective|about\s+me|experience|work\s+experience|skills|technical\s+skills|education|projects|certifications|curriculum\s+vitae|resume|cv)\b/i.test(n);
+    };
 
-      // Scan pipe-separated tokens
-      if (line.includes('|') || line.includes('•')) {
-        const parts = line.split(/[|•]/).map(p => p.trim());
-        parts.forEach(p => {
-          if (p.includes('@') && !p.includes('/') && !result.email) result.email = p;
-          else if (p.includes('linkedin.com') && !result.linkedin) {
-            const li = p.match(linkedinRe);
-            result.linkedin = li ? 'linkedin.com/in/' + li[1] : p;
-          } else if (p.includes('github.com') && !result.github) {
-            const gh = p.match(githubRe);
-            result.github = gh ? 'github.com/' + gh[1] : p;
-          } else if (phoneRe.test(p) && !result.phone) {
-            result.phone = p;
-          } else if (!result.location && p.length > 2 && p.length < 45 && !p.includes(':')) {
-            result.location = this.cleanText(p);
-          }
-        });
-      } else {
-        const em = line.match(emailRe);
-        if (em && !result.email) result.email = em[1].trim();
+    // Section classification headers
+    const secHeaders = [
+      { key: 'summary', regex: /^(?:professional\s+|executive\s+|career\s+)?(?:summary|profile|statement|objective|about\s+me)$/i },
+      { key: 'skills', regex: /^(?:technical\s+|core\s+|key\s+)?(?:skills|technologies|tools|competencies)(?:\s+(?:&|and)\s+tools)?$/i },
+      { key: 'experience', regex: /^(?:work\s+|professional\s+|employment\s+)?(?:experience|employment\s+history|career\s+history|work\s+history)$/i },
+      { key: 'projects', regex: /^(?:key\s+|selected\s+|technical\s+|featured\s+|personal\s+|academic\s+|independent\s+)?(?:projects|initiatives)$/i },
+      { key: 'education', regex: /^(?:education|academic\s+background|academics|qualifications)$/i },
+      { key: 'certifications', regex: /^(?:certifications|licenses|credentials|honors\s+(?:&|and)\s+certifications|certifications?\s*[\/&]\s*(?:short\s+courses|training|licenses))$/i },
+      { key: 'hobbies', regex: /^(?:hobbies|interests|extracurricular(?:\s+activities)?)$/i }
+    ];
 
-        const ph = line.match(phoneRe);
-        if (ph && !result.phone) result.phone = ph[0].trim();
-
-        const li = line.match(linkedinRe);
-        if (li && !result.linkedin) result.linkedin = 'linkedin.com/in/' + li[1];
-
-        const gh = line.match(githubRe);
-        if (gh && !result.github) result.github = 'github.com/' + gh[1];
+    const isSectionHeader = (line) => {
+      const clean = line.replace(/^[•\-\*#\d\.\s]+/, '').replace(/[:\-–—]+$/, '').trim();
+      if (clean.length > 50) return null;
+      for (const h of secHeaders) {
+        if (h.regex.test(clean)) return h.key;
       }
+      return null;
+    };
 
-      // Name extraction: first non-contact, non-header line
-      if (i === 0 && !emailRe.test(line) && !phoneRe.test(line) && !linkedinRe.test(line) && !githubRe.test(line)) {
-        result.name = this.cleanText(line.replace(/^(?:resume|curriculum\s+vitae|cv)\s*[-:]?\s*/i, ''));
-      } else if (i === 1 && !result.name && !emailRe.test(line) && !phoneRe.test(line)) {
-        result.name = this.cleanText(line);
-      } else if (!result.targetTitle && (i === 1 || i === 2) && !emailRe.test(line) && !phoneRe.test(line) && !linkedinRe.test(line) && !githubRe.test(line)) {
+    // Scan all lines for contact info and associated candidate name
+    for (let i = 0; i < rawLines.length; i++) {
+      const line = rawLines[i];
+      const em = line.match(emailRe);
+      const ph = line.match(phoneRe);
+      const li = line.match(linkedinRe);
+      const gh = line.match(githubRe);
+
+      if (em && !result.email) result.email = em[1].trim();
+      if (ph && !result.phone) result.phone = ph[0].trim();
+      if (li && !result.linkedin) result.linkedin = 'linkedin.com/in/' + li[1];
+      if (gh && !result.github) result.github = 'github.com/' + gh[1];
+
+      // If contact info found and name not set yet (or was a section header)
+      if ((em || ph || li) && (!result.name || isNameInvalid(result.name))) {
+        if (i > 0) {
+          const prev = rawLines[i - 1].replace(/^[•\-\*📞✉\s]+/, '').trim();
+          if (prev.length > 2 && prev.length < 40 && !isSectionHeader(prev) && !emailRe.test(prev) && !phoneRe.test(prev)) {
+            result.name = this.cleanText(prev);
+          }
+        }
+      }
+    }
+
+    // Name extraction fallback: first non-header, non-contact line from the top
+    if (!result.name || isNameInvalid(result.name)) {
+      for (let i = 0; i < Math.min(6, rawLines.length); i++) {
+        const line = rawLines[i];
+        if (!isSectionHeader(line) && !emailRe.test(line) && !phoneRe.test(line) && line.length < 40) {
+          result.name = this.cleanText(line.replace(/^(?:resume|curriculum\s+vitae|cv)\s*[-:]?\s*/i, ''));
+          break;
+        }
+      }
+    }
+
+    // Target title and location from top lines
+    for (let i = 0; i < Math.min(5, rawLines.length); i++) {
+      const line = rawLines[i];
+      if (line === result.name || isSectionHeader(line)) continue;
+      if (!result.targetTitle && !emailRe.test(line) && !phoneRe.test(line) && !linkedinRe.test(line)) {
         const parts = line.split(/[|•–—]/);
-        if (parts.length >= 1 && parts[0].trim().length > 2) {
+        if (parts.length >= 1 && parts[0].trim().length > 2 && parts[0].trim().length < 50) {
           result.targetTitle = this.cleanText(parts[0]);
         }
         if (parts.length >= 2 && !result.location) {
@@ -294,48 +358,31 @@ class ResumeParser {
       }
     }
 
-    if (!result.name && rawLines.length > 0) {
-      result.name = rawLines[0].substring(0, 40);
-    }
-
-    // Section classification
-    const secHeaders = [
-      { key: 'summary', regex: /^(?:professional\s+|executive\s+)?(?:summary|profile|statement|objective|about\s+me)$/i },
-      { key: 'skills', regex: /^(?:technical\s+|core\s+|key\s+)?(?:skills|technologies|tools|competencies)(?:\s+(?:&|and)\s+tools)?$/i },
-      { key: 'experience', regex: /^(?:work\s+|professional\s+|employment\s+)?(?:experience|employment\s+history|career\s+history|work\s+history)$/i },
-      { key: 'projects', regex: /^(?:key\s+|selected\s+|technical\s+|featured\s+)?(?:projects|initiatives)$/i },
-      { key: 'education', regex: /^(?:education|academic\s+background|academics|qualifications)$/i },
-      { key: 'certifications', regex: /^(?:certifications|licenses|credentials|honors\s+(?:&|and)\s+certifications)$/i }
-    ];
-
     const sections = {
       summary: [],
       skills: [],
       experience: [],
       projects: [],
       education: [],
-      certifications: []
+      certifications: [],
+      hobbies: []
     };
 
     let currentSec = null;
-    const bulletPrefixRe = /^[•\-\*▸–—\+✓●▪■◆◇►✔\d+\.]\s*/;
 
-    for (let i = 2; i < rawLines.length; i++) {
+    for (let i = 0; i < rawLines.length; i++) {
       const line = rawLines[i];
-      const cleanHeader = line.replace(/[:\-–—]+$/, '').trim();
+      const detectedSec = isSectionHeader(line);
 
-      let matched = null;
-      if (cleanHeader.length < 45 && !bulletPrefixRe.test(line)) {
-        for (const sec of secHeaders) {
-          if (sec.regex.test(cleanHeader)) {
-            matched = sec.key;
-            break;
-          }
-        }
+      if (detectedSec) {
+        currentSec = detectedSec;
+        continue;
       }
 
-      if (matched) {
-        currentSec = matched;
+      // Ignore isolated contact lines or candidate name so they don't pollute bullet points
+      const normLine = line.replace(/\s+/g, ' ').trim().toLowerCase();
+      const normName = (result.name || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      if (emailRe.test(line) || phoneRe.test(line) || linkedinRe.test(line) || githubRe.test(line) || (normName && (normLine === normName || normLine.includes(normName)))) {
         continue;
       }
 
@@ -350,13 +397,33 @@ class ResumeParser {
     }
 
     // 2. Process Skills
+    const unwrappedSkills = [];
+    const skillBulletRe = /^[•\-\*▸–—\+✓●▪■◆◇►✔]/;
+    for (const rawLine of sections.skills) {
+      let line = rawLine.trim();
+      if (!line) continue;
+      if (/^[•\-\*]?\s*[A-Za-z\s&/]+:/.test(line)) {
+        unwrappedSkills.push(line);
+      } else if (unwrappedSkills.length > 0) {
+        if (skillBulletRe.test(line)) {
+          unwrappedSkills[unwrappedSkills.length - 1] += ' • ' + line.replace(/^[•\-\*▸–—\+✓●▪■◆◇►✔]\s*/, '');
+        } else {
+          // Wrapped continuation line
+          unwrappedSkills[unwrappedSkills.length - 1] += ' ' + line;
+        }
+      } else {
+        unwrappedSkills.push(line);
+      }
+    }
+
     const skillsObj = {};
-    for (const line of sections.skills) {
+    for (const line of unwrappedSkills) {
       if (line.includes(':')) {
         const [cat, rawVals] = line.split(/:(.+)/);
+        const cleanCat = this.cleanText(cat.replace(/^[•\-\*#\d\.\s]+/, ''));
         const vals = this.splitSkills(rawVals);
         if (vals.length > 0) {
-          skillsObj[this.cleanText(cat)] = vals;
+          skillsObj[cleanCat] = vals;
         }
       } else {
         const vals = this.splitSkills(line);
@@ -459,19 +526,45 @@ class ResumeParser {
 
           i += 1;
         } else if (dMatch) {
-          // Single line with date: "Company / Role  Date"
+          // Line 1 has the date (e.g. "Relicare tech services... Mar 2023 – Present")
           period = dMatch[0];
           let remaining = line.replace(dMatch[0], '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
-          if (remaining.includes('@')) {
-            const parts = remaining.split('@');
-            title = parts[0].trim();
-            company = parts[1].trim();
-          } else if (remaining.includes(' - ')) {
-            const parts = remaining.split(' - ');
-            title = parts[0].trim();
-            company = parts[1].trim();
+
+          // Check if next line is Title & Location (Pattern B)
+          if (i + 1 < lines.length && !bulletRe.test(lines[i + 1]) && !dateRe.test(lines[i + 1])) {
+            const nextLine = lines[i + 1];
+            company = remaining;
+
+            if (nextLine.includes('@')) {
+              const parts = nextLine.split('@');
+              title = parts[0].trim();
+              location = parts[1].trim();
+            } else if (nextLine.includes('  ')) {
+              const parts = nextLine.split(/\s{2,}/);
+              title = parts[0].trim();
+              location = parts.slice(1).join(', ').trim();
+            } else if (jobTitleKeywords.test(nextLine)) {
+              const m = nextLine.match(jobTitleKeywords);
+              const idx = m.index + m[0].length;
+              title = nextLine.substring(0, idx).trim();
+              location = nextLine.substring(idx).replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
+            } else {
+              title = nextLine;
+            }
+            i += 1; // consume line 2
           } else {
-            title = remaining;
+            // Standard single line header
+            if (remaining.includes('@')) {
+              const parts = remaining.split('@');
+              title = parts[0].trim();
+              company = parts[1].trim();
+            } else if (remaining.includes(' - ')) {
+              const parts = remaining.split(' - ');
+              title = parts[0].trim();
+              company = parts[1].trim();
+            } else {
+              title = remaining;
+            }
           }
         } else {
           // Header without date
@@ -641,12 +734,49 @@ class ResumeParser {
     const lines = this.unwrapSectionLines(rawLines);
     const eduList = [];
     const yearRe = /\b(?:19|20)\d{2}(?:\s*[-–—to\s]+\s*(?:(?:19|20)\d{2}|Present|Current))?\b/i;
+    const degreeKeywords = /\b(?:B\.?E\.?|B\.?Tech\.?|M\.?Tech\.?|B\.?Sc\.?|M\.?Sc\.?|B\.?Com\.?|Bachelor|Master|Doctor|Ph\.?D\.?|MBA|Degree|Diploma)\b/i;
 
-    for (const line of lines) {
-      if (!line.trim()) continue;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
       let year = '';
       const yMatch = line.match(yearRe);
       if (yMatch) year = yMatch[0];
+
+      // Check if this is a 2-line education format:
+      // Line i: Institution (e.g. "Krupanidhi College of Pharmacy")
+      // Line i+1: Degree & Location (e.g. "Master of pharmacy in Pharmacology Bengaluru, Karnataka")
+      if (!degreeKeywords.test(line) && i + 1 < lines.length && degreeKeywords.test(lines[i + 1])) {
+        const nextLine = lines[i + 1].trim();
+        const nyMatch = nextLine.match(yearRe);
+        if (nyMatch && !year) year = nyMatch[0];
+
+        let degreeText = nextLine.replace(yearRe, '').replace(/[\(\)]/g, '').replace(/[,|–—]$/, '').trim();
+        let location = '';
+
+        if (degreeText.includes('–') || degreeText.includes('—') || degreeText.includes('|')) {
+          const parts = degreeText.split(/[|–—]/).map(p => p.trim()).filter(Boolean);
+          degreeText = parts[0] || '';
+          location = parts.slice(1).join(', ');
+        } else {
+          const locMatch = degreeText.match(/\b([A-Z][a-z]{2,}),\s*([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)?)$/);
+          if (locMatch) {
+            location = locMatch[0].trim();
+            degreeText = degreeText.substring(0, locMatch.index).trim();
+          }
+        }
+
+        eduList.push({
+          id: 'edu-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+          degree: this.cleanText(degreeText),
+          institution: this.cleanText(line),
+          year: year,
+          location: this.cleanText(location)
+        });
+        i += 1; // skip next line
+        continue;
+      }
 
       let clean = line.replace(yearRe, '').replace(/[\(\)]/g, '').replace(/[,|–—]$/, '').trim();
       const parts = clean.split(/[|–—]/).map(p => p.trim()).filter(Boolean);
@@ -669,7 +799,14 @@ class ResumeParser {
 
     for (const line of lines) {
       if (!line.trim()) continue;
-      const clean = this.cleanText(line.replace(bulletRe, '$1').trim());
+      let clean = this.cleanText(line.replace(bulletRe, '$1').trim());
+      // De-duplicate if format is "Course from Issuer – Issuer"
+      if (clean.includes('–') || clean.includes(' - ')) {
+        const parts = clean.split(/[–\-]/).map(p => p.trim());
+        if (parts.length === 2 && parts[0].toLowerCase().includes(parts[1].toLowerCase())) {
+          clean = parts[0];
+        }
+      }
       if (clean.length > 2) {
         certList.push(clean);
       }
