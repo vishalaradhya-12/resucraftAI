@@ -1842,6 +1842,9 @@ html, body {
     position: relative !important;
     display: block !important;
     overflow: visible !important;
+    background: #ffffff !important;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   /* Resume Canvas on Mobile */
@@ -1855,6 +1858,8 @@ html, body {
     display: block !important;
     box-sizing: border-box !important;
     margin: 0 !important;
+    background: #ffffff !important;
+    border-radius: 4px;
   }
 }
 

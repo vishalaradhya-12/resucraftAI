@@ -1684,8 +1684,17 @@ class ResuCraftApp {
       doc.style.height = 'auto';
       doc.style.minHeight = '1122px';
 
+      // Measure children to get true content bottom
+      let contentBottom = 0;
+      if (doc.children && doc.children.length > 0) {
+        Array.from(doc.children).forEach(child => {
+          const b = child.offsetTop + child.offsetHeight;
+          if (b > contentBottom) contentBottom = b;
+        });
+      }
+
       const unscaledWidth = 794;
-      const naturalHeight = Math.max(doc.scrollHeight, doc.offsetHeight, 1122);
+      const naturalHeight = Math.ceil(Math.max(doc.scrollHeight, doc.offsetHeight, contentBottom + 30, 1122));
       const availWidth = Math.max(280, window.innerWidth - 20);
       const scale = Math.min(1, availWidth / unscaledWidth);
       const scaledWidth = Math.round(unscaledWidth * scale);
@@ -1697,6 +1706,7 @@ class ResuCraftApp {
         wrapper.style.margin = '0 auto';
         wrapper.style.position = 'relative';
         wrapper.style.overflow = 'visible';
+        wrapper.style.backgroundColor = '#ffffff';
       }
 
       canvas.style.position = 'absolute';
@@ -1707,8 +1717,10 @@ class ResuCraftApp {
       canvas.style.transformOrigin = 'top left';
       canvas.style.transform = `scale(${scale})`;
       canvas.style.margin = '0';
+      canvas.style.backgroundColor = '#ffffff';
 
       doc.style.minHeight = `${naturalHeight}px`;
+      doc.style.height = `${naturalHeight}px`;
       doc.style.backgroundColor = '#ffffff';
 
       const label = document.getElementById('zoom-level-label');

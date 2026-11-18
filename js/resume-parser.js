@@ -92,6 +92,7 @@ class ResumeParser {
       .replace(/\s+([,.:;!?%])/g, '$1')   // Remove space before punctuation: "10% ." -> "10%."
       .replace(/([(\[{])\s+/g, '$1')      // Remove space after open bracket: "( pandas" -> "(pandas"
       .replace(/\s+([)\]}])/g, '$1')      // Remove space before close bracket: "NumPy )" -> "NumPy)"
+      .replace(/([a-zA-Z])\s+-\s*([a-zA-Z])/g, '$1-$2') // Fix separated hyphens: "SQL -based" -> "SQL-based"
       .replace(/₹\s+/g, '₹')              // "₹ 1.2 Cr" -> "₹1.2 Cr"
       .replace(/\$\s+/g, '$')              // "$ 100" -> "$100"
       .replace(/\s{2,}/g, ' ')            // Multiple spaces to single space
@@ -113,9 +114,21 @@ class ResumeParser {
    */
   unwrapSectionLines(lines) {
     const bulletRe = /^[•\-\*▸–—\+✓●▪■◆◇►✔\d+\.]\s*/;
-    const dateRe = /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}|\b\d{4}\s*[-–—to\s]+\s*(?:Present|Current|\d{4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4})/i;
+    const dateRe = /((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}|\b\d{4}|\d{1,2}\/\d{4})\s*[-–—to\s]+\s*(Present|Current|\b\d{4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}|\d{1,2}\/\d{4})/i;
     // Capitalized action verbs indicating a bullet point even without bullet symbol
-    const actionVerbStart = /^(?:Identified|Analysed|Analyzed|Built|Designed|Automated|Spearheaded|Uncovered|Reduced|Increased|Architected|Engineered|Developed|Led|Created|Implemented|Achieved|Collaborated|Drove|Optimized|Maintained|Delivered|Managed|Formulated|Executed|Coordinated|Established|Streamlined|Pioneered|Directed|Authored|Mentored|Trained|Scaled|Resolved|Migrated|Administered|Negotiated|Constructed|Transformed|Generated|Accelerated|Facilitated|Modernized|Programmed)\b/;
+    const actionVerbsList = [
+      'Identified', 'Analysed', 'Analyzed', 'Built', 'Designed', 'Automated',
+      'Spearheaded', 'Uncovered', 'Reduced', 'Improved', 'Increased', 'Architected',
+      'Engineered', 'Developed', 'Led', 'Created', 'Implemented', 'Achieved',
+      'Collaborated', 'Drove', 'Optimized', 'Maintained', 'Delivered', 'Managed',
+      'Formulated', 'Executed', 'Coordinated', 'Established', 'Streamlined',
+      'Pioneered', 'Directed', 'Authored', 'Mentored', 'Trained', 'Scaled',
+      'Resolved', 'Migrated', 'Administered', 'Negotiated', 'Constructed',
+      'Transformed', 'Generated', 'Accelerated', 'Facilitated', 'Modernized',
+      'Programmed', 'Performed', 'Ran', 'Conducted', 'Supervised', 'Overhauled',
+      'Synthesized', 'Orchestrated', 'Initiated', 'Partnered', 'Produced', 'Monitored'
+    ];
+    const actionVerbStart = new RegExp('^(?:' + actionVerbsList.join('|') + ')\\b');
     const jobTitleKeywords = /\b(?:Analyst|Engineer|Manager|Developer|Director|Lead|Consultant|Executive|Specialist|Intern|Architect|Designer|Scientist|Associate|Officer|Coordinator|Administrator|VP)\b/i;
 
     const unwrapped = [];
@@ -129,7 +142,7 @@ class ResumeParser {
       const startsWithCapVerb = actionVerbStart.test(line);
 
       // Check if this line is an implied bullet without symbol
-      if (!isBullet && !isDate && startsWithCapVerb && line.length > 35) {
+      if (!isBullet && !isDate && startsWithCapVerb && line.length > 30) {
         line = '• ' + line;
       }
 
@@ -140,13 +153,15 @@ class ResumeParser {
         const prevIsBullet = bulletRe.test(prev);
 
         if (prevIsBullet) {
-          // Verify this line is not a new job header or company before merging into bullet!
-          const nextIsDate = (i + 1 < lines.length) && dateRe.test(lines[i + 1]);
-          const nextNextIsDate = (i + 2 < lines.length) && dateRe.test(lines[i + 2]);
-          const isJobTitle = jobTitleKeywords.test(line) && line.length < 50;
-          const isHeader = line.includes('@') || line.includes(' | ') || isDate || nextIsDate || nextNextIsDate || isJobTitle;
+          // Is this line a continuation of the previous bullet?
+          // 1. If previous line did not end with a sentence terminator (. ! ?), it's definitely continuation
+          const prevEndsWithTerminator = /[.!?]['"]?\s*$/.test(prev);
+          // 2. If current line starts with lowercase, it's definitely continuation
+          const startsWithLower = /^[a-z]/.test(line);
+          // 3. Check if this line is an actual job title header
+          const isHeader = !startsWithLower && (line.includes('@') || line.includes(' | ') || (jobTitleKeywords.test(line) && line.length < 50 && prevEndsWithTerminator));
 
-          if (!isHeader) {
+          if (!isHeader || !prevEndsWithTerminator || startsWithLower) {
             // Continuation of previous bullet!
             if (prev.endsWith('-')) {
               unwrapped[unwrapped.length - 1] = prev.slice(0, -1) + line;
@@ -410,50 +425,62 @@ class ResumeParser {
           location = dateLine.replace(dateRe, '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
           i += 2;
         } else if (nextDMatch) {
-          // Line i: Title & Company, Line i+1: Date / Location
-          const header = line;
-          const dateLine = lines[i + 1];
-          const m = dateLine.match(dateRe);
+          // Two-line header:
+          // Line i: Title (e.g. "Senior Executive – Analytics" or "Data Analyst")
+          // Line i+1: Company & Date (e.g. "Titan Company Ltd (Jewellery Division)  November 2025 - Present")
+          title = line;
+          const secondLine = lines[i + 1];
+          const m = secondLine.match(dateRe);
           period = m ? m[0] : '';
-          location = dateLine.replace(dateRe, '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
+          const remaining = secondLine.replace(dateRe, '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
 
-          if (header.includes('@')) {
-            const parts = header.split('@');
-            title = parts[0].trim();
-            company = parts[1].trim();
-          } else if (header.includes(' - ')) {
-            const parts = header.split(' - ');
-            title = parts[0].trim();
-            company = parts[1].trim();
-          } else if (header.includes(',')) {
-            const parts = header.split(',');
-            title = parts[0].trim();
-            company = parts.slice(1).join(',').trim();
+          if (remaining.includes('@')) {
+            const parts = remaining.split('@');
+            company = parts[0].trim();
+            location = parts[1].trim();
+          } else if (remaining.includes('•') || remaining.includes('|')) {
+            const parts = remaining.split(/[•|]/);
+            company = parts[0].trim();
+            location = parts.slice(1).join(', ').trim();
           } else {
-            title = header;
+            company = remaining;
           }
+
+          // If line i actually had both Title and Company separated by @ or - or |
+          if (line.includes('@')) {
+            const parts = line.split('@');
+            title = parts[0].trim();
+            if (!company) company = parts[1].trim();
+          } else if (line.includes(' - ') && !line.includes('–')) {
+            const parts = line.split(' - ');
+            title = parts[0].trim();
+            if (!company) company = parts[1].trim();
+          }
+
           i += 1;
-        } else {
-          // Single line header
-          let headerText = line;
-          if (dMatch) {
-            period = dMatch[0];
-            headerText = line.replace(dMatch[0], '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
-          }
-          if (headerText.includes('@')) {
-            const parts = headerText.split('@');
-            title = parts[0].trim();
-            company = parts[1].split('|')[0].trim();
-          } else if (headerText.includes(' - ')) {
-            const parts = headerText.split(' - ');
+        } else if (dMatch) {
+          // Single line with date: "Company / Role  Date"
+          period = dMatch[0];
+          let remaining = line.replace(dMatch[0], '').replace(/^[•|\s,-]+|[•|\s,-]+$/g, '').trim();
+          if (remaining.includes('@')) {
+            const parts = remaining.split('@');
             title = parts[0].trim();
             company = parts[1].trim();
-          } else if (headerText.includes('|')) {
-            const parts = headerText.split('|');
+          } else if (remaining.includes(' - ')) {
+            const parts = remaining.split(' - ');
             title = parts[0].trim();
-            company = parts.length > 1 ? parts[1].trim() : '';
+            company = parts[1].trim();
           } else {
-            title = headerText;
+            title = remaining;
+          }
+        } else {
+          // Header without date
+          if (line.includes('@')) {
+            const parts = line.split('@');
+            title = parts[0].trim();
+            company = parts[1].trim();
+          } else {
+            title = line;
           }
         }
 
