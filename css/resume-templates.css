@@ -15,11 +15,84 @@
   border-radius: 4px;
   padding: 30px 40px;
   box-sizing: border-box;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.011em;
   line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   position: relative;
   overflow: visible !important;
   transition: none !important;
+}
+
+/* ==========================================================================
+   Typography Engine — Premium Font Overrides
+   ========================================================================== */
+.resume-document.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: -0.012em;
+}
+.resume-document.font-inter .candidate-name,
+.resume-document.font-inter .classic-name {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+.resume-document.font-inter .section-title,
+.resume-document.font-inter .classic-section-title {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.resume-document.font-garamond {
+  font-family: 'EB Garamond', 'Georgia', 'Times New Roman', serif !important;
+  font-size: 1.04em;
+  line-height: 1.48;
+  letter-spacing: 0.005em;
+}
+.resume-document.font-garamond .candidate-name,
+.resume-document.font-garamond .classic-name {
+  font-family: 'EB Garamond', 'Georgia', serif !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.resume-document.font-garamond .section-title,
+.resume-document.font-garamond .classic-section-title {
+  font-family: 'EB Garamond', 'Georgia', serif !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.resume-document.font-merriweather {
+  font-family: 'Merriweather', 'Georgia', serif !important;
+  font-size: 0.94em;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+.resume-document.font-merriweather .candidate-name,
+.resume-document.font-merriweather .classic-name {
+  font-family: 'Merriweather', serif !important;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.resume-document.font-merriweather .section-title,
+.resume-document.font-merriweather .classic-section-title {
+  font-family: 'Merriweather', serif !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.resume-document.font-jakarta {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+  letter-spacing: -0.01em;
+}
+.resume-document.font-jakarta .candidate-name,
+.resume-document.font-jakarta .classic-name {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 /* Core Keywords & Competencies Highlighting */
@@ -113,7 +186,7 @@ mark.kw-matched {
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: inherit;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -297,7 +370,7 @@ mark.kw-matched {
    Clean, serif-accent, 100% ATS-compliant, centered header, sharp full-width rules
    ========================================================================== */
 .tpl-classic-ats {
-  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
+  font-family: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
   color: #111111;
   padding: 30px 40px;
   box-sizing: border-box;
@@ -319,11 +392,11 @@ mark.kw-matched {
 }
 
 .classic-name {
-  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
-  font-size: 18.5px;
+  font-family: inherit;
+  font-size: 21px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: #111111;
   margin-bottom: 4px;
   line-height: 1.2;
@@ -361,11 +434,11 @@ mark.kw-matched {
 }
 
 .classic-section-title {
-  font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
-  font-size: 13px;
+  font-family: inherit;
+  font-size: 13.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
   color: var(--theme-accent, #111111);
   border-bottom: 1.5px solid var(--theme-accent, #222222);
   padding-bottom: 2px;
@@ -487,10 +560,10 @@ mark.kw-matched {
 }
 
 .tpl-tech .candidate-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: inherit;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
 }
 
 .tpl-tech .candidate-title {
@@ -541,9 +614,9 @@ mark.kw-matched {
 }
 
 .tpl-executive .candidate-name {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-family: inherit;
+  font-weight: 750;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #0f172a;
 }
@@ -575,16 +648,16 @@ mark.kw-matched {
    TEMPLATE 3: HARVARD / CLASSIC MINIMAL (Wall Street / Ivy ATS Standard)
    ========================================================================== */
 .tpl-minimal {
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
   color: #111827;
 }
 
 .tpl-minimal .candidate-name {
-  font-family: 'Georgia', serif;
-  font-weight: bold;
+  font-family: inherit;
+  font-weight: 700;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   font-size: 24px;
   margin-bottom: 4px;
 }
@@ -666,11 +739,12 @@ mark.kw-matched {
 }
 
 .nordic-sidebar .candidate-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: inherit;
   font-size: 20px;
   font-weight: 800;
   color: #0f172a;
   line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
 .nordic-sidebar .candidate-title {

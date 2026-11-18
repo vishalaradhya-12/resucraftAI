@@ -9,6 +9,9 @@ class ResumeTemplates {
     this.colorTheme = 'indigo';
     this.highlightKeywords = true;
     this.fontSize = 'medium'; // small, medium, large
+    let savedFont = 'inter';
+    try { savedFont = localStorage.getItem('resucraft_font_family') || 'inter'; } catch(e) {}
+    this.fontFamily = savedFont; // inter, garamond, merriweather, jakarta
   }
 
   setTemplate(templateName) {
@@ -21,6 +24,11 @@ class ResumeTemplates {
 
   setFontSize(size) {
     this.fontSize = size;
+  }
+
+  setFontFamily(family) {
+    this.fontFamily = family;
+    try { localStorage.setItem('resucraft_font_family', family); } catch(e) {}
   }
 
   toggleHighlight(enabled) {
@@ -206,7 +214,7 @@ class ResumeTemplates {
   /* ----------------- 0. CLASSIC ATS TEMPLATE (REFERENCE DESIGN) ----------------- */
   renderClassicATS(data, matchedKeywords) {
     return `
-      <div class="resume-document tpl-classic-ats theme-${this.colorTheme} size-${this.fontSize}" id="printable-resume">
+      <div class="resume-document tpl-classic-ats theme-${this.colorTheme} size-${this.fontSize} font-${this.fontFamily}" id="printable-resume">
         <!-- Centered Header -->
         <header class="classic-header">
           <h1 class="classic-name">${this.escapeHtml(data.name || "Your Name")}</h1>
@@ -381,7 +389,7 @@ class ResumeTemplates {
   /* ----------------- 1. TECH MODERN TEMPLATE ----------------- */
   renderTechModern(data, matchedKeywords) {
     return `
-      <div class="resume-document tpl-tech theme-${this.colorTheme} size-${this.fontSize}" id="printable-resume">
+      <div class="resume-document tpl-tech theme-${this.colorTheme} size-${this.fontSize} font-${this.fontFamily}" id="printable-resume">
         <!-- Header -->
         <header class="resume-header">
           <div class="header-main">
@@ -427,7 +435,7 @@ class ResumeTemplates {
   /* ----------------- 2. EXECUTIVE TEMPLATE ----------------- */
   renderExecutive(data, matchedKeywords) {
     return `
-      <div class="resume-document tpl-executive theme-${this.colorTheme} size-${this.fontSize}" id="printable-resume">
+      <div class="resume-document tpl-executive theme-${this.colorTheme} size-${this.fontSize} font-${this.fontFamily}" id="printable-resume">
         <header class="resume-header">
           <div class="header-top-bar"></div>
           <h1 class="candidate-name">${this.escapeHtml(data.name || "Your Name")}</h1>
@@ -456,7 +464,7 @@ class ResumeTemplates {
   /* ----------------- 3. HARVARD / MINIMAL TEMPLATE ----------------- */
   renderMinimal(data, matchedKeywords) {
     return `
-      <div class="resume-document tpl-minimal theme-${this.colorTheme} size-${this.fontSize}" id="printable-resume">
+      <div class="resume-document tpl-minimal theme-${this.colorTheme} size-${this.fontSize} font-${this.fontFamily}" id="printable-resume">
         <header class="resume-header text-center">
           <h1 class="candidate-name">${this.escapeHtml(data.name || "Your Name")}</h1>
           <div class="header-contact">
@@ -483,7 +491,7 @@ class ResumeTemplates {
   /* ----------------- 4. NORDIC CLEAN TEMPLATE ----------------- */
   renderNordic(data, matchedKeywords) {
     return `
-      <div class="resume-document tpl-nordic theme-${this.colorTheme} size-${this.fontSize}" id="printable-resume">
+      <div class="resume-document tpl-nordic theme-${this.colorTheme} size-${this.fontSize} font-${this.fontFamily}" id="printable-resume">
         <div class="nordic-layout">
           <!-- Sidebar -->
           <aside class="nordic-sidebar">

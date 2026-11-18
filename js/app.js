@@ -187,6 +187,18 @@ class ResuCraftApp {
       });
     }
 
+    // Font Family Typography Selector
+    const fontFamilySelect = document.getElementById('font-family-select');
+    if (fontFamilySelect && window.resumeTemplates) {
+      if (window.resumeTemplates.fontFamily) {
+        fontFamilySelect.value = window.resumeTemplates.fontFamily;
+      }
+      fontFamilySelect.addEventListener('change', (e) => {
+        window.resumeTemplates.setFontFamily(e.target.value);
+        this.renderResumePreview();
+      });
+    }
+
     // Font Size Selector
     const fontSizeSelect = document.getElementById('font-size-select');
     if (fontSizeSelect) {
