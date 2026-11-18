@@ -63,6 +63,9 @@ class ResuCraftApp {
     this.populateEditor();
     this.runATSAnalysis();
     this.renderResumePreview();
+    this.updateProfileStatusUI();
+    this.updateGuidedStepper();
+    this.initWelcomeOnboarding();
   }
 
   bindEvents() {
@@ -73,6 +76,30 @@ class ResuCraftApp {
         this.switchTab(targetTab);
       });
     });
+
+    // 3-Step Guided Stepper Click Handlers
+    const step1 = document.getElementById('step-nav-resume');
+    if (step1) {
+      step1.addEventListener('click', () => {
+        this.switchTab('content-editor');
+      });
+    }
+    const step2 = document.getElementById('step-nav-jd');
+    if (step2) {
+      step2.addEventListener('click', () => {
+        this.switchTab('jd-analyzer');
+        const jdField = document.getElementById('jd-input-text');
+        if (jdField) jdField.focus();
+      });
+    }
+    const step3 = document.getElementById('step-nav-tailor');
+    if (step3) {
+      step3.addEventListener('click', () => {
+        this.switchTab('jd-analyzer');
+        const banner = document.getElementById('auto-tailor-banner');
+        if (banner) banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
 
     // Sample Profile Switcher
     const profileSelect = document.getElementById('sample-profile-select');
@@ -357,6 +384,16 @@ class ResuCraftApp {
       panel.classList.toggle('active', panel.id === `panel-${tabId}`);
     });
 
+    // Sync Stepper Step Active State
+    const step1 = document.getElementById('step-nav-resume');
+    const step2 = document.getElementById('step-nav-jd');
+    const step3 = document.getElementById('step-nav-tailor');
+    if (step1 && step2 && step3) {
+      step1.classList.toggle('active', tabId === 'content-editor');
+      step2.classList.toggle('active', tabId === 'jd-analyzer');
+      step3.classList.toggle('active', tabId === 'bullet-tailorer');
+    }
+
     if (tabId === 'bullet-tailorer') {
       this.populateBulletSelectDropdown();
       this.renderKeywordSuggestions();
@@ -379,6 +416,9 @@ class ResuCraftApp {
       this.runATSAnalysis();
       this.renderResumePreview();
       this.resetCanvasScroll();
+      this.updateProfileStatusUI();
+      this.updateGuidedStepper();
+      this.saveSession();
       this.showToast('Started a blank resume — fill in your own details!');
       return;
     }
@@ -397,6 +437,8 @@ class ResuCraftApp {
     this.runATSAnalysis();
     this.renderResumePreview();
     this.resetCanvasScroll();
+    this.updateProfileStatusUI();
+    this.updateGuidedStepper();
     this.showToast(`Loaded ${this.resumeData.name}'s profile and benchmark JD`);
     this.saveSession();
   }
@@ -407,6 +449,7 @@ class ResuCraftApp {
     this.renderKeywordBadges();
     this.updateATSBreakdown();
     this.renderKeywordSuggestions();
+    this.updateGuidedStepper();
     this.saveSession();
   }
 
@@ -841,6 +884,9 @@ class ResuCraftApp {
       if (el) {
         el.addEventListener('input', () => {
           this.resumeData[prop] = el.value;
+          if (prop === 'name') {
+            this.updateProfileStatusUI();
+          }
           this.runATSAnalysis();
           this.renderResumePreview();
         });
@@ -956,6 +1002,7 @@ class ResuCraftApp {
       if (previewBox) previewBox.style.display = 'none';
       if (fileStatus) fileStatus.innerText = '';
     };
+    this.openResumeImporter = openModal;
 
     const closeModal = () => {
       if (modal) modal.style.display = 'none';
@@ -1121,6 +1168,8 @@ class ResuCraftApp {
         this.runATSAnalysis();
         this.renderResumePreview();
         this.resetCanvasScroll();
+        this.updateProfileStatusUI();
+        this.updateGuidedStepper();
         this.saveSession();
         this.showToast(`🎉 Loaded ${currentParsedData.name || 'your'}'s resume! Ready to tailor with JD.`);
       });
@@ -1777,6 +1826,256 @@ class ResuCraftApp {
       toast.classList.add('fade-out');
       setTimeout(() => toast.remove(), 400);
     }, canUndo ? 6000 : 3200);
+  }
+
+  updateProfileStatusUI() {
+    const isCustom = this.currentProfileId === 'custom';
+    const isBlank = this.currentProfileId === 'blank';
+    const candidateName = this.resumeData && this.resumeData.name ? this.resumeData.name : (isBlank ? 'Blank Slate' : 'Sample Candidate');
+
+    // 1. Update Canvas Profile Bar directly above Resume Paper
+    const canvasBar = document.getElementById('canvas-profile-bar');
+    if (canvasBar) {
+      if (isCustom) {
+        canvasBar.className = 'canvas-profile-bar user-mode';
+        canvasBar.innerHTML = `
+          <div class="cpb-identity">
+            <span class="cpb-dot-live" title="Active private session"></span>
+            <div class="cpb-text">
+              <span class="cpb-tag cpb-tag-user">🟢 Your Active Resume</span>
+              <span>Candidate: <strong>${this.escapeHtml(candidateName)}</strong> (Private)</span>
+            </div>
+          </div>
+          <div class="cpb-actions">
+            <button id="btn-cpb-change" class="btn-cpb-secondary" title="Upload a different resume">
+              <span>🔄 Replace / Upload New</span>
+            </button>
+            <button id="btn-cpb-edit" class="btn-cpb-secondary" title="Edit your info in editor">
+              <span>✏️ Edit Info</span>
+            </button>
+            <button id="btn-cpb-sample" class="btn-cpb-secondary" title="View sample demo profile">
+              <span>👀 Try Demo</span>
+            </button>
+          </div>
+        `;
+        const changeBtn = canvasBar.querySelector('#btn-cpb-change');
+        if (changeBtn) changeBtn.addEventListener('click', () => this.openResumeImporter());
+        const editBtn = canvasBar.querySelector('#btn-cpb-edit');
+        if (editBtn) editBtn.addEventListener('click', () => this.switchTab('content-editor'));
+        const sampleBtn = canvasBar.querySelector('#btn-cpb-sample');
+        if (sampleBtn) sampleBtn.addEventListener('click', () => this.loadSampleProfile('vishal_aradhya'));
+      } else if (isBlank) {
+        canvasBar.className = 'canvas-profile-bar user-mode';
+        canvasBar.innerHTML = `
+          <div class="cpb-identity">
+            <span class="cpb-dot-live"></span>
+            <div class="cpb-text">
+              <span class="cpb-tag cpb-tag-user">✨ Blank Resume</span>
+              <span>Fill in your details in the Content Editor</span>
+            </div>
+          </div>
+          <div class="cpb-actions">
+            <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload existing PDF/Word">
+              <span>⚡ Upload Existing Resume</span>
+            </button>
+            <button id="btn-cpb-sample" class="btn-cpb-secondary" title="Explore sample demo profile">
+              <span>👀 View Sample</span>
+            </button>
+          </div>
+        `;
+        const uploadBtn = canvasBar.querySelector('#btn-cpb-upload');
+        if (uploadBtn) uploadBtn.addEventListener('click', () => this.openResumeImporter());
+        const sampleBtn = canvasBar.querySelector('#btn-cpb-sample');
+        if (sampleBtn) sampleBtn.addEventListener('click', () => this.loadSampleProfile('vishal_aradhya'));
+      } else {
+        // Demo profile
+        canvasBar.className = 'canvas-profile-bar demo-mode';
+        canvasBar.innerHTML = `
+          <div class="cpb-identity">
+            <span class="cpb-dot-demo"></span>
+            <div class="cpb-text">
+              <span class="cpb-tag cpb-tag-demo">📂 Demo Mode</span>
+              <span>Viewing sample candidate: <strong>${this.escapeHtml(candidateName)}</strong></span>
+            </div>
+          </div>
+          <div class="cpb-actions">
+            <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload your PDF/Word to tailor your own resume">
+              <span>⚡ Put My Resume Here</span>
+            </button>
+            <button id="btn-cpb-blank" class="btn-cpb-secondary" title="Start with a blank clean resume">
+              <span>✨ Start Blank</span>
+            </button>
+          </div>
+        `;
+        const uploadBtn = canvasBar.querySelector('#btn-cpb-upload');
+        if (uploadBtn) uploadBtn.addEventListener('click', () => this.openResumeImporter());
+        const blankBtn = canvasBar.querySelector('#btn-cpb-blank');
+        if (blankBtn) blankBtn.addEventListener('click', () => this.loadSampleProfile('blank'));
+      }
+    }
+
+    // 2. Update Header Button Text
+    const headerBtnText = document.getElementById('btn-header-import-text');
+    if (headerBtnText) {
+      headerBtnText.innerText = isCustom ? '🔄 Change Resume' : '📄 Use My Resume';
+    }
+
+    // 3. Update Dropdown Options
+    const select = document.getElementById('sample-profile-select');
+    if (select) {
+      let customOpt = select.querySelector('option[value="custom"]');
+      if (isCustom) {
+        if (!customOpt) {
+          customOpt = document.createElement('option');
+          customOpt.value = 'custom';
+          select.insertBefore(customOpt, select.firstChild);
+        }
+        customOpt.disabled = false;
+        customOpt.hidden = false;
+        customOpt.innerText = `⭐ YOUR RESUME: ${candidateName} (Active)`;
+        select.value = 'custom';
+      } else {
+        if (customOpt) customOpt.innerText = `⭐ Your Resume: ${this.resumeData && this.resumeData.name ? this.resumeData.name : 'Saved'}`;
+        select.value = this.currentProfileId;
+      }
+    }
+
+    // 4. Update Content Editor Banner
+    const ribBadge = document.querySelector('.resume-import-banner .rib-badge');
+    const ribTitle = document.querySelector('.resume-import-banner h4');
+    const ribDesc = document.querySelector('.resume-import-banner p');
+    const ribImportBtn = document.getElementById('btn-banner-import-resume');
+    if (ribBadge && ribTitle && ribDesc) {
+      if (isCustom) {
+        ribBadge.className = 'rib-badge';
+        ribBadge.style.background = '#10b981';
+        ribBadge.innerText = '✅ Your Active Resume';
+        ribTitle.innerText = `Editing: ${candidateName}`;
+        ribDesc.innerText = 'All fields below are populated with your data. Changes reflect live on the preview canvas.';
+        if (ribImportBtn) ribImportBtn.innerText = '🔄 Replace / Re-upload';
+      } else if (isBlank) {
+        ribBadge.className = 'rib-badge';
+        ribBadge.style.background = '#6366f1';
+        ribBadge.innerText = '✨ Clean Slate';
+        ribTitle.innerText = 'Blank Resume Ready';
+        ribDesc.innerText = 'Fill in your details below or upload your existing resume to auto-fill.';
+        if (ribImportBtn) ribImportBtn.innerText = '📥 Upload / Paste Resume';
+      } else {
+        ribBadge.className = 'rib-badge';
+        ribBadge.style.background = '#6366f1';
+        ribBadge.innerText = '⚡ Quick Onboarding';
+        ribTitle.innerText = 'Want to tailor your own resume?';
+        ribDesc.innerText = 'Upload your existing PDF / Word resume or paste text to auto-fill all form fields in 2 seconds.';
+        if (ribImportBtn) ribImportBtn.innerText = '📥 Upload / Paste Resume';
+      }
+    }
+
+    // 5. Update Stepper Step 1
+    const cgBadgeResume = document.getElementById('cg-badge-resume');
+    const cgDescResume = document.getElementById('cg-desc-resume');
+    if (cgBadgeResume && cgDescResume) {
+      if (isCustom) {
+        cgBadgeResume.className = 'cg-step-badge user';
+        cgBadgeResume.innerText = 'Your Resume';
+        cgDescResume.innerText = candidateName;
+      } else if (isBlank) {
+        cgBadgeResume.className = 'cg-step-badge user';
+        cgBadgeResume.innerText = 'Blank';
+        cgDescResume.innerText = 'Building fresh';
+      } else {
+        cgBadgeResume.className = 'cg-step-badge demo';
+        cgBadgeResume.innerText = 'Sample';
+        cgDescResume.innerText = candidateName;
+      }
+    }
+  }
+
+  updateGuidedStepper() {
+    // Step 2: Target Job status
+    const hasJd = this.jdText && this.jdText.trim().length > 30;
+    const cgBadgeJd = document.getElementById('cg-badge-jd');
+    const cgDescJd = document.getElementById('cg-desc-jd');
+    if (cgBadgeJd && cgDescJd) {
+      if (hasJd) {
+        const count = this.atsResult && this.atsResult.matchedKeywords ? this.atsResult.matchedKeywords.length : 0;
+        cgBadgeJd.className = 'cg-step-badge ready';
+        cgBadgeJd.innerText = 'Ready';
+        cgDescJd.innerText = `${count} Keywords Matched`;
+      } else {
+        cgBadgeJd.className = 'cg-step-badge demo';
+        cgBadgeJd.innerText = 'Waiting';
+        cgDescJd.innerText = 'Paste target JD';
+      }
+    }
+
+    // Step 3: Match & Tailor
+    const cgBadgeTailor = document.getElementById('cg-badge-tailor');
+    const cgDescTailor = document.getElementById('cg-desc-tailor');
+    if (cgBadgeTailor && cgDescTailor) {
+      if (this.atsResult && this.atsResult.overallScore !== undefined) {
+        cgBadgeTailor.className = 'cg-step-badge match';
+        cgBadgeTailor.innerText = `${this.atsResult.overallScore}% Match`;
+        cgDescTailor.innerText = this.atsResult.overallScore >= 80 ? 'ATS Ready • Export' : 'Auto-Add Keywords';
+      }
+    }
+  }
+
+  initWelcomeOnboarding() {
+    const welcomeModal = document.getElementById('modal-welcome-onboarding');
+    const btnUpload = document.getElementById('btn-welcome-upload');
+    const btnBlank = document.getElementById('btn-welcome-blank');
+    const btnDemo = document.getElementById('btn-welcome-demo');
+    const btnDismiss = document.getElementById('btn-welcome-dismiss');
+    const btnHowItWorks = document.getElementById('btn-header-how-it-works');
+
+    const openWelcome = () => {
+      if (welcomeModal) welcomeModal.style.display = 'flex';
+    };
+
+    const closeWelcome = () => {
+      if (welcomeModal) welcomeModal.style.display = 'none';
+      try { localStorage.setItem('resucraft_onboarded_v1', 'true'); } catch(e) {}
+    };
+
+    if (btnUpload) {
+      btnUpload.addEventListener('click', () => {
+        closeWelcome();
+        if (this.openResumeImporter) this.openResumeImporter();
+      });
+    }
+
+    if (btnBlank) {
+      btnBlank.addEventListener('click', () => {
+        closeWelcome();
+        this.loadSampleProfile('blank');
+      });
+    }
+
+    if (btnDemo) {
+      btnDemo.addEventListener('click', () => {
+        closeWelcome();
+        this.showToast('ℹ️ Exploring with sample profile. Click "Use My Resume" when ready!');
+      });
+    }
+
+    if (btnDismiss) btnDismiss.addEventListener('click', closeWelcome);
+    if (welcomeModal) {
+      welcomeModal.addEventListener('click', (e) => {
+        if (e.target === welcomeModal) closeWelcome();
+      });
+    }
+
+    if (btnHowItWorks) {
+      btnHowItWorks.addEventListener('click', openWelcome);
+    }
+
+    // Show on first visit
+    try {
+      const seen = localStorage.getItem('resucraft_onboarded_v1');
+      if (!seen) {
+        setTimeout(openWelcome, 350);
+      }
+    } catch(e) {}
   }
 
   escapeHtml(str) {

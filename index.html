@@ -26,8 +26,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/styles.css?v=20261118_v9">
-  <link rel="stylesheet" href="css/resume-templates.css?v=20261118_v9">
+  <link rel="stylesheet" href="css/styles.css?v=20261118_v10">
+  <link rel="stylesheet" href="css/resume-templates.css?v=20261118_v10">
 
   <style>
 .quickstart-guide {
@@ -78,13 +78,15 @@
 
     <div class="header-center-controls">
       <div class="profile-selector-box">
-        <label for="sample-profile-select" class="desktop-only">Demo Personas:</label>
+        <label for="sample-profile-select" class="desktop-only">Active Profile:</label>
         <select id="sample-profile-select" class="form-select">
-          <option value="vishal_aradhya" selected>Vishal Aradhya JC (Senior Business Analyst)</option>
-          <option value="software_engineer">Alex Morgan (Lead Full Stack / Cloud)</option>
-          <option value="ai_ml_engineer">Dr. Elena Rostova (Senior AI / LLM Systems)</option>
-          <option value="product_manager">Marcus Vance (Principal Product Manager)</option>
-          <option value="blank">✨ Start Blank Resume (Clean Slate)</option>
+          <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
+            <option value="vishal_aradhya" selected>Vishal Aradhya JC (Senior Business Analyst)</option>
+            <option value="software_engineer">Alex Morgan (Lead Full Stack / Cloud)</option>
+            <option value="ai_ml_engineer">Dr. Elena Rostova (Senior AI / LLM Systems)</option>
+            <option value="product_manager">Marcus Vance (Principal Product Manager)</option>
+            <option value="blank">✨ Blank Resume (Clean Slate)</option>
+          </optgroup>
         </select>
       </div>
     </div>
@@ -93,7 +95,11 @@
       <!-- Universal Resume Importer -->
       <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow" title="Upload PDF/Word or Paste your resume to auto-load">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        <span>Upload / Paste Resume</span>
+        <span id="btn-header-import-text">📄 Use My Resume</span>
+      </button>
+
+      <button id="btn-header-how-it-works" class="btn btn-secondary btn-sm desktop-only" title="See 3-step quickstart guide">
+        <span>❓ How It Works</span>
       </button>
 
       <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only" title="Restore original pristine resume (undo custom changes)">
@@ -143,6 +149,40 @@
     <!-- Left Cockpit: Intelligence, NLP Analyzer & Form Editors -->
     <aside class="left-cockpit">
       
+      <!-- 3-Step Guided Stepper -->
+      <div class="cockpit-guided-stepper" id="cockpit-guided-stepper">
+        <div class="cg-step" id="step-nav-resume" data-target-tab="content-editor" title="Step 1: Upload or edit your resume">
+          <div class="cg-step-header">
+            <span class="cg-step-num" id="cg-num-1">1</span>
+            <span class="cg-step-title">Your Resume</span>
+            <span class="cg-step-badge demo" id="cg-badge-resume">Sample</span>
+          </div>
+          <div class="cg-step-desc" id="cg-desc-resume">Vishal Aradhya JC</div>
+        </div>
+
+        <div class="cg-arrow">➔</div>
+
+        <div class="cg-step active" id="step-nav-jd" data-target-tab="jd-analyzer" title="Step 2: Target job description & ATS scoring">
+          <div class="cg-step-header">
+            <span class="cg-step-num" id="cg-num-2">2</span>
+            <span class="cg-step-title">Target Job</span>
+            <span class="cg-step-badge ready" id="cg-badge-jd">Ready</span>
+          </div>
+          <div class="cg-step-desc" id="cg-desc-jd">Paste Job Description</div>
+        </div>
+
+        <div class="cg-arrow">➔</div>
+
+        <div class="cg-step" id="step-nav-tailor" data-target-tab="jd-analyzer" title="Step 3: Auto-add keywords & download PDF">
+          <div class="cg-step-header">
+            <span class="cg-step-num" id="cg-num-3">3</span>
+            <span class="cg-step-title">Tailor &amp; PDF</span>
+            <span class="cg-step-badge match" id="cg-badge-tailor">88% Match</span>
+          </div>
+          <div class="cg-step-desc" id="cg-desc-tailor">1-Click Auto-Add</div>
+        </div>
+      </div>
+
       <!-- Cockpit Tabs -->
       <nav class="cockpit-tabs-nav" aria-label="Cockpit Tabs">
         <button class="nav-tab active" data-tab="jd-analyzer" id="tab-btn-jd">
@@ -626,6 +666,25 @@
         </div>
       </div>
 
+      <!-- Resume Identity & Active Profile Banner -->
+      <div class="canvas-profile-bar demo-mode" id="canvas-profile-bar">
+        <div class="cpb-identity">
+          <span class="cpb-dot-demo" id="cpb-status-dot"></span>
+          <div class="cpb-text">
+            <span class="cpb-tag cpb-tag-demo" id="cpb-tag">Demo Mode</span>
+            <span>Viewing sample candidate: <strong id="cpb-candidate-name">Vishal Aradhya JC</strong></span>
+          </div>
+        </div>
+        <div class="cpb-actions" id="cpb-actions">
+          <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload your PDF/Word resume to replace sample">
+            <span>⚡ Put My Resume Here</span>
+          </button>
+          <button id="btn-cpb-blank" class="btn-cpb-secondary" title="Start with a blank clean resume">
+            <span>✨ Start Blank</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Live Canvas Paper Viewport -->
       <div class="canvas-viewport" id="canvas-scroll-container">
         <div class="resume-scale-wrapper" id="resume-scale-wrapper">
@@ -700,15 +759,92 @@
     </div>
   </div>
 
+  <!-- ================= FIRST-TIME USER WELCOME ONBOARDING MODAL ================= -->
+  <div class="modal-backdrop" id="modal-welcome-onboarding" style="display: none;">
+    <div class="modal-dialog modal-dialog-welcome">
+      <div class="welcome-header">
+        <div class="welcome-badge">🚀 1-Click ATS Tailor wrt Job Description</div>
+        <h2>Welcome to ResuCraft AI</h2>
+        <p class="welcome-subtitle">Tailor your resume to pass any ATS screening in 3 easy steps. 100% free, 100% private in your browser.</p>
+      </div>
+
+      <div class="welcome-steps-overview">
+        <div class="wso-step">
+          <span class="wso-num">1</span>
+          <div>
+            <strong>Your Resume</strong>
+            <span>Upload or use sample</span>
+          </div>
+        </div>
+        <div class="wso-arrow">➔</div>
+        <div class="wso-step">
+          <span class="wso-num">2</span>
+          <div>
+            <strong>Target Job</strong>
+            <span>Paste target job posting</span>
+          </div>
+        </div>
+        <div class="wso-arrow">➔</div>
+        <div class="wso-step">
+          <span class="wso-num">3</span>
+          <div>
+            <strong>Tailor &amp; Download</strong>
+            <span>Auto-add keywords &amp; get PDF</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="welcome-options-container">
+        <!-- Option 1: Primary Action -->
+        <button type="button" class="welcome-card welcome-card-primary" id="btn-welcome-upload">
+          <div class="wc-icon">📄</div>
+          <div class="wc-info">
+            <div class="wc-title-row">
+              <span class="wc-title">Upload / Paste My Resume</span>
+              <span class="wc-badge">Recommended</span>
+            </div>
+            <p class="wc-desc">Drop your existing PDF, Word (.docx) or paste text. Auto-fills your details instantly so you tailor YOUR resume.</p>
+          </div>
+          <div class="wc-arrow">➔</div>
+        </button>
+
+        <div class="welcome-secondary-row">
+          <!-- Option 2: Blank Resume -->
+          <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-blank">
+            <div class="wc-icon">✨</div>
+            <div class="wc-info">
+              <span class="wc-title">Start Blank Resume</span>
+              <p class="wc-desc">Build fresh from scratch with guided fields.</p>
+            </div>
+          </button>
+
+          <!-- Option 3: Explore Demo -->
+          <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-demo">
+            <div class="wc-icon">👀</div>
+            <div class="wc-info">
+              <span class="wc-title">Explore with Demo Resume</span>
+              <p class="wc-desc">Test features with sample candidate Vishal Aradhya.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="welcome-footer">
+        <span>🔒 <strong>100% Private</strong> — your resume data never leaves your device.</span>
+        <button type="button" class="btn-micro" id="btn-welcome-dismiss">Dismiss &amp; Explore</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Third-Party PDF & Word Client-Side Extraction Engines -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
   <!-- Script Modules with Cache Busters -->
-  <script src="js/sample-data.js?v=20261118_v9"></script>
-  <script src="js/resume-parser.js?v=20261118_v9"></script>
-  <script src="js/engine.js?v=20261118_v9"></script>
-  <script src="js/templates.js?v=20261118_v9"></script>
-  <script src="js/app.js?v=20261118_v9"></script>
+  <script src="js/sample-data.js?v=20261118_v10"></script>
+  <script src="js/resume-parser.js?v=20261118_v10"></script>
+  <script src="js/engine.js?v=20261118_v10"></script>
+  <script src="js/templates.js?v=20261118_v10"></script>
+  <script src="js/app.js?v=20261118_v10"></script>
 </body>
 </html>
