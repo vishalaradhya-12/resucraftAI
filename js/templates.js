@@ -17,9 +17,14 @@ class ResumeTemplates {
     this.colorTheme = savedTheme;
     this.highlightKeywords = true;
     this.fontSize = 'medium'; // small, medium, large
-    let savedFont = 'inter';
-    try { savedFont = localStorage.getItem('resucraft_font_family') || 'inter'; } catch(e) {}
-    this.fontFamily = savedFont; // inter, space, garamond, playfair, merriweather
+    let savedFont = 'sora';
+    try {
+      const storedFont = localStorage.getItem('resucraft_font_family');
+      if (storedFont && storedFont !== 'inter') {
+        savedFont = storedFont;
+      }
+    } catch(e) {}
+    this.fontFamily = savedFont; // sora, space, garamond, playfair, merriweather, inter
   }
 
   setTemplate(templateName) {
