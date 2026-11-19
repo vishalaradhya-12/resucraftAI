@@ -29,6 +29,40 @@
 /* ==========================================================================
    Typography Engine — Premium Font Overrides
    ========================================================================== */
+.resume-document.font-space {
+  font-family: 'Space Grotesk', -apple-system, sans-serif !important;
+  letter-spacing: -0.015em;
+}
+.resume-document.font-space .candidate-name,
+.resume-document.font-space .classic-name {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.resume-document.font-space .section-title,
+.resume-document.font-space .classic-section-title {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.resume-document.font-playfair {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  letter-spacing: 0.01em;
+}
+.resume-document.font-playfair .candidate-name,
+.resume-document.font-playfair .classic-name {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.resume-document.font-playfair .section-title,
+.resume-document.font-playfair .classic-section-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
 .resume-document.font-inter {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   letter-spacing: -0.012em;
