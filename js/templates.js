@@ -6,12 +6,20 @@
 class ResumeTemplates {
   constructor() {
     this.currentTemplate = 'classic-ats';
-    this.colorTheme = 'indigo';
+    // Default heading accent is ALWAYS Executive Black for ATS gold standard
+    let savedTheme = 'black';
+    try {
+      const stored = localStorage.getItem('resucraft_color_theme');
+      if (stored && stored !== 'indigo') {
+        savedTheme = stored;
+      }
+    } catch(e) {}
+    this.colorTheme = savedTheme;
     this.highlightKeywords = true;
     this.fontSize = 'medium'; // small, medium, large
     let savedFont = 'inter';
     try { savedFont = localStorage.getItem('resucraft_font_family') || 'inter'; } catch(e) {}
-    this.fontFamily = savedFont; // inter, garamond, merriweather, jakarta
+    this.fontFamily = savedFont; // inter, space, garamond, playfair, merriweather
   }
 
   setTemplate(templateName) {
@@ -19,7 +27,8 @@ class ResumeTemplates {
   }
 
   setColorTheme(themeName) {
-    this.colorTheme = themeName;
+    this.colorTheme = themeName || 'black';
+    try { localStorage.setItem('resucraft_color_theme', this.colorTheme); } catch(e) {}
   }
 
   setFontSize(size) {

@@ -166,7 +166,12 @@ class ResuCraftApp {
       });
     });
 
-    // Color Swatches
+    // Color Swatches — Default to Executive Black
+    const initialTheme = window.resumeTemplates.colorTheme || 'black';
+    document.querySelectorAll('.color-swatch').forEach(s => {
+      s.classList.toggle('active', s.getAttribute('data-theme') === initialTheme);
+    });
+
     document.querySelectorAll('.color-swatch').forEach(swatch => {
       swatch.addEventListener('click', (e) => {
         document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));

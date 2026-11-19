@@ -1074,6 +1074,15 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
+.swatch-black {
+  background: #0f172a;
+  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+}
+.swatch-black.active {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
+}
+.swatch-navy { background: #1e3a8a; }
 .swatch-indigo { background: #6366f1; }
 .swatch-emerald { background: #10b981; }
 .swatch-cyan { background: #06b6d4; }

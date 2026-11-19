@@ -208,6 +208,15 @@ mark.kw-matched {
 .resume-document.size-large .classic-edu-row { font-size: 12px !important; line-height: 1.52 !important; }
 
 /* Color Themes */
+:root {
+  --theme-accent: #000000;
+  --theme-accent-light: #f3f4f6;
+  --theme-text-accent: #111827;
+}
+
+.theme-black,
+.theme-monochrome { --theme-accent: #000000; --theme-accent-light: #f3f4f6; --theme-text-accent: #111827; }
+.theme-navy { --theme-accent: #1e3a8a; --theme-accent-light: #eff6ff; --theme-text-accent: #172554; }
 .theme-indigo { --theme-accent: #4f46e5; --theme-accent-light: #e0e7ff; --theme-text-accent: #3730a3; }
 .theme-emerald { --theme-accent: #059669; --theme-accent-light: #d1fae5; --theme-text-accent: #065f46; }
 .theme-cyan { --theme-accent: #0891b2; --theme-accent-light: #cffafe; --theme-text-accent: #155e75; }
