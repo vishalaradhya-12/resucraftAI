@@ -813,6 +813,125 @@ class ResumeParser {
     }
     return certList;
   }
+
+  /**
+   * AI Deep Parse using Google Gemini 1.5 Flash via Netlify Serverless Function
+   * @param {string} rawText Raw text of the resume
+   * @param {Object} [options]
+   * @param {string} [options.apiKey] Optional user-provided Gemini API key
+   * @param {Array} [options.images] Optional base64 images for visual/scanned PDF parsing
+   * @returns {Promise<Object>} ResuCraft-structured resume object
+   */
+  async parseWithGemini(rawText, options = {}) {
+    if (!rawText || rawText.trim().length < 15) {
+      throw new Error('Resume content is too short for AI parsing.');
+    }
+
+    const apiKey = options.apiKey || localStorage.getItem('resucraft_gemini_key') || '';
+    const payload = {
+      text: rawText,
+      apiKey: apiKey || undefined,
+      images: options.images || []
+    };
+
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if (apiKey) {
+      headers['x-gemini-key'] = apiKey;
+    }
+
+    let response;
+    try {
+      response = await fetch('/.netlify/functions/parse-resume', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(payload)
+      });
+    } catch (netErr) {
+      // Fallback to /api/parse-resume
+      try {
+        response = await fetch('/api/parse-resume', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(payload)
+        });
+      } catch (err2) {
+        throw new Error('Network error reaching resume parsing service. Please check your internet connection.');
+      }
+    }
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || !result.success) {
+      if (result.error === 'NO_API_KEY') {
+        const customErr = new Error(result.message || 'Gemini API key is required.');
+        customErr.code = 'NO_API_KEY';
+        throw customErr;
+      }
+      throw new Error(result.message || `AI parsing failed (HTTP ${response.status}).`);
+    }
+
+    const data = result.data;
+    if (!data || typeof data !== 'object') {
+      throw new Error('AI returned an invalid response structure.');
+    }
+
+    // Sanitize and ensure full ResuCraft schema compliance
+    return this.normalizeGeminiOutput(data);
+  }
+
+  normalizeGeminiOutput(d) {
+    const skills = d.skills || {};
+    return {
+      name: (d.name || '').trim() || 'Candidate',
+      targetTitle: (d.targetTitle || '').trim() || 'Professional',
+      email: (d.email || '').trim(),
+      phone: (d.phone || '').trim(),
+      location: (d.location || '').trim(),
+      linkedin: (d.linkedin || '').trim(),
+      github: (d.github || '').trim(),
+      portfolio: (d.portfolio || '').trim(),
+      summary: (d.summary || '').trim(),
+      skills: {
+        technical: Array.isArray(skills.technical) ? skills.technical.map(s => String(s).trim()).filter(Boolean) : [],
+        domain: Array.isArray(skills.domain) ? skills.domain.map(s => String(s).trim()).filter(Boolean) : [],
+        tools: Array.isArray(skills.tools) ? skills.tools.map(s => String(s).trim()).filter(Boolean) : [],
+        soft: Array.isArray(skills.soft) ? skills.soft.map(s => String(s).trim()).filter(Boolean) : []
+      },
+      experience: Array.isArray(d.experience) ? d.experience.map((exp, idx) => ({
+        id: 'exp-ai-' + Date.now() + '-' + idx,
+        title: (exp.title || '').trim(),
+        company: (exp.company || '').trim(),
+        location: (exp.location || '').trim(),
+        period: (exp.period || '').trim(),
+        bullets: Array.isArray(exp.bullets) ? exp.bullets.map(b => String(b).trim()).filter(b => b.length > 3) : []
+      })) : [],
+      projects: Array.isArray(d.projects) ? d.projects.map((proj, idx) => ({
+        id: 'proj-ai-' + Date.now() + '-' + idx,
+        name: (proj.name || '').trim(),
+        role: (proj.role || '').trim(),
+        link: (proj.link || '').trim(),
+        techStack: (proj.techStack || '').trim(),
+        description: (proj.description || '').trim(),
+        bullets: Array.isArray(proj.bullets) ? proj.bullets.map(b => String(b).trim()).filter(b => b.length > 3) : []
+      })) : [],
+      education: Array.isArray(d.education) ? d.education.map((edu, idx) => ({
+        id: 'edu-ai-' + Date.now() + '-' + idx,
+        degree: (edu.degree || '').trim(),
+        institution: (edu.institution || '').trim(),
+        location: (edu.location || '').trim(),
+        year: (edu.year || '').trim()
+      })) : [],
+      certifications: Array.isArray(d.certifications) ? d.certifications.map(c => {
+        if (typeof c === 'string') return c.trim();
+        if (c && typeof c === 'object') {
+          return [c.name, c.issuer, c.year].filter(Boolean).join(' - ');
+        }
+        return '';
+      }).filter(Boolean) : []
+    };
+  }
 }
 
 // Global singleton instance

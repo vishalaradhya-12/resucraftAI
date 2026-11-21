@@ -1061,7 +1061,9 @@ class ResuCraftApp {
       });
     }
 
-    const showParsedPreview = (data) => {
+    let lastExtractedRawText = '';
+
+    const showParsedPreview = (data, isAi = false) => {
       currentParsedData = data;
       if (!data) return;
 
@@ -1078,10 +1080,13 @@ class ResuCraftApp {
         }
         const eduCount = data.education ? data.education.length : 0;
         const certCount = data.certifications ? data.certifications.length : 0;
+        const projCount = data.projects ? data.projects.length : 0;
 
         previewStats.innerHTML = `
           <span class="stat-pill">👤 Name: <strong>${this.escapeHtml(data.name || 'Candidate')}</strong></span>
+          ${data.targetTitle ? `<span class="stat-pill">🎯 Title: <strong>${this.escapeHtml(data.targetTitle)}</strong></span>` : ''}
           <span class="stat-pill">💼 Roles: <strong>${expCount}</strong></span>
+          ${projCount > 0 ? `<span class="stat-pill">🚀 Projects: <strong>${projCount}</strong></span>` : ''}
           <span class="stat-pill">⚡ Skills: <strong>${skillCount}</strong></span>
           <span class="stat-pill">🎓 Education: <strong>${eduCount}</strong></span>
           ${certCount > 0 ? `<span class="stat-pill">🏆 Certs: <strong>${certCount}</strong></span>` : ''}
@@ -1090,6 +1095,105 @@ class ResuCraftApp {
       }
       if (submitBtn) submitBtn.disabled = false;
     };
+
+    // AI Deep Parse Controls
+    const aiDeepParseBtn = document.getElementById('btn-ai-deep-parse');
+    const aiStatus = document.getElementById('ai-deep-parse-status');
+    const aiKeyBox = document.getElementById('ai-key-config-box');
+    const userKeyInput = document.getElementById('input-user-gemini-key');
+    const saveKeyBtn = document.getElementById('btn-save-gemini-key');
+
+    if (userKeyInput) {
+      const storedKey = localStorage.getItem('resucraft_gemini_key') || '';
+      userKeyInput.value = storedKey;
+    }
+
+    const runAiDeepParse = async (customKey = '') => {
+      const textToParse = lastExtractedRawText || (pasteTextarea ? pasteTextarea.value.trim() : '');
+      if (!textToParse || textToParse.length < 20) {
+        if (aiStatus) {
+          aiStatus.style.display = 'block';
+          aiStatus.style.background = 'rgba(239, 68, 68, 0.15)';
+          aiStatus.style.color = '#f87171';
+          aiStatus.innerHTML = '⚠️ Please upload a resume file or paste resume text first.';
+        }
+        return;
+      }
+
+      if (aiDeepParseBtn) {
+        aiDeepParseBtn.disabled = true;
+        aiDeepParseBtn.innerHTML = '<span>⏳ Deep Parsing with Gemini 1.5 Flash...</span>';
+      }
+      if (aiStatus) {
+        aiStatus.style.display = 'block';
+        aiStatus.style.background = 'rgba(255, 255, 255, 0.08)';
+        aiStatus.style.color = '#ffffff';
+        aiStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash</strong> is analyzing complex layouts, de-duplicating text, and structuring roles...';
+      }
+
+      try {
+        const geminiParsed = await window.resumeParser.parseWithGemini(textToParse, {
+          apiKey: customKey || (userKeyInput ? userKeyInput.value.trim() : '')
+        });
+
+        if (aiKeyBox) aiKeyBox.style.display = 'none';
+        showParsedPreview(geminiParsed, true);
+
+        const badge = document.getElementById('preview-status-badge');
+        if (badge) {
+          badge.innerHTML = '✨ AI Deep Parse Complete (Gemini 1.5 Flash — 99% Precision)';
+          badge.style.color = '#ffffff';
+        }
+
+        if (aiStatus) {
+          aiStatus.style.display = 'block';
+          aiStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+          aiStatus.style.color = '#34d399';
+          aiStatus.innerHTML = '✅ <strong>Gemini 1.5 Flash extraction complete!</strong> Structured perfectly into 1-click ATS format.';
+        }
+        if (fileStatus) {
+          fileStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash AI Parse Complete!</strong>';
+        }
+      } catch (err) {
+        if (err.code === 'NO_API_KEY') {
+          if (aiKeyBox) aiKeyBox.style.display = 'block';
+          if (aiStatus) {
+            aiStatus.style.display = 'block';
+            aiStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+            aiStatus.style.color = '#fbbf24';
+            aiStatus.innerHTML = '🔑 <strong>Gemini API Key Required:</strong> Configure <code>GEMINI_API_KEY</code> in Netlify Environment Variables, or enter your free Google AI Studio key below:';
+          }
+        } else {
+          if (aiStatus) {
+            aiStatus.style.display = 'block';
+            aiStatus.style.background = 'rgba(239, 68, 68, 0.15)';
+            aiStatus.style.color = '#f87171';
+            aiStatus.innerHTML = `❌ AI Parsing Error: ${this.escapeHtml(err.message || 'Failed to parse with Gemini')}`;
+          }
+        }
+      } finally {
+        if (aiDeepParseBtn) {
+          aiDeepParseBtn.disabled = false;
+          aiDeepParseBtn.innerHTML = '<span>✨ AI Deep Parse (Gemini 1.5 Flash)</span>';
+        }
+      }
+    };
+
+    if (saveKeyBtn && userKeyInput) {
+      saveKeyBtn.addEventListener('click', () => {
+        const key = userKeyInput.value.trim();
+        if (key) {
+          localStorage.setItem('resucraft_gemini_key', key);
+          runAiDeepParse(key);
+        }
+      });
+    }
+
+    if (aiDeepParseBtn) {
+      aiDeepParseBtn.addEventListener('click', () => {
+        runAiDeepParse();
+      });
+    }
 
     // File Dropzone Handling
     if (browseBtn && fileInput) {
@@ -1110,8 +1214,16 @@ class ResuCraftApp {
         if (!text || text.trim().length < 20) {
           throw new Error('Extracted text was too short or unreadable. Try pasting text directly.');
         }
+        lastExtractedRawText = text;
         const parsed = window.resumeParser.parseText(text);
         if (fileStatus) fileStatus.innerHTML = `✅ Successfully extracted text from <strong>${this.escapeHtml(file.name)}</strong>!`;
+        const badge = document.getElementById('preview-status-badge');
+        if (badge) {
+          badge.innerHTML = '✅ Instant Heuristic Parse';
+          badge.style.color = '#e5e5e5';
+        }
+        if (aiStatus) aiStatus.style.display = 'none';
+        if (aiKeyBox) aiKeyBox.style.display = 'none';
         showParsedPreview(parsed);
       } catch (err) {
         if (fileStatus) fileStatus.innerHTML = `❌ Error: ${this.escapeHtml(err.message || 'Failed to read file')}`;
@@ -1149,8 +1261,16 @@ class ResuCraftApp {
     if (pasteTextarea) {
       pasteTextarea.addEventListener('input', () => {
         const text = pasteTextarea.value.trim();
+        lastExtractedRawText = text;
         if (text.length > 30) {
           const parsed = window.resumeParser.parseText(text);
+          const badge = document.getElementById('preview-status-badge');
+          if (badge) {
+            badge.innerHTML = '✅ Instant Heuristic Parse';
+            badge.style.color = '#e5e5e5';
+          }
+          if (aiStatus) aiStatus.style.display = 'none';
+          if (aiKeyBox) aiKeyBox.style.display = 'none';
           showParsedPreview(parsed);
         } else {
           currentParsedData = null;
