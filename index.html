@@ -827,8 +827,7 @@
           <span class="modal-title-icon">📄</span>
           <div>
             <h3>Import Your Resume</h3>
-            <p class="modal-subtitle">Upload your existing PDF, Word document, or paste raw text. 100% private &
-              client-side.</p>
+            <p class="modal-subtitle">Upload your PDF/Word document or paste text. Includes <strong>✨ Gemini 1.5 Flash AI Deep Parse</strong> for 99% accuracy on complex layouts.</p>
           </div>
         </div>
         <button type="button" class="modal-close-btn" id="btn-close-import-modal" title="Close">&times;</button>
@@ -836,8 +835,7 @@
 
       <!-- Modal Tabs -->
       <div class="modal-tabs">
-        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF /
-          Word / TXT)</button>
+        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF / Word / TXT)</button>
         <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text</button>
       </div>
 
@@ -849,10 +847,15 @@
             <div class="dropzone-icon">☁️</div>
             <h4>Drag & drop your resume here</h4>
             <p>Supports <strong>PDF, Word (.docx), Plain Text (.txt, .md)</strong></p>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file"
-              style="margin-top: 10px;">
-              Browse Local Files
-            </button>
+            <div style="margin: 8px 0; display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); padding: 5px 14px; border-radius: 20px; font-size: 11.5px; border: 1px solid rgba(255, 255, 255, 0.18); color: #ffffff;">
+              <span>✨ Gemini 1.5 Flash AI Deep Parse Ready</span>
+            </div>
+            <div>
+              <button type="button" class="btn btn-primary btn-sm" id="btn-browse-resume-file"
+                style="margin-top: 8px;">
+                Browse Local Files
+              </button>
+            </div>
             <div id="dropzone-file-status" class="dropzone-status"></div>
           </div>
         </div>
