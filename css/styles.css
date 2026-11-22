@@ -2704,3 +2704,270 @@ html, body {
   }
 }
 
+/* ==========================================================================
+   Elevated Job-Seeker UI/UX Components
+   ========================================================================== */
+
+/* Header 3-Step Journey Stepper */
+.header-journey-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 30px;
+}
+
+.hj-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.hj-step:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hj-step.active {
+  background: #ffffff;
+  color: #000000;
+}
+
+.hj-step.active .hj-num {
+  background: #000000;
+  color: #ffffff;
+}
+
+.hj-step.active .hj-title,
+.hj-step.active .hj-sub {
+  color: #000000;
+}
+
+.hj-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.hj-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.hj-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.hj-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.hj-arrow {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+}
+
+@media (max-width: 1080px) {
+  .header-journey-stepper {
+    display: none;
+  }
+}
+
+/* Header More Utilities Menu */
+.header-utils-wrap {
+  position: relative;
+}
+
+.btn-icon {
+  padding: 6px 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-utils-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+  min-width: 230px;
+  padding: 10px;
+  z-index: 1000;
+  backdrop-filter: blur(20px);
+}
+
+.hud-item {
+  padding: 4px 6px 8px;
+}
+
+.hud-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 6px 0;
+}
+
+.hud-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #d4d4d4;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.hud-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Active Resume Card (Top of Main Studio) */
+.active-resume-card {
+  margin: 14px 16px 8px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.arc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arc-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.arc-badge-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.arc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.arc-meta {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.arc-footer {
+  margin-top: 4px;
+}
+
+/* Import Engine Choices in Modal */
+.import-engine-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.engine-radio-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.engine-radio-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.engine-radio-card.active {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+}
+
+.erc-badge {
+  align-self: flex-start;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.engine-radio-card.active .erc-badge {
+  background: #ffffff;
+  color: #000000;
+}
+
+.erc-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.erc-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .import-engine-choice {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -387,6 +387,51 @@ class ResuCraftApp {
       this.updateMobileCanvasScale();
     });
 
+    // Header More Options Utilities Dropdown
+    const moreBtn = document.getElementById('btn-header-more');
+    const moreDropdown = document.getElementById('header-utils-dropdown');
+    if (moreBtn && moreDropdown) {
+      moreBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moreDropdown.style.display = moreDropdown.style.display === 'none' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!moreDropdown.contains(e.target) && e.target !== moreBtn) {
+          moreDropdown.style.display = 'none';
+        }
+      });
+    }
+
+    // Active Resume Card in Left Panel
+    const cardChangeBtn = document.getElementById('btn-card-change-resume');
+    if (cardChangeBtn) {
+      cardChangeBtn.addEventListener('click', () => {
+        if (typeof this.openResumeImporter === 'function') this.openResumeImporter();
+      });
+    }
+    const cardAiBtn = document.getElementById('btn-card-ai-rescan');
+    if (cardAiBtn) {
+      cardAiBtn.addEventListener('click', () => {
+        if (typeof this.openResumeImporter === 'function') this.openResumeImporter();
+        const aiDeepBtn = document.getElementById('btn-ai-deep-parse');
+        if (aiDeepBtn) aiDeepBtn.click();
+      });
+    }
+
+    // Modal Engine Selector Radio Cards
+    const engineAi = document.getElementById('engine-card-ai');
+    const engineLocal = document.getElementById('engine-card-local');
+    if (engineAi && engineLocal) {
+      engineAi.addEventListener('click', () => {
+        engineAi.classList.add('active');
+        engineLocal.classList.remove('active');
+      });
+      engineLocal.addEventListener('click', () => {
+        engineLocal.classList.add('active');
+        engineAi.classList.remove('active');
+      });
+    }
+
     // Bind Live Content Form Inputs
     this.bindEditorInputs();
 
@@ -1225,6 +1270,11 @@ class ResuCraftApp {
         if (aiStatus) aiStatus.style.display = 'none';
         if (aiKeyBox) aiKeyBox.style.display = 'none';
         showParsedPreview(parsed);
+        const engineCardAi = document.getElementById('engine-card-ai');
+        const isAiActive = !engineCardAi || engineCardAi.classList.contains('active');
+        if (isAiActive) {
+          runAiDeepParse();
+        }
       } catch (err) {
         if (fileStatus) fileStatus.innerHTML = `❌ Error: ${this.escapeHtml(err.message || 'Failed to read file')}`;
       }
@@ -1272,6 +1322,11 @@ class ResuCraftApp {
           if (aiStatus) aiStatus.style.display = 'none';
           if (aiKeyBox) aiKeyBox.style.display = 'none';
           showParsedPreview(parsed);
+        const engineCardAi = document.getElementById('engine-card-ai');
+        const isAiActive = !engineCardAi || engineCardAi.classList.contains('active');
+        if (isAiActive) {
+          runAiDeepParse();
+        }
         } else {
           currentParsedData = null;
           if (submitBtn) submitBtn.disabled = true;
@@ -2149,6 +2204,21 @@ class ResuCraftApp {
         cgBadgeResume.innerText = 'Sample';
         cgDescResume.innerText = candidateName;
       }
+    }
+
+    // 6. Update Left Panel Active Resume Card
+    const arcName = document.getElementById('arc-candidate-name');
+    const arcMeta = document.getElementById('arc-candidate-meta');
+    if (arcName && arcMeta) {
+      arcName.innerText = candidateName;
+      const expCount = this.resumeData && this.resumeData.experience ? this.resumeData.experience.length : 0;
+      let skillCount = 0;
+      if (this.resumeData && this.resumeData.skills) {
+        if (Array.isArray(this.resumeData.skills)) skillCount = this.resumeData.skills.length;
+        else Object.values(this.resumeData.skills).forEach(a => skillCount += (Array.isArray(a) ? a.length : 0));
+      }
+      const title = this.resumeData && this.resumeData.targetTitle ? this.resumeData.targetTitle : (isCustom ? 'Active Candidate' : 'Senior Business Analyst');
+      arcMeta.innerText = `${title} • ${expCount} Roles • ${skillCount} Skills`;
     }
   }
 

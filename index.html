@@ -88,102 +88,104 @@
   <!-- Top App Navigation & Master Controls -->
   <header class="app-header">
     <div class="brand-wrapper">
-      <div class="brand-logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round" class="brand-svg">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-      </div>
+      <div class="brand-logo-icon">⚡</div>
       <div class="brand-text">
         <h1>ResuCraft AI</h1>
-        <span class="brand-tag">Resume Tailoring for Every Job</span>
+        <span class="brand-tag">Tailor Resume for Any Job</span>
       </div>
     </div>
 
-    <div class="header-center-controls">
-      <div class="profile-selector-box">
-        <label for="sample-profile-select" class="desktop-only">My Resume:</label>
-        <select id="sample-profile-select" class="form-select">
-          <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
-            <option value="vishal_aradhya" selected>Vishal Aradhya — Business Analyst (Demo)</option>
-            <option value="software_engineer">Alex Morgan — Software Engineer (Demo)</option>
-            <option value="ai_ml_engineer">Dr. Elena Rostova — AI / ML Engineer (Demo)</option>
-            <option value="product_manager">Marcus Vance — Product Manager (Demo)</option>
-            <option value="blank">✨ Start Fresh — Blank Resume</option>
-          </optgroup>
-        </select>
+    <!-- Center: Visual 3-Step Journey -->
+    <div class="header-journey-stepper" id="header-journey-stepper">
+      <div class="hj-step active" id="step-nav-resume" title="Step 1: Your resume">
+        <span class="hj-num" id="cg-num-1">1</span>
+        <div class="hj-text">
+          <span class="hj-title">Your Resume</span>
+          <span class="hj-sub" id="cg-desc-resume">Vishal Aradhya</span>
+        </div>
+      </div>
+      <div class="hj-arrow">➔</div>
+      <div class="hj-step" id="step-nav-jd" title="Step 2: Match to job description">
+        <span class="hj-num" id="cg-num-2">2</span>
+        <div class="hj-text">
+          <span class="hj-title">Match to Job</span>
+          <span class="hj-sub" id="cg-desc-jd">Paste Job</span>
+        </div>
+      </div>
+      <div class="hj-arrow">➔</div>
+      <div class="hj-step" id="step-nav-tailor" title="Step 3: Tailor & Download PDF">
+        <span class="hj-num" id="cg-num-3">3</span>
+        <div class="hj-text">
+          <span class="hj-title">Tailor &amp; PDF</span>
+          <span class="hj-sub" id="cg-desc-tailor">1-Click Ready</span>
+        </div>
       </div>
     </div>
 
-      <!-- Upload Resume Button -->
+    <!-- Right: High-Priority Actions -->
+    <div class="header-actions">
+      <!-- Upload Resume (Primary Call-to-Action) -->
       <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow"
-        title="Upload your PDF/Word resume or paste your resume text to auto-fill everything">
+        title="Upload your resume (PDF/Word) to tailor it">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="17 8 12 3 7 8"></polyline>
           <line x1="12" y1="3" x2="12" y2="15"></line>
         </svg>
-        <span id="btn-header-import-text">📄 Upload My Resume</span>
+        <span id="btn-header-import-text">📄 Upload Resume</span>
       </button>
 
-      <button id="btn-header-how-it-works" class="btn btn-secondary btn-sm desktop-only"
-        title="See how to use ResuCraft AI in 3 steps">
-        <span>❓ How It Works</span>
-      </button>
-
-      <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only"
-        title="Undo all changes and go back to your original resume">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-          <path d="M3 3v5h5" />
-        </svg>
-        <span>Reset</span>
-      </button>
-
-      <button id="btn-copy-ats" class="btn btn-secondary btn-sm"
-        title="Copy your resume as plain text — paste directly into any online job application form">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-        <span class="desktop-only">Copy </span>Plain Text<span class="desktop-only"> (for Forms)</span>
-      </button>
-
-      <button id="btn-export-json" class="btn btn-secondary btn-sm desktop-only" title="Save your resume data as a backup file">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>Save Backup</span>
-      </button>
-
-      <label for="import-json-file" class="btn btn-secondary btn-sm desktop-only" style="cursor: pointer;"
-        title="Restore a previously saved backup file">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        <span>Load Backup</span>
-        <input type="file" id="import-json-file" accept=".json" style="display: none;">
-      </label>
-
-      <button id="btn-print-pdf" class="btn btn-primary btn-sm"
-        title="Download your resume as a PDF file">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+      <!-- Download PDF -->
+      <button id="btn-print-pdf" class="btn btn-secondary btn-sm"
+        title="Download your tailored resume as PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 6 2 18 2 18 9"></polyline>
           <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
           <rect x="6" y="14" width="12" height="8"></rect>
         </svg>
-        <span class="desktop-only">Download </span>PDF<span class="desktop-only"> / Print</span>
+        <span>Download PDF</span>
       </button>
+
+      <!-- Utilities Popover Menu (More Options) -->
+      <div class="header-utils-wrap">
+        <button type="button" class="btn btn-secondary btn-sm btn-icon" id="btn-header-more" title="More Options">
+          •••
+        </button>
+        <div class="header-utils-dropdown" id="header-utils-dropdown" style="display: none;">
+          <div class="hud-item">
+            <label for="sample-profile-select" style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Sample Resumes:</label>
+            <select id="sample-profile-select" class="form-select form-select-sm" style="width: 100%;">
+              <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
+                <option value="vishal_aradhya" selected>Vishal Aradhya (Business Analyst)</option>
+                <option value="software_engineer">Alex Morgan (Software Engineer)</option>
+                <option value="ai_ml_engineer">Dr. Elena Rostova (AI / ML Engineer)</option>
+                <option value="product_manager">Marcus Vance (Product Manager)</option>
+                <option value="blank">✨ Start Blank Resume</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="hud-divider"></div>
+          <button id="btn-copy-ats" class="hud-btn" title="Copy plain text for forms">
+            📋 Copy Plain Text
+          </button>
+          <button id="btn-header-restore" class="hud-btn" title="Reset all changes">
+            ↺ Reset to Original
+          </button>
+          <button id="btn-header-how-it-works" class="hud-btn" title="How It Works">
+            ❓ How It Works
+          </button>
+          <div class="hud-divider"></div>
+          <button id="btn-export-json" class="hud-btn">
+            💾 Save Backup (JSON)
+          </button>
+          <label for="import-json-file" class="hud-btn" style="cursor: pointer; margin: 0;">
+            📂 Load Backup (JSON)
+            <input type="file" id="import-json-file" accept=".json" style="display: none;">
+          </label>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -216,54 +218,18 @@
   <!-- Left Panel: Job Match Analyzer & Resume Editor -->
     <aside class="left-cockpit">
 
-      <!-- Progress Steps -->
-      <div class="cockpit-guided-stepper" id="cockpit-guided-stepper">
-        <div class="cg-step" id="step-nav-resume" data-target-tab="content-editor"
-          title="Step 1: Add or edit your resume">
-          <div class="cg-step-header">
-            <span class="cg-step-num" id="cg-num-1">1</span>
-            <span class="cg-step-title">Your Resume</span>
-            <span class="cg-step-badge demo" id="cg-badge-resume">Sample</span>
-          </div>
-          <div class="cg-step-desc" id="cg-desc-resume">Vishal Aradhya JC</div>
-        </div>
-
-        <div class="cg-arrow">➔</div>
-
-        <div class="cg-step active" id="step-nav-jd" data-target-tab="jd-analyzer"
-          title="Step 2: Paste the job you're applying to">
-          <div class="cg-step-header">
-            <span class="cg-step-num" id="cg-num-2">2</span>
-            <span class="cg-step-title">Job Description</span>
-            <span class="cg-step-badge ready" id="cg-badge-jd">Ready</span>
-          </div>
-          <div class="cg-step-desc" id="cg-desc-jd">Paste Job Posting</div>
-        </div>
-
-        <div class="cg-arrow">➔</div>
-
-        <div class="cg-step" id="step-nav-tailor" data-target-tab="jd-analyzer"
-          title="Step 3: Add missing keywords and download your tailored resume">
-          <div class="cg-step-header">
-            <span class="cg-step-num" id="cg-num-3">3</span>
-            <span class="cg-step-title">Tailor & PDF</span>
-            <span class="cg-step-badge match" id="cg-badge-tailor">88% Match</span>
-          </div>
-          <div class="cg-step-desc" id="cg-desc-tailor">1-Click Auto-Add</div>
-        </div>
-      </div>
-
-      <!-- Panel Tabs -->
+      <!-- Panel Tabs: Focused 2-Tab Workflow -->
       <nav class="cockpit-tabs-nav" aria-label="Panel Tabs">
         <button class="nav-tab active" data-tab="jd-analyzer" id="tab-btn-jd">
-          Job Match
+          🎯 Match &amp; Tailor to Job
           <span class="tab-badge" id="tab-match-badge">Live</span>
         </button>
-        <button class="nav-tab" data-tab="bullet-tailorer" id="tab-btn-tailor">
-          Improve Bullets
-        </button>
         <button class="nav-tab" data-tab="content-editor" id="tab-btn-editor">
-          Edit Resume
+          ✏️ Edit Resume Content
+        </button>
+        <!-- Keep bullet-tailorer accessible for internal routing without clutter -->
+        <button class="nav-tab" data-tab="bullet-tailorer" id="tab-btn-tailor" style="display: none;">
+          Improve Bullets
         </button>
       </nav>
 
@@ -271,6 +237,28 @@
 
         <!-- ================= PANEL 1: JD ANALYZER & ATS RADAR ================= -->
         <section class="tab-panel active" id="panel-jd-analyzer">
+
+          <!-- Active Resume Status Card with 1-Click AI Smart Read -->
+          <div class="active-resume-card" id="main-active-resume-card">
+            <div class="arc-header">
+              <span class="arc-badge-live" id="cg-badge-resume">ACTIVE RESUME</span>
+              <button type="button" class="btn btn-secondary btn-micro" id="btn-card-change-resume"
+                title="Upload or paste your own resume">
+                Change Resume
+              </button>
+            </div>
+            <div class="arc-body">
+              <div class="arc-title" id="arc-candidate-name">Vishal Aradhya JC</div>
+              <div class="arc-meta" id="arc-candidate-meta">Senior Business Analyst • 3 Roles • 18 Skills</div>
+            </div>
+            <div class="arc-footer">
+              <button type="button" class="btn btn-primary btn-micro" id="btn-card-ai-rescan"
+                style="width: 100%; padding: 8px 12px; font-size: 12px; font-weight: 700;"
+                title="Re-analyze this resume with Google Gemini 1.5 Flash for 99% accuracy">
+                ✨ AI Smart Read with Gemini 1.5 Flash (99% Accuracy)
+              </button>
+            </div>
+          </div>
 
           <!-- ATS Master Score Card -->
           <!-- How it Works Quick Guide -->
@@ -825,7 +813,21 @@
         <button type="button" class="modal-close-btn" id="btn-close-import-modal" title="Close">&times;</button>
       </div>
 
-      <!-- Modal Tabs -->
+      <!-- Engine Selection: AI Smart Extract vs Fast Local -->
+        <div class="import-engine-choice" style="margin: 0 0 14px;">
+          <div class="engine-radio-card active" id="engine-card-ai" data-engine="ai" title="Recommended for modern, Canva, and multi-column resumes">
+            <span class="erc-badge">RECOMMENDED</span>
+            <div class="erc-title">✨ AI Deep Parse (Gemini 1.5)</div>
+            <div class="erc-desc">Deeply reads 2-column, Canva, and scanned resumes with 99% accuracy.</div>
+          </div>
+          <div class="engine-radio-card" id="engine-card-local" data-engine="local" title="Fast local client extraction">
+            <span class="erc-badge">OFFLINE</span>
+            <div class="erc-title">⚡ Fast Local Scan</div>
+            <div class="erc-desc">Instant 10ms extraction for standard simple single-column documents.</div>
+          </div>
+        </div>
+
+        <!-- Modal Tabs -->
       <div class="modal-tabs">
         <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload a File (PDF, Word, or TXT)</button>
         <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text Instead</button>
