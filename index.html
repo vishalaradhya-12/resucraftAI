@@ -4,24 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>ResuCraft AI — NextGen ATS Resume Engine wrt Job Description</title>
+  <title>ResuCraft AI — Tailor Your Resume to Any Job in 1 Click</title>
   <meta name="description"
-    content="State of the art ATS resume tailoring engine with real-time job description analysis, keyword gap extraction, and Google XYZ bullet point optimizer.">
+    content="Upload your resume, paste a job description, and ResuCraft AI instantly shows your ATS match score, missing keywords, and auto-tailors your resume to get more interviews. 100% free, runs in your browser.">
 
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="ResuCraft AI, ATS Resume Optimizer, Resume Tailor, Job Description Match, Free ATS Resume Checker, ATS Score">
 
   <!-- Open Graph / Social Share -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="ResuCraft AI — Free ATS Resume Optimizer wrt Job Description">
+  <meta property="og:title" content="ResuCraft AI — Tailor Your Resume to Any Job in 1 Click">
   <meta property="og:description"
-    content="Paste any Job Description and get a real-time ATS match score, missing keyword radar, and 1-click Google XYZ bullet optimization. 100% free, 100% private — runs in your browser.">
+    content="Upload your resume, paste a job description, and get your ATS match score instantly. Auto-add missing keywords and download a job-ready PDF. 100% free, runs in your browser.">
   <meta property="og:image" content="https://resucraftaai.netlify.app/og-preview.png">
   <meta property="og:url" content="https://resucraftaai.netlify.app">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ResuCraft AI — Free ATS Resume Optimizer">
+  <meta name="twitter:title" content="ResuCraft AI — Free Resume Tailoring Tool">
   <meta name="twitter:description"
-    content="Real-time ATS scoring, keyword gap analysis & Google XYZ bullet rewriter. No signup, no data sent to servers.">
+    content="See your resume's ATS score, find missing keywords, and auto-tailor your resume for any job in one click. No signup needed. 100% private.">
   <meta name="twitter:image" content="https://resucraftaai.netlify.app/og-preview.png">
   <!-- Canonical & Theme -->
   <meta name="theme-color" content="#000000">
@@ -96,45 +96,44 @@
       </div>
       <div class="brand-text">
         <h1>ResuCraft AI</h1>
-        <span class="brand-tag">ATS Engine wrt JD</span>
+        <span class="brand-tag">Resume Tailoring for Every Job</span>
       </div>
     </div>
 
     <div class="header-center-controls">
       <div class="profile-selector-box">
-        <label for="sample-profile-select" class="desktop-only">Active Profile:</label>
+        <label for="sample-profile-select" class="desktop-only">My Resume:</label>
         <select id="sample-profile-select" class="form-select">
           <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
-            <option value="vishal_aradhya" selected>Vishal Aradhya JC (Senior Business Analyst)</option>
-            <option value="software_engineer">Alex Morgan (Lead Full Stack / Cloud)</option>
-            <option value="ai_ml_engineer">Dr. Elena Rostova (Senior AI / LLM Systems)</option>
-            <option value="product_manager">Marcus Vance (Principal Product Manager)</option>
-            <option value="blank">✨ Blank Resume (Clean Slate)</option>
+            <option value="vishal_aradhya" selected>Vishal Aradhya — Business Analyst (Demo)</option>
+            <option value="software_engineer">Alex Morgan — Software Engineer (Demo)</option>
+            <option value="ai_ml_engineer">Dr. Elena Rostova — AI / ML Engineer (Demo)</option>
+            <option value="product_manager">Marcus Vance — Product Manager (Demo)</option>
+            <option value="blank">✨ Start Fresh — Blank Resume</option>
           </optgroup>
         </select>
       </div>
     </div>
 
-    <div class="header-actions">
-      <!-- Universal Resume Importer -->
+      <!-- Upload Resume Button -->
       <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow"
-        title="Upload PDF/Word or Paste your resume to auto-load">
+        title="Upload your PDF/Word resume or paste your resume text to auto-fill everything">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="17 8 12 3 7 8"></polyline>
           <line x1="12" y1="3" x2="12" y2="15"></line>
         </svg>
-        <span id="btn-header-import-text">📄 Use My Resume</span>
+        <span id="btn-header-import-text">📄 Upload My Resume</span>
       </button>
 
       <button id="btn-header-how-it-works" class="btn btn-secondary btn-sm desktop-only"
-        title="See 3-step quickstart guide">
+        title="See how to use ResuCraft AI in 3 steps">
         <span>❓ How It Works</span>
       </button>
 
       <button id="btn-header-restore" class="btn btn-secondary btn-sm desktop-only"
-        title="Restore original pristine resume (undo custom changes)">
+        title="Undo all changes and go back to your original resume">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
@@ -144,39 +143,39 @@
       </button>
 
       <button id="btn-copy-ats" class="btn btn-secondary btn-sm"
-        title="Copy clean plaintext for direct ATS form copy-pasting">
+        title="Copy your resume as plain text — paste directly into any online job application form">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
         </svg>
-        <span class="desktop-only">Copy </span>ATS<span class="desktop-only"> Plaintext</span>
+        <span class="desktop-only">Copy </span>Plain Text<span class="desktop-only"> (for Forms)</span>
       </button>
 
-      <button id="btn-export-json" class="btn btn-secondary btn-sm desktop-only" title="Export profile to JSON backup">
+      <button id="btn-export-json" class="btn btn-secondary btn-sm desktop-only" title="Save your resume data as a backup file">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
-        <span>Export JSON</span>
+        <span>Save Backup</span>
       </button>
 
       <label for="import-json-file" class="btn btn-secondary btn-sm desktop-only" style="cursor: pointer;"
-        title="Import existing profile JSON">
+        title="Restore a previously saved backup file">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="17 8 12 3 7 8"></polyline>
           <line x1="12" y1="3" x2="12" y2="15"></line>
         </svg>
-        <span>Import JSON</span>
+        <span>Load Backup</span>
         <input type="file" id="import-json-file" accept=".json" style="display: none;">
       </label>
 
       <button id="btn-print-pdf" class="btn btn-primary btn-sm"
-        title="Print or save as pixel-perfect ATS-compliant vector PDF">
+        title="Download your resume as a PDF file">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -214,13 +213,13 @@
   <!-- Main Split Studio Layout -->
   <main class="studio-container mobile-mode-editor" id="main-studio-container">
 
-    <!-- Left Cockpit: Intelligence, NLP Analyzer & Form Editors -->
+  <!-- Left Panel: Job Match Analyzer & Resume Editor -->
     <aside class="left-cockpit">
 
-      <!-- 3-Step Guided Stepper -->
+      <!-- Progress Steps -->
       <div class="cockpit-guided-stepper" id="cockpit-guided-stepper">
         <div class="cg-step" id="step-nav-resume" data-target-tab="content-editor"
-          title="Step 1: Upload or edit your resume">
+          title="Step 1: Add or edit your resume">
           <div class="cg-step-header">
             <span class="cg-step-num" id="cg-num-1">1</span>
             <span class="cg-step-title">Your Resume</span>
@@ -232,39 +231,39 @@
         <div class="cg-arrow">➔</div>
 
         <div class="cg-step active" id="step-nav-jd" data-target-tab="jd-analyzer"
-          title="Step 2: Target job description & ATS scoring">
+          title="Step 2: Paste the job you're applying to">
           <div class="cg-step-header">
             <span class="cg-step-num" id="cg-num-2">2</span>
-            <span class="cg-step-title">Target Job</span>
+            <span class="cg-step-title">Job Description</span>
             <span class="cg-step-badge ready" id="cg-badge-jd">Ready</span>
           </div>
-          <div class="cg-step-desc" id="cg-desc-jd">Paste Job Description</div>
+          <div class="cg-step-desc" id="cg-desc-jd">Paste Job Posting</div>
         </div>
 
         <div class="cg-arrow">➔</div>
 
         <div class="cg-step" id="step-nav-tailor" data-target-tab="jd-analyzer"
-          title="Step 3: Auto-add keywords & download PDF">
+          title="Step 3: Add missing keywords and download your tailored resume">
           <div class="cg-step-header">
             <span class="cg-step-num" id="cg-num-3">3</span>
-            <span class="cg-step-title">Tailor &amp; PDF</span>
+            <span class="cg-step-title">Tailor & PDF</span>
             <span class="cg-step-badge match" id="cg-badge-tailor">88% Match</span>
           </div>
           <div class="cg-step-desc" id="cg-desc-tailor">1-Click Auto-Add</div>
         </div>
       </div>
 
-      <!-- Cockpit Tabs -->
-      <nav class="cockpit-tabs-nav" aria-label="Cockpit Tabs">
+      <!-- Panel Tabs -->
+      <nav class="cockpit-tabs-nav" aria-label="Panel Tabs">
         <button class="nav-tab active" data-tab="jd-analyzer" id="tab-btn-jd">
-          JD Radar
+          Job Match
           <span class="tab-badge" id="tab-match-badge">Live</span>
         </button>
         <button class="nav-tab" data-tab="bullet-tailorer" id="tab-btn-tailor">
-          Bullet Optimizer
+          Improve Bullets
         </button>
         <button class="nav-tab" data-tab="content-editor" id="tab-btn-editor">
-          Content Editor
+          Edit Resume
         </button>
       </nav>
 
@@ -274,15 +273,16 @@
         <section class="tab-panel active" id="panel-jd-analyzer">
 
           <!-- ATS Master Score Card -->
+          <!-- How it Works Quick Guide -->
           <div class="quickstart-guide desktop-only">
             <div class="qs-steps">
-              <span class="qs-step"><span class="qs-num">1</span> Paste your target Job Description below</span>
+              <span class="qs-step"><span class="qs-num">1</span> Paste the job posting below</span>
               <span class="qs-sep">→</span>
-              <span class="qs-step"><span class="qs-num">2</span> See your live ATS score &amp; missing keywords</span>
+              <span class="qs-step"><span class="qs-num">2</span> See your live match score &amp; missing keywords</span>
               <span class="qs-sep">→</span>
-              <span class="qs-step"><span class="qs-num">3</span> Click Auto-Add to tailor your resume</span>
+              <span class="qs-step"><span class="qs-num">3</span> Click "Add to Resume" to tailor it</span>
               <span class="qs-sep">→</span>
-              <span class="qs-step"><span class="qs-num">4</span> Download PDF or Copy ATS Plaintext</span>
+              <span class="qs-step"><span class="qs-num">4</span> Download your PDF</span>
             </div>
           </div>
 
@@ -295,17 +295,17 @@
                 </svg>
                 <div class="score-inner-text">
                   <div class="score-number" id="ats-score-value">88%</div>
-                  <div class="score-label">ATS Match</div>
+                  <div class="score-label">Job Match</div>
                 </div>
               </div>
 
               <div class="ats-meta-col">
-                <h3>Target Alignment Status</h3>
+                <h3>Your Match Score</h3>
                 <div class="ats-badge-row" id="ats-score-rating">
                   <span class="badge badge-success">ATS Ready • Top 5% Applicant</span>
                 </div>
                 <p class="desktop-only" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
-                  Real-time algorithmic scoring based on keyword coverage, XYZ bullet metrics, and technical depth.
+                  Scored on keyword match, skills overlap, measurable results, and strong action words.
                 </p>
               </div>
             </div>
@@ -314,7 +314,7 @@
             <div class="ats-breakdown-grid">
               <div class="meter-item">
                 <div class="meter-header">
-                  <span>Keyword Coverage</span>
+                  <span>Keyword Match</span>
                   <span id="cov-score-val">85%</span>
                 </div>
                 <div class="meter-track">
@@ -324,7 +324,7 @@
 
               <div class="meter-item">
                 <div class="meter-header">
-                  <span>Technical Skills Match</span>
+                  <span>Skills Match</span>
                   <span id="tech-score-val">90%</span>
                 </div>
                 <div class="meter-track">
@@ -334,7 +334,7 @@
 
               <div class="meter-item">
                 <div class="meter-header">
-                  <span>Quantification (XYZ Formula)</span>
+                  <span>Measurable Results</span>
                   <span id="quant-score-val">82%</span>
                 </div>
                 <div class="meter-track">
@@ -344,7 +344,7 @@
 
               <div class="meter-item">
                 <div class="meter-header">
-                  <span>Strong Action Verbs</span>
+                  <span>Strong Action Words</span>
                   <span id="verb-score-val">88%</span>
                 </div>
                 <div class="meter-track">
@@ -357,21 +357,20 @@
           <!-- One-Click Auto-Tailor Action Command Bar -->
           <div class="auto-tailor-banner" id="auto-tailor-banner">
             <div class="auto-tailor-left">
-              <div class="auto-tailor-badge">ATS 1-Click Optimizer</div>
-              <h4 id="auto-tailor-title">Auto-Add Missing JD Keywords to Resume</h4>
+              <div class="auto-tailor-badge">1-Click Resume Tailor</div>
+              <h4 id="auto-tailor-title">Add Missing Keywords to Your Resume</h4>
               <p id="auto-tailor-desc" class="desktop-only">
-                Automatically inject missing technical skills into your Skills Matrix and weave target competencies into
-                your Experience bullets using Google XYZ formulas.
+                Automatically adds the keywords from this job posting into your skills section and weaves them into your experience bullets — so your resume reads like a perfect fit.
               </p>
             </div>
             <div class="auto-tailor-actions">
               <button id="btn-auto-tailor-all" class="btn btn-primary"
                 title="Automatically inject curated missing skills and weave domain terms into bullets">
-                Auto-Add All to Resume
+                Add All to Resume
               </button>
               <button id="btn-restore-resume" class="btn btn-secondary btn-sm"
                 title="Restore original pristine resume before auto-tailoring">
-                Restore Original
+                Undo Changes
               </button>
               <button id="btn-auto-add-skills" class="btn btn-secondary btn-sm"
                 title="Add curated missing technical skills to your Skills Matrix">
@@ -384,27 +383,26 @@
           <div class="section-block">
             <div class="section-block-header">
               <span class="section-block-title">
-                Target Job Description (JD)
+                Paste the Job Description Here
               </span>
               <div style="display: flex; gap: 6px;">
                 <button id="btn-load-matched-jd" class="btn-micro"
                   style="color: #ffffff; border-color: rgba(255, 255, 255, 0.25); font-weight: 700;"
-                  title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">Load Benchmark
-                  JD</button>
+                  title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">Load Sample JD</button>
                 <button id="btn-clear-jd" class="btn-micro btn-danger"
-                  title="Clear to paste any job description you are applying for">Clear</button>
+                  title="Clear to paste your own job description">Clear</button>
               </div>
             </div>
 
             <textarea id="jd-input-text" class="form-textarea" rows="7"
-              placeholder="Paste the complete job description (title, requirements, tech stack, responsibilities) here to analyze ATS match in real time..."></textarea>
+              placeholder="Paste the full job description here (job title, requirements, skills, responsibilities) — your match score updates live as you type..."></textarea>
           </div>
 
           <!-- Matched Keywords Matrix -->
           <div class="section-block">
             <div class="section-block-header">
               <span class="section-block-title">
-                Matched JD Keywords in Resume
+                Keywords from This Job Found in Your Resume ✅
               </span>
             </div>
             <div class="keyword-cloud-box" id="matched-keywords-container">
@@ -416,7 +414,7 @@
           <div class="section-block">
             <div class="section-block-header">
               <span class="section-block-title">
-                Missing Critical Keywords (Opportunities)
+                Keywords Missing from Your Resume ⚠️
               </span>
               <div style="display: flex; gap: 6px;">
                 <button id="btn-missing-add-all-skills" class="btn-micro"
@@ -426,8 +424,7 @@
               </div>
             </div>
             <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
-              Click <strong>+ Add to Skills</strong> to append to your skills matrix, or <strong>Weave into
-                Role</strong> to automatically integrate with quantifiable metrics into your experience bullets.
+              Click <strong>+ Add to Skills</strong> to add a keyword to your skills section, or <strong>Weave into Role</strong> to naturally work it into your experience bullets.
             </p>
             <div class="missing-keywords-list" id="missing-keywords-container">
               <!-- Dynamically populated -->
@@ -441,21 +438,21 @@
         <section class="tab-panel" id="panel-bullet-tailorer">
 
           <div class="tailor-banner">
-            <h3>Google XYZ Bullet Point Rewriter</h3>
-            <p>Formula: <em>"Accomplished [X] as measured by [Y] by doing [Z]"</em>. Transforms generic bullets into
+            <h3>Rewrite a Bullet Point to Sound More Impressive</h3>
+            <p>Formula: <em>"Accomplished X, as measured by Y, by doing Z"</em>. Transforms generic bullets into
               high-impact, keyword-rich metrics.</p>
           </div>
 
           <div class="tailor-control-card">
             <div class="form-group">
-              <label class="form-label" for="tailor-bullet-select">Select Bullet Point to Optimize:</label>
+              <label class="form-label" for="tailor-bullet-select">Choose a Bullet to Rewrite:</label>
               <select id="tailor-bullet-select" class="form-select">
                 <!-- Dynamically populated with resume bullets -->
               </select>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Current Bullet Text:</label>
+              <label class="form-label">Original Bullet:</label>
               <div id="tailor-original-bullet" class="orig-bullet-box">
                 Identified ₹1.2 Cr of excess inventory and working capital opportunities through SKU-level sales
                 velocity, ageing and stock-cover analysis across 25K+ SKUs, helping merchandising teams prioritise
@@ -464,14 +461,14 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="tailor-target-keyword">Target JD Keywords to Weave In:</label>
+              <label class="form-label" for="tailor-target-keyword">Keywords to Add (from the Job Posting):</label>
               <input type="text" id="tailor-target-keyword" class="form-input"
-                placeholder="e.g. Data Governance, Root Cause Analysis, Power BI (or click suggestions below)">
+                placeholder="e.g. Python, Root Cause Analysis, Power BI — or click a suggestion below">
               <div id="tailor-keyword-suggestions" class="kw-suggestions-row"></div>
             </div>
 
             <button id="btn-generate-bullets" class="btn btn-primary" style="width: 100%;">
-              Generate AI-Grade XYZ Bullet Variations
+              ✨ Rewrite This Bullet
             </button>
           </div>
 
@@ -489,13 +486,13 @@
           <!-- Universal Onboarding Banner -->
           <div class="resume-import-banner">
             <div class="rib-content">
-              <span class="rib-badge">⚡ Quick Onboarding</span>
-              <h4>Want to tailor your own resume?</h4>
-              <p>Upload your existing PDF / Word resume or paste text to auto-fill all form fields in 2 seconds.</p>
+              <span class="rib-badge">📄 Use Your Own Resume</span>
+              <h4>Currently viewing a sample. Add your real resume to get started.</h4>
+              <p>Drop your PDF, Word file, or paste your resume text — we'll fill in all the fields automatically in seconds.</p>
             </div>
             <div class="rib-actions">
               <button type="button" class="btn btn-primary btn-sm" id="btn-banner-import-resume">
-                📥 Upload / Paste Resume
+                📥 Upload My Resume
               </button>
               <button type="button" class="btn btn-secondary btn-sm" id="btn-banner-blank-resume">
                 ✨ Start Blank
@@ -504,16 +501,15 @@
           </div>
 
           <div class="accordion-controls-bar">
-            <span style="font-size: 11.5px; color: var(--text-dim);">Click section headers to expand or collapse</span>
-            <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾
-              Collapse All</button>
+            <span style="font-size: 11.5px; color: var(--text-dim);">Click any section below to expand or collapse it</span>
+            <button id="btn-toggle-all-accordions" class="btn-micro" title="Toggle expand or collapse all sections">▾ Collapse All</button>
           </div>
 
           <!-- 1. Personal Details -->
           <div class="accordion-section" id="acc-sec-personal">
             <div class="accordion-header" data-target="acc-body-personal">
               <div class="accordion-header-left">
-                <span class="accordion-title">Personal Details & Contact</span>
+                <span class="accordion-title">Your Details & Contact Info</span>
               </div>
               <div class="accordion-header-right">
                 <span class="accordion-chevron">▾</span>
@@ -557,7 +553,7 @@
             </div>
           </div>
 
-          <!-- 2. Professional Summary -->
+          <!-- 2. About You / Summary -->
           <div class="accordion-section" id="acc-sec-summary">
             <div class="accordion-header" data-target="acc-body-summary">
               <div class="accordion-header-left">
@@ -566,18 +562,18 @@
               <div class="accordion-header-right">
                 <button id="btn-ai-summary" class="btn-micro"
                   title="Auto-craft tailored summary weaving target JD keywords" onclick="event.stopPropagation();">
-                  AI Tailor wrt JD
+                  ✨ Rewrite for This Job
                 </button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
             <div class="accordion-body" id="acc-body-summary">
               <textarea id="input-summary" class="form-textarea" rows="4"
-                placeholder="Enter high-impact professional summary..."></textarea>
+                placeholder="Write a short intro about yourself — what you do, what you're good at, and what you're looking for..."></textarea>
             </div>
           </div>
 
-          <!-- 3. Work Experience -->
+          <!-- 3. Work History -->
           <div class="accordion-section" id="acc-sec-experience">
             <div class="accordion-header" data-target="acc-body-experience">
               <div class="accordion-header-left">
@@ -585,8 +581,7 @@
                 <span class="accordion-badge" id="badge-count-exp">3 Roles</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-experience" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
-                  Role</button>
+                <button id="btn-add-experience" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Job</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -601,7 +596,7 @@
           <div class="accordion-section" id="acc-sec-skills">
             <div class="accordion-header" data-target="acc-body-skills">
               <div class="accordion-header-left">
-                <span class="accordion-title">Technical Skills by Category</span>
+                <span class="accordion-title">Your Skills</span>
                 <span class="accordion-badge" id="badge-count-skills">5 Categories</span>
               </div>
               <div class="accordion-header-right">
@@ -619,12 +614,11 @@
           <div class="accordion-section" id="acc-sec-projects">
             <div class="accordion-header" data-target="acc-body-projects">
               <div class="accordion-header-left">
-                <span class="accordion-title">Projects & Engineering</span>
+                <span class="accordion-title">Projects</span>
                 <span class="accordion-badge" id="badge-count-projects">1 Project</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-project" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
-                  Project</button>
+                <button id="btn-add-project" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Project</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -643,8 +637,7 @@
                 <span class="accordion-badge" id="badge-count-edu">2 Degrees</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-education" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
-                  Degree</button>
+                <button id="btn-add-education" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Degree</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -663,8 +656,7 @@
                 <span class="accordion-badge" id="badge-count-certs">1 Cert</span>
               </div>
               <div class="accordion-header-right">
-                <button id="btn-add-cert" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add
-                  Certification</button>
+                <button id="btn-add-cert" class="btn-micro btn-secondary" onclick="event.stopPropagation();">+ Add Cert</button>
                 <span class="accordion-chevron">▾</span>
               </div>
             </div>
@@ -760,7 +752,7 @@
               <input type="checkbox" id="toggle-kw-highlight" checked>
               <span class="slider"></span>
             </span>
-            <span>Highlight JD Terms</span>
+            <span>Highlight Job Keywords</span>
           </label>
 
           <!-- Typography Style Selector -->
@@ -775,9 +767,9 @@
 
           <!-- Font Size Scaling -->
           <select id="font-size-select" class="form-select" style="width: auto; padding: 4px 8px; font-size: 11px;">
-            <option value="small">Compact Fit (1-Page)</option>
-            <option value="medium" selected>Standard (Balanced)</option>
-            <option value="large">Spacious (2-Page)</option>
+            <option value="small">Compact (1 Page)</option>
+            <option value="medium" selected>Standard</option>
+            <option value="large">Spacious (2 Pages)</option>
           </select>
 
           <!-- Page Fit Indicator -->
@@ -792,13 +784,13 @@
         <div class="cpb-identity">
           <span class="cpb-dot-demo" id="cpb-status-dot"></span>
           <div class="cpb-text">
-            <span class="cpb-tag cpb-tag-demo" id="cpb-tag">Demo Mode</span>
-            <span>Viewing sample candidate: <strong id="cpb-candidate-name">Vishal Aradhya JC</strong></span>
+            <span class="cpb-tag cpb-tag-demo" id="cpb-tag">Viewing Sample</span>
+            <span>Sample resume: <strong id="cpb-candidate-name">Vishal Aradhya JC</strong></span>
           </div>
         </div>
         <div class="cpb-actions" id="cpb-actions">
           <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload your PDF/Word resume to replace sample">
-            <span>⚡ Put My Resume Here</span>
+            <span>📄 Use My Resume</span>
           </button>
           <button id="btn-cpb-blank" class="btn-cpb-secondary" title="Start with a blank clean resume">
             <span>✨ Start Blank</span>
@@ -826,7 +818,7 @@
         <div class="modal-title-wrap">
           <span class="modal-title-icon">📄</span>
           <div>
-            <h3>Import Your Resume</h3>
+            <h3>Upload Your Resume</h3>
             <p class="modal-subtitle">Upload your PDF/Word document or paste text. Includes <strong>✨ Gemini 1.5 Flash AI Deep Parse</strong> for 99% accuracy on complex layouts.</p>
           </div>
         </div>
@@ -835,8 +827,8 @@
 
       <!-- Modal Tabs -->
       <div class="modal-tabs">
-        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload File (PDF / Word / TXT)</button>
-        <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text</button>
+        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload a File (PDF, Word, or TXT)</button>
+        <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text Instead</button>
       </div>
 
       <div class="modal-body">
@@ -845,15 +837,15 @@
           <div class="file-dropzone" id="resume-file-dropzone">
             <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
             <div class="dropzone-icon">☁️</div>
-            <h4>Drag & drop your resume here</h4>
+            <h4>Drag & Drop Your Resume Here</h4>
             <p>Supports <strong>PDF, Word (.docx), Plain Text (.txt, .md)</strong></p>
             <div style="margin: 8px 0; display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); padding: 5px 14px; border-radius: 20px; font-size: 11.5px; border: 1px solid rgba(255, 255, 255, 0.18); color: #ffffff;">
-              <span>✨ Gemini 1.5 Flash AI Deep Parse Ready</span>
+              <span>✨ AI Smart Reading available after upload</span>
             </div>
             <div>
               <button type="button" class="btn btn-primary btn-sm" id="btn-browse-resume-file"
                 style="margin-top: 8px;">
-                Browse Local Files
+                📂 Choose File from Your Device
               </button>
             </div>
             <div id="dropzone-file-status" class="dropzone-status"></div>
@@ -862,34 +854,45 @@
 
         <!-- Paste Text View -->
         <div class="modal-tab-content" id="modal-content-paste">
-          <label class="form-label-sm" style="margin-bottom: 6px; display: block;">Paste your resume contents (from
-            LinkedIn, Word, or Google Docs):</label>
+          <label class="form-label-sm" style="margin-bottom: 6px; display: block;">Copy your resume text from LinkedIn, Word, Google Docs, or anywhere and paste it here:</label>
           <textarea id="import-paste-textarea" class="form-textarea" rows="11"
             placeholder="Paste your resume text here...&#10;&#10;John Doe&#10;Senior Software Engineer | San Francisco, CA&#10;john.doe@email.com | (555) 012-3456 | linkedin.com/in/johndoe&#10;&#10;SUMMARY&#10;Experienced engineer with 5+ years building scalable systems...&#10;&#10;EXPERIENCE&#10;Lead Developer @ TechCorp (2021 - Present)&#10;• Built scalable microservices reducing p99 latency by 40%..."></textarea>
         </div>
 
         <!-- Live Parser Preview / Status Box (Hybrid Heuristic + Gemini LLM) -->
         <div id="import-preview-box" class="import-preview-card" style="display: none;">
-          <div class="import-preview-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-            <span class="preview-badge-status" id="preview-status-badge">✅ Instant Heuristic Parse</span>
-            <button type="button" class="btn btn-secondary btn-micro" id="btn-ai-deep-parse" title="Use Gemini 1.5 Flash for 99% accuracy on multi-column, Canva, and complex resumes">
-              <span>✨ AI Deep Parse (Gemini 1.5 Flash)</span>
+
+          <!-- Quick scan summary -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+            <span class="preview-badge-status" id="preview-status-badge">⚡ Quick Scan Done</span>
+            <span style="font-size: 11px; color: var(--text-muted);">Scroll down to see what was read</span>
+          </div>
+          <div class="import-preview-stats" id="import-preview-stats"></div>
+
+          <!-- AI Smart Read — prominent CTA -->
+          <div style="margin-top: 14px; padding: 14px 16px; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;">
+            <div style="font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">✨ Get Better Accuracy with AI Smart Read</div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.5;">
+              The quick scan above works for most standard resumes. But if yours has a <strong style="color:#fff;">Canva design, two columns, or was scanned as an image</strong> — click below and AI will re-read it perfectly.
+            </p>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-ai-deep-parse"
+              style="width: 100%; font-size: 13px; padding: 10px 16px;"
+              title="Use Gemini AI to deeply read complex, multi-column, or Canva resumes with 99% accuracy">
+              ✨ AI Smart Read My Resume (99% Accuracy)
             </button>
           </div>
-          <div class="import-preview-stats" id="import-preview-stats">
-            <!-- Dynamic stats injected here -->
-          </div>
+
           <div id="ai-deep-parse-status" style="display: none; margin-top: 10px; font-size: 11.5px; padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1);"></div>
 
-          <!-- Inline Optional Gemini Key Config -->
+          <!-- API key config (shown only if no key set) -->
           <div id="ai-key-config-box" style="display: none; margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px;">
-            <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">🔑 Configure Google Gemini API Key</div>
+            <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">🔑 One-time Setup: Add Your Free Google AI Key</div>
             <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4;">
-              To enable AI Deep Parse, configure <code>GEMINI_API_KEY</code> in your Netlify Dashboard (Site configuration → Environment variables), or enter your free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #ffffff; text-decoration: underline;">Google AI Studio</a> below (saved securely in your browser):
+              Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #ffffff; text-decoration: underline;">Google AI Studio</a> (60 seconds, no credit card). Paste it below — saved only in your browser:
             </p>
             <div style="display: flex; gap: 8px;">
-              <input type="password" id="input-user-gemini-key" class="form-input" style="flex: 1; padding: 6px 10px; font-size: 12px;" placeholder="AIzaSy...">
-              <button type="button" id="btn-save-gemini-key" class="btn btn-primary btn-micro">Save & Parse</button>
+              <input type="password" id="input-user-gemini-key" class="form-input" style="flex: 1; padding: 6px 10px; font-size: 12px;" placeholder="Paste your key here (AIzaSy...)">
+              <button type="button" id="btn-save-gemini-key" class="btn btn-primary btn-micro">Save &amp; Try Again</button>
             </div>
           </div>
         </div>
@@ -898,7 +901,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-import">Cancel</button>
         <button type="button" class="btn btn-primary btn-sm" id="btn-submit-import" disabled>
-          <span>⚡ Load into ResuCraft</span>
+          <span>✅ Load This Resume</span>
         </button>
       </div>
     </div>
@@ -908,10 +911,9 @@
   <div class="modal-backdrop" id="modal-welcome-onboarding" style="display: none;">
     <div class="modal-dialog modal-dialog-welcome">
       <div class="welcome-header">
-        <div class="welcome-badge">🚀 1-Click ATS Tailor wrt Job Description</div>
+        <div class="welcome-badge">🚀 Tailor Your Resume for Any Job</div>
         <h2>Welcome to ResuCraft AI</h2>
-        <p class="welcome-subtitle">Tailor your resume to pass any ATS screening in 3 easy steps. 100% free, 100%
-          private in your browser.</p>
+        <p class="welcome-subtitle">Upload your resume, paste the job you want, and get a tailored resume ready to send — in under 2 minutes. Free, private, no account needed.</p>
       </div>
 
       <div class="welcome-steps-overview">
@@ -927,15 +929,15 @@
           <span class="wso-num">2</span>
           <div>
             <strong>Target Job</strong>
-            <span>Paste target job posting</span>
+            <span>Paste the job posting</span>
           </div>
         </div>
         <div class="wso-arrow">➔</div>
         <div class="wso-step">
           <span class="wso-num">3</span>
           <div>
-            <strong>Tailor &amp; Download</strong>
-            <span>Auto-add keywords &amp; get PDF</span>
+            <strong>Download &amp; Apply</strong>
+            <span>Get your tailored PDF</span>
           </div>
         </div>
       </div>
@@ -946,11 +948,10 @@
           <div class="wc-icon">📄</div>
           <div class="wc-info">
             <div class="wc-title-row">
-              <span class="wc-title">Upload / Paste My Resume</span>
+              <span class="wc-title">Upload My Resume</span>
               <span class="wc-badge">Recommended</span>
             </div>
-            <p class="wc-desc">Drop your existing PDF, Word (.docx) or paste text. Auto-fills your details instantly so
-              you tailor YOUR resume.</p>
+            <p class="wc-desc">Drop your PDF, Word file, or paste your resume — we'll read it and fill everything in automatically.</p>
           </div>
           <div class="wc-arrow">➔</div>
         </button>
@@ -960,8 +961,8 @@
           <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-blank">
             <div class="wc-icon">✨</div>
             <div class="wc-info">
-              <span class="wc-title">Start Blank Resume</span>
-              <p class="wc-desc">Build fresh from scratch with guided fields.</p>
+              <span class="wc-title">Start from Scratch</span>
+              <p class="wc-desc">Fill in your details manually using simple forms.</p>
             </div>
           </button>
 
@@ -969,16 +970,16 @@
           <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-demo">
             <div class="wc-icon">👀</div>
             <div class="wc-info">
-              <span class="wc-title">Explore with Demo Resume</span>
-              <p class="wc-desc">Test features with sample candidate Vishal Aradhya.</p>
+              <span class="wc-title">Try it with a Sample Resume</span>
+              <p class="wc-desc">See how everything works using a pre-filled example resume.</p>
             </div>
           </button>
         </div>
       </div>
 
       <div class="welcome-footer">
-        <span>🔒 <strong>100% Private</strong> — your resume data never leaves your device.</span>
-        <button type="button" class="btn-micro" id="btn-welcome-dismiss">Dismiss &amp; Explore</button>
+        <span>🔒 <strong>100% Private</strong> — your resume never leaves your device.</span>
+        <button type="button" class="btn-micro" id="btn-welcome-dismiss">Skip for Now</button>
       </div>
     </div>
   </div>
