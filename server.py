@@ -145,58 +145,76 @@ class ResuCraftHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 }
             }
 
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={urllib.parse.quote(api_key.strip())}"
-            req = urllib.request.Request(
-                url,
-                data=json.dumps(gemini_payload).encode('utf-8'),
-                headers={'Content-Type': 'application/json'}
-            )
+            candidate_endpoints = [
+                'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+                'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent'
+            ]
 
-            try:
-                with urllib.request.urlopen(req, timeout=30) as resp:
-                    resp_data = json.loads(resp.read().decode('utf-8'))
-                    candidate = resp_data.get('candidates', [{}])[0]
-                    raw_text = candidate.get('content', {}).get('parts', [{}])[0].get('text', '')
-                    parsed_resume = json.loads(raw_text)
+            parsed_resume = None
+            used_model = "gemini-1.5-flash"
+            last_err_msg = ""
+            last_status = 502
 
-                    self.send_response(200)
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    res = {
-                        "success": True,
-                        "model": "gemini-1.5-flash",
-                        "data": parsed_resume
-                    }
-                    self.wfile.write(json.dumps(res).encode('utf-8'))
-            except urllib.error.HTTPError as e:
-                err_body = e.read().decode('utf-8', errors='ignore')
-                err_msg = f"Gemini API error: HTTP {e.code}"
+            for base_url in candidate_endpoints:
+                url = f"{base_url}?key={urllib.parse.quote(api_key.strip())}"
+                req = urllib.request.Request(
+                    url,
+                    data=json.dumps(gemini_payload).encode('utf-8'),
+                    headers={'Content-Type': 'application/json'}
+                )
                 try:
-                    p = json.loads(err_body)
-                    if 'error' in p and 'message' in p['error']:
-                        err_msg = p['error']['message']
-                except Exception:
-                    pass
+                    with urllib.request.urlopen(req, timeout=30) as resp:
+                        resp_data = json.loads(resp.read().decode('utf-8'))
+                        candidate = resp_data.get('candidates', [{}])[0]
+                        raw_text = candidate.get('content', {}).get('parts', [{}])[0].get('text', '')
+                        parsed_resume = json.loads(raw_text)
+                        import re
+                        m = re.search(r'models/([^:]+)', base_url)
+                        if m:
+                            used_model = m.group(1)
+                        break
+                except urllib.error.HTTPError as e:
+                    err_body = e.read().decode('utf-8', errors='ignore')
+                    err_msg = f"Gemini API error: HTTP {e.code}"
+                    try:
+                        p = json.loads(err_body)
+                        if 'error' in p and 'message' in p['error']:
+                            err_msg = p['error']['message']
+                    except Exception:
+                        pass
+                    last_err_msg = err_msg
+                    last_status = e.code
+                    if e.code in (400, 401, 403, 429):
+                        break
+                except Exception as ex:
+                    last_err_msg = str(ex)
 
-                self.send_response(e.code if e.code >= 400 else 500)
+            if parsed_resume is not None:
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                res = {
+                    "success": True,
+                    "model": used_model,
+                    "data": parsed_resume
+                }
+                self.wfile.write(json.dumps(res).encode('utf-8'))
+            else:
+                self.send_response(last_status if last_status >= 400 else 502)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 res = {
                     "success": False,
                     "error": "GEMINI_API_ERROR",
-                    "message": err_msg
+                    "message": last_err_msg or "Failed to query Gemini model."
                 }
                 self.wfile.write(json.dumps(res).encode('utf-8'))
-            except Exception as e:
-                self.send_response(500)
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                res = {
-                    "success": False,
-                    "error": "SERVER_ERROR",
-                    "message": str(e)
-                }
-                self.wfile.write(json.dumps(res).encode('utf-8'))
+            return
         else:
             self.send_response(404)
             self.end_headers()

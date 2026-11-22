@@ -157,42 +157,83 @@ exports.handler = async function(event, context) {
       }
     }
 
-    // Call Google Gemini 1.5 Flash API
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey.trim())}`;
-    
-    const response = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [
-          { parts }
-        ],
-        generationConfig: {
-          temperature: 0.1,
-          responseMimeType: 'application/json'
-        }
-      })
-    });
+    // Candidate models to try in order of preference (v1 stable, v1beta aliases)
+    const candidateEndpoints = [
+      'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent'
+    ];
 
-    if (!response.ok) {
-      const errText = await response.text();
-      let errMsg = `Gemini API returned HTTP ${response.status}`;
+    let response = null;
+    let lastErrMsg = '';
+    let usedModel = 'gemini-1.5-flash';
+
+    for (const endpoint of candidateEndpoints) {
+      const geminiUrl = `${endpoint}?key=${encodeURIComponent(apiKey.trim())}`;
       try {
-        const parsedErr = JSON.parse(errText);
-        if (parsedErr.error && parsedErr.error.message) {
-          errMsg = parsedErr.error.message;
-        }
-      } catch (e) {}
+        const res = await fetch(geminiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [
+              { parts }
+            ],
+            generationConfig: {
+              temperature: 0.1,
+              responseMimeType: 'application/json'
+            }
+          })
+        });
 
+        if (res.ok) {
+          response = res;
+          const match = endpoint.match(/models\/([^:]+)/);
+          if (match) usedModel = match[1];
+          break;
+        }
+
+        const errText = await res.text();
+        let errMsg = `HTTP ${res.status}`;
+        try {
+          const parsedErr = JSON.parse(errText);
+          if (parsedErr.error && parsedErr.error.message) {
+            errMsg = parsedErr.error.message;
+          }
+        } catch (e) {}
+
+        lastErrMsg = errMsg;
+
+        // If it's not a 404/not found error (e.g. invalid key 400/403 or quota 429), don't keep trying models
+        if (res.status === 400 || res.status === 401 || res.status === 403 || res.status === 429) {
+          return {
+            statusCode: res.status,
+            headers: CORS_HEADERS,
+            body: JSON.stringify({
+              success: false,
+              error: 'GEMINI_API_ERROR',
+              message: errMsg
+            })
+          };
+        }
+      } catch (networkErr) {
+        lastErrMsg = networkErr.message;
+      }
+    }
+
+    if (!response || !response.ok) {
       return {
-        statusCode: response.status >= 500 ? 502 : response.status,
+        statusCode: 502,
         headers: CORS_HEADERS,
         body: JSON.stringify({
           success: false,
           error: 'GEMINI_API_ERROR',
-          message: errMsg
+          message: lastErrMsg || 'Failed to reach any supported Gemini model.'
         })
       };
     }
@@ -235,7 +276,7 @@ exports.handler = async function(event, context) {
       headers: CORS_HEADERS,
       body: JSON.stringify({
         success: true,
-        model: 'gemini-1.5-flash',
+        model: usedModel,
         data: parsedResume
       })
     };
