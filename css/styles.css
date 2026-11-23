@@ -3242,17 +3242,93 @@ html, body {
   color: #737373;
 }
 
-/* Results Navigation Bar */
+/* Results Navigation Bar (Ultra-Clean, Single Header) */
 .results-header-bar {
-  height: 60px;
-  background: #000000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  background: #000000 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 20px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+/* Eliminate redundant profile banner in Results View */
+#view-results .canvas-profile-bar {
+  display: none !important;
+}
+
+/* Studio container sized to single 52px header */
+#view-results .studio-container {
+  height: calc(100vh - 52px) !important;
+}
+
+/* Streamlined, single-line canvas toolbar without wrapping */
+#view-results .canvas-toolbar {
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  gap: 12px !important;
+  background: #050505 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  scrollbar-width: none !important;
+}
+
+#view-results .canvas-toolbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+#view-results .toolbar-left,
+#view-results .toolbar-right {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+#view-results .template-picker-group {
+  padding: 2px !important;
+  gap: 2px !important;
+}
+
+#view-results .tpl-btn {
+  padding: 3px 8px !important;
+  font-size: 11px !important;
+}
+
+#view-results .color-picker-group {
+  gap: 4px !important;
+}
+
+#view-results .color-swatch {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Tighten canvas top margin/padding to bring resume up */
+#view-results .canvas-viewport {
+  padding: 16px 20px 36px !important;
+}
+
+@media (max-width: 992px) {
+  #view-results .canvas-toolbar {
+    height: auto !important;
+    max-height: none !important;
+    padding: 8px 12px !important;
+    flex-wrap: wrap !important;
+  }
 }
 

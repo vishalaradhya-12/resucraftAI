@@ -494,13 +494,30 @@ class ResuCraftApp {
     }
 
     // Back to Scanner
-    if (btnBackScanner && viewScanner && viewResults) {
-      btnBackScanner.addEventListener('click', () => {
-        viewResults.style.display = 'none';
-        viewScanner.style.display = 'flex';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    const mainAppHeader = document.querySelector('.app-header');
+    const brandHomeBtn = document.getElementById('btn-results-brand-home');
+
+    const returnToScanner = () => {
+      if (mainAppHeader) mainAppHeader.style.display = 'flex';
+      if (viewResults) viewResults.style.display = 'none';
+      if (viewScanner) viewScanner.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    if (btnBackScanner) btnBackScanner.addEventListener('click', returnToScanner);
+    if (brandHomeBtn) brandHomeBtn.addEventListener('click', returnToScanner);
+
+    const transitionToResults = () => {
+      if (mainAppHeader) mainAppHeader.style.display = 'none';
+      if (viewScanner) viewScanner.style.display = 'none';
+      if (viewResults) viewResults.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      requestAnimationFrame(() => {
+        this.renderResumePreview();
+        this.updateGuidedStepper();
       });
-    }
+    };
 
     // The Big Hero Match & Tailor Action
     if (btnMatchTailor && viewScanner && viewResults) {
@@ -525,15 +542,8 @@ class ResuCraftApp {
           resultsScoreBadge.innerText = `${score}% Match • ATS Ready`;
         }
 
-        // Switch to Results View
-        viewScanner.style.display = 'none';
-        viewResults.style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        requestAnimationFrame(() => {
-          this.renderResumePreview();
-          this.updateGuidedStepper();
-        });
+        // Switch to Results View (Hiding app-header for clean zero-deadspace layout)
+        transitionToResults();
       });
     }
 
@@ -550,16 +560,7 @@ class ResuCraftApp {
           resultsScoreBadge.innerText = `${score}% Match • ATS Ready`;
         }
 
-        if (viewScanner && viewResults) {
-          viewScanner.style.display = 'none';
-          viewResults.style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        requestAnimationFrame(() => {
-          this.renderResumePreview();
-          this.updateGuidedStepper();
-        });
+        transitionToResults();
       });
     }
 
