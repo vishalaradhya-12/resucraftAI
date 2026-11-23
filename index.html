@@ -95,52 +95,44 @@
       </div>
     </div>
 
-    <!-- Center: Visual 3-Step Journey -->
-    <div class="header-journey-stepper" id="header-journey-stepper">
+    <!-- Center Scanner Mode Indicator / Results Stepper -->
+    <div class="header-journey-stepper" id="header-journey-stepper" style="display: none;">
       <div class="hj-step active" id="step-nav-resume" title="Step 1: Your resume">
         <span class="hj-num" id="cg-num-1">1</span>
         <div class="hj-text">
           <span class="hj-title">Your Resume</span>
-          <span class="hj-sub" id="cg-desc-resume">Vishal Aradhya</span>
+          <span class="hj-sub" id="cg-desc-resume">Uploaded</span>
         </div>
       </div>
       <div class="hj-arrow">➔</div>
-      <div class="hj-step" id="step-nav-jd" title="Step 2: Match to job description">
+      <div class="hj-step active" id="step-nav-jd" title="Step 2: Match to job description">
         <span class="hj-num" id="cg-num-2">2</span>
         <div class="hj-text">
           <span class="hj-title">Match to Job</span>
-          <span class="hj-sub" id="cg-desc-jd">Paste Job</span>
+          <span class="hj-sub" id="cg-desc-jd">Tailored</span>
         </div>
       </div>
       <div class="hj-arrow">➔</div>
-      <div class="hj-step" id="step-nav-tailor" title="Step 3: Tailor & Download PDF">
+      <div class="hj-step active" id="step-nav-tailor" title="Step 3: Tailor & Download PDF">
         <span class="hj-num" id="cg-num-3">3</span>
         <div class="hj-text">
-          <span class="hj-title">Tailor &amp; PDF</span>
-          <span class="hj-sub" id="cg-desc-tailor">1-Click Ready</span>
+          <span class="hj-title">Download PDF</span>
+          <span class="hj-sub" id="cg-desc-tailor">Ready</span>
         </div>
       </div>
     </div>
 
     <!-- Right: High-Priority Actions -->
     <div class="header-actions">
-      <!-- Upload Resume (Primary Call-to-Action) -->
-      <button id="btn-open-resume-importer" class="btn btn-primary btn-sm btn-import-glow"
-        title="Upload your resume (PDF/Word) to tailor it">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        <span id="btn-header-import-text">📄 Upload Resume</span>
+      <!-- Try Demo Button -->
+      <button type="button" class="btn btn-secondary btn-sm" id="btn-header-demo-top" title="Explore with a sample resume and job description">
+        <span>👀 Try Demo</span>
       </button>
 
-      <!-- Download PDF -->
-      <button id="btn-print-pdf" class="btn btn-secondary btn-sm"
+      <!-- Results View PDF Download Button (shown in results view) -->
+      <button id="btn-print-pdf" class="btn btn-primary btn-sm" style="display: none;"
         title="Download your tailored resume as PDF">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <polyline points="6 9 6 2 18 2 18 9"></polyline>
           <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
           <rect x="6" y="14" width="12" height="8"></rect>
@@ -155,7 +147,7 @@
         </button>
         <div class="header-utils-dropdown" id="header-utils-dropdown" style="display: none;">
           <div class="hud-item">
-            <label for="sample-profile-select" style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Sample Resumes:</label>
+            <label for="sample-profile-select" style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Sample Profiles:</label>
             <select id="sample-profile-select" class="form-select form-select-sm" style="width: 100%;">
               <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
                 <option value="vishal_aradhya" selected>Vishal Aradhya (Business Analyst)</option>
@@ -188,6 +180,153 @@
       </div>
     </div>
   </header>
+
+
+  <!-- ================= VIEW 1: 2-BOX SCANNER (OPTION A) ================= -->
+  <section class="app-scanner-view" id="view-scanner">
+    
+    <!-- Hero Value Proposition -->
+    <div class="scanner-hero">
+      <div class="scanner-hero-badge">
+        <span>🚀 Powered by Google Gemini 1.5 Flash AI</span>
+      </div>
+      <h1>Tailor Your Resume to Any Job in Seconds</h1>
+      <p>Drop your resume, paste the job posting, and get an ATS-optimized resume ready to apply.</p>
+    </div>
+
+    <!-- The 2-Box Core Scanner Grid -->
+    <div class="scanner-grid">
+      
+      <!-- BOX 1: Your Resume -->
+      <div class="scanner-card" id="box-resume-card">
+        <div class="scanner-card-header">
+          <div class="scanner-card-title">
+            <span class="scanner-card-num">1</span>
+            <span>Your Resume</span>
+          </div>
+          <span class="scanner-card-meta">PDF, Word, or Text</span>
+        </div>
+
+        <!-- Initial Dropzone State -->
+        <div class="scanner-dropzone-box" id="scanner-dropzone">
+          <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
+          <div class="scanner-dropzone-icon">☁️</div>
+          <div class="scanner-dropzone-title">Drop your resume here</div>
+          <div class="scanner-dropzone-desc">Supports PDF &amp; Word (.docx)</div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-browse-resume-file" style="margin-bottom: 8px;">
+            📂 Browse Files
+          </button>
+          <button type="button" class="btn-micro" id="btn-toggle-paste-view" style="color: #a3a3a3; text-decoration: underline;">
+            or paste text instead
+          </button>
+          <div id="scanner-dropzone-file-status" class="dropzone-status" style="margin-top: 10px;"></div>
+        </div>
+
+        <!-- Optional Paste View inside Box 1 -->
+        <div id="scanner-paste-box" style="display: none; flex-direction: column; flex: 1;">
+          <textarea id="import-paste-textarea" class="scanner-jd-textarea" style="min-height: 190px;"
+            placeholder="Paste your complete resume text here (experience, skills, education)..."></textarea>
+          <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center; justify-content: space-between;">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-parse-pasted-resume">
+              ✨ Parse Resume with AI
+            </button>
+            <button type="button" class="btn-micro" id="btn-back-to-dropzone" style="color: #a3a3a3; text-decoration: underline;">
+              ← Upload a file instead
+            </button>
+          </div>
+        </div>
+
+        <!-- Loaded Resume State (Shown once parsed) -->
+        <div class="scanner-resume-loaded" id="scanner-resume-loaded" style="display: none;">
+          <div>
+            <div class="srl-top">
+              <span class="srl-icon">📄</span>
+              <div>
+                <div class="srl-name" id="srl-candidate-name">Candidate Resume Loaded</div>
+                <div class="srl-meta" id="srl-candidate-meta">Auto-extracted by Gemini AI</div>
+              </div>
+            </div>
+            <div class="srl-stats" id="srl-stats-pills">
+              <span class="srl-pill" id="srl-pill-roles">3 Roles</span>
+              <span class="srl-pill" id="srl-pill-skills">18 Skills</span>
+              <span class="srl-pill" id="srl-pill-ai-badge">✨ Gemini 1.5 Flash Verified</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-replace-resume" style="flex: 1;">
+              Replace File
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-ai-deep-read" title="Run deep AI extraction with Gemini 1.5">
+              ✨ AI Re-Scan
+            </button>
+          </div>
+        </div>
+
+        <!-- Inline Status & AI Message inside Box 1 -->
+        <div id="scanner-box-status" style="display: none; margin-top: 10px; font-size: 12px; padding: 10px 14px; border-radius: 8px;"></div>
+      </div>
+
+      <!-- BOX 2: The Job Description -->
+      <div class="scanner-card" id="box-jd-card">
+        <div class="scanner-card-header">
+          <div class="scanner-card-title">
+            <span class="scanner-card-num">2</span>
+            <span>Job Description</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="btn-load-matched-jd" class="btn-micro" style="color: #ffffff; border-color: rgba(255,255,255,0.25);" title="Load a sample job posting">
+              Try Sample Job
+            </button>
+            <button type="button" id="btn-clear-jd" class="btn-micro btn-danger" title="Clear job posting">
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <textarea id="jd-input-text" class="scanner-jd-textarea"
+          placeholder="Paste the job description you're applying for here (requirements, qualifications, responsibilities)..."></textarea>
+      </div>
+
+    </div>
+
+    <!-- The Primary Action Button -->
+    <div class="scanner-action-bar">
+      <button type="button" class="btn-scan-hero" id="btn-match-and-tailor">
+        <span>✨ Match &amp; Tailor My Resume</span>
+        <span>➔</span>
+      </button>
+      <div class="scanner-trust-text">
+        🔒 100% Free • Private (Runs in Your Browser) • Powered by Gemini 1.5 Flash
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================= VIEW 2: TAILORED RESULTS & DOWNLOAD (OPTION A) ================= -->
+  <div id="view-results" style="display: none;">
+    <!-- Results Header Bar -->
+    <div class="results-header-bar">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-back-to-scanner">
+          ← Back to Scanner
+        </button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 13px; font-weight: 700; color: #fff;">Match Score:</span>
+          <span id="results-score-badge" class="badge badge-success" style="font-size: 13px; font-weight: 800;">88% Match</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-ats-results" title="Copy plaintext for application forms">
+          📋 Copy Plain Text
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-print-pdf-results" style="font-weight: 700;" title="Download tailored PDF">
+          📥 Download PDF
+        </button>
+      </div>
+    </div>
+
+
+
 
   <!-- Mobile Segmented View Control (Visible only on mobile/tablet <= 992px) -->
   <div class="mobile-segmented-bar" id="mobile-view-nav">
@@ -798,6 +937,8 @@
     </section>
 
   </main>
+  </div><!-- /#view-results -->
+
 
   <!-- ================= UNIVERSAL RESUME IMPORTER MODAL ================= -->
   <div class="modal-backdrop" id="modal-resume-import" style="display: none;">
