@@ -889,29 +889,97 @@
       <div class="canvas-toolbar">
         <div class="toolbar-left">
 
-          <!-- Template Picker -->
-          <div class="template-picker-group">
-            <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic"
-              title="Single-column reference ATS design (Taleo, Workday, SAP compliant)">Classic ATS</button>
-            <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech"
-              title="Modern layout for software & cloud engineers">Tech Modern</button>
-            <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive"
-              title="Executive leadership format with strategic capability sections">Executive</button>
-            <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal"
-              title="Ivy / Harvard standard monochrome layout">Harvard Minimal</button>
-            <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic"
-              title="Clean 2-column sidebar layout for design & networking">Nordic Clean</button>
+          <!-- Visual Template Layout Switcher -->
+          <div class="template-selector-zone">
+            <div class="template-picker-group" role="tablist" aria-label="Resume Layout Templates">
+              <button class="tpl-btn active" data-tpl="classic-ats" id="tpl-btn-classic"
+                title="Single-column reference ATS design (Taleo, Workday, Greenhouse, SAP compliant)">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="tpl-icon">
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="4.5" y1="4" x2="11.5" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="4.5" y1="6.5" x2="11.5" y2="6.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="8.5" x2="11.5" y2="8.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="10.5" x2="9.5" y2="10.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="12.5" x2="10.5" y2="12.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                </svg>
+                <span>Classic ATS</span>
+              </button>
+
+              <button class="tpl-btn" data-tpl="tech" id="tpl-btn-tech"
+                title="Modern skills-first layout for software & cloud engineers">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="tpl-icon">
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="4.5" y1="4" x2="9" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <rect x="4.5" y="6" width="7" height="2.5" rx="0.5" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="0.8"/>
+                  <line x1="4.5" y1="10.5" x2="11.5" y2="10.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="12.5" x2="10" y2="12.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                </svg>
+                <span>Tech Modern</span>
+              </button>
+
+              <button class="tpl-btn" data-tpl="executive" id="tpl-btn-executive"
+                title="Executive leadership format with distinguished header bar">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="tpl-icon">
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M2 1.5H14V4.5H2V1.5Z" fill="currentColor" fill-opacity="0.3"/>
+                  <line x1="5.5" y1="6.5" x2="10.5" y2="6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  <line x1="4.5" y1="9" x2="11.5" y2="9" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="11" x2="11.5" y2="11" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                  <line x1="4.5" y1="13" x2="9" y2="13" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                </svg>
+                <span>Executive</span>
+              </button>
+
+              <button class="tpl-btn" data-tpl="minimal" id="tpl-btn-minimal"
+                title="Ivy League / Harvard standard compact monochrome layout">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="tpl-icon">
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="6" y1="3.5" x2="10" y2="3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                  <line x1="3.5" y1="5.5" x2="12.5" y2="5.5" stroke="currentColor" stroke-width="0.8"/>
+                  <line x1="4.5" y1="7.5" x2="11.5" y2="7.5" stroke="currentColor" stroke-width="0.8"/>
+                  <line x1="4.5" y1="9.5" x2="11.5" y2="9.5" stroke="currentColor" stroke-width="0.8"/>
+                  <line x1="4.5" y1="11.5" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="0.8"/>
+                  <line x1="4.5" y1="13" x2="9" y2="13" stroke="currentColor" stroke-width="0.8"/>
+                </svg>
+                <span>Harvard Minimal</span>
+              </button>
+
+              <button class="tpl-btn" data-tpl="nordic" id="tpl-btn-nordic"
+                title="Contemporary 2-column layout with left sidebar for skills & contact">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="tpl-icon">
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <rect x="2" y="1.5" width="4" height="13" fill="currentColor" fill-opacity="0.3"/>
+                  <line x1="7.5" y1="4" x2="12.5" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                  <line x1="7.5" y1="6.5" x2="12.5" y2="6.5" stroke="currentColor" stroke-width="0.9"/>
+                  <line x1="7.5" y1="8.5" x2="12.5" y2="8.5" stroke="currentColor" stroke-width="0.9"/>
+                  <line x1="7.5" y1="10.5" x2="12.5" y2="10.5" stroke="currentColor" stroke-width="0.9"/>
+                  <line x1="7.5" y1="12.5" x2="11" y2="12.5" stroke="currentColor" stroke-width="0.9"/>
+                </svg>
+                <span>Nordic Clean (2-Col)</span>
+              </button>
+            </div>
+
+            <!-- Layout Gallery Button -->
+            <button type="button" class="btn-browse-layouts" id="btn-open-template-gallery" title="Open visual layout guide and recommendations">
+              <span>Layout Guide</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
           </div>
 
-          <!-- Color Palettes -->
-          <div class="color-picker-group" title="Select Heading Accent (Default: ATS Executive Black)">
-            <span class="color-swatch swatch-black active" data-theme="black" title="Executive Black (ATS Gold Standard — Default)"></span>
-            <span class="color-swatch swatch-navy" data-theme="navy" title="Classic Navy"></span>
-            <span class="color-swatch swatch-indigo" data-theme="indigo" title="Indigo Violet"></span>
-            <span class="color-swatch swatch-emerald" data-theme="emerald" title="Emerald Slate"></span>
-            <span class="color-swatch swatch-cyan" data-theme="cyan" title="Electric Cyan"></span>
-            <span class="color-swatch swatch-purple" data-theme="purple" title="Royal Purple"></span>
-            <span class="color-swatch swatch-slate" data-theme="slate" title="Obsidian Slate"></span>
+          <div class="toolbar-sep"></div>
+
+          <!-- Color Palettes with Label -->
+          <div class="color-picker-wrap">
+            <span class="toolbar-label">Accent:</span>
+            <div class="color-picker-group" title="Select Heading Accent">
+              <span class="color-swatch swatch-black active" data-theme="black" title="Executive Charcoal (ATS Default)"></span>
+              <span class="color-swatch swatch-navy" data-theme="navy" title="Deep Navy"></span>
+              <span class="color-swatch swatch-indigo" data-theme="indigo" title="Ocean Sapphire"></span>
+              <span class="color-swatch swatch-emerald" data-theme="emerald" title="Emerald Slate"></span>
+              <span class="color-swatch swatch-cyan" data-theme="cyan" title="Electric Cyan"></span>
+              <span class="color-swatch swatch-purple" data-theme="purple" title="Royal Purple"></span>
+              <span class="color-swatch swatch-slate" data-theme="slate" title="Obsidian Slate"></span>
+            </div>
           </div>
         </div>
 
@@ -1181,6 +1249,155 @@
       <div class="welcome-footer">
         <span><strong>Client-Side Privacy</strong> — your resume data stays securely in your browser.</span>
         <button type="button" class="btn-micro" id="btn-welcome-dismiss">Skip for Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= VISUAL TEMPLATE GALLERY MODAL ================= -->
+  <div class="modal-backdrop" id="modal-template-gallery" style="display: none;">
+    <div class="modal-dialog modal-dialog-gallery">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div>
+            <h3>Resume Layout Archetypes</h3>
+            <p class="modal-subtitle">Each template is tailored for different hiring standards. Select an archetype to preview it live.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-gallery-modal" title="Close">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 20px 24px;">
+        <div class="template-gallery-grid">
+
+          <!-- 1. Classic ATS -->
+          <div class="gallery-card active" data-tpl="classic-ats">
+            <div class="gc-preview">
+              <div class="gc-wireframe wf-classic">
+                <div class="wf-header"></div>
+                <div class="wf-rule"></div>
+                <div class="wf-line long"></div>
+                <div class="wf-line med"></div>
+                <div class="wf-rule"></div>
+                <div class="wf-line long"></div>
+                <div class="wf-line full"></div>
+                <div class="wf-line short"></div>
+              </div>
+            </div>
+            <div class="gc-info">
+              <div class="gc-top">
+                <span class="gc-badge gc-badge-ats">100% ATS Safe</span>
+                <span class="gc-active-pill">ACTIVE</span>
+              </div>
+              <h4 class="gc-name">Classic ATS</h4>
+              <p class="gc-desc">Single-column layout with standard sequential hierarchy. 100% compliant with Taleo, Workday, Greenhouse & SAP.</p>
+              <div class="gc-best-for"><strong>Best for:</strong> Corporate, Enterprise & Fortune 500 applications</div>
+            </div>
+          </div>
+
+          <!-- 2. Tech Modern -->
+          <div class="gallery-card" data-tpl="tech">
+            <div class="gc-preview">
+              <div class="gc-wireframe wf-tech">
+                <div class="wf-header"></div>
+                <div class="wf-skills-box">
+                  <div class="wf-chip"></div><div class="wf-chip"></div><div class="wf-chip"></div>
+                </div>
+                <div class="wf-rule"></div>
+                <div class="wf-line full"></div>
+                <div class="wf-line med"></div>
+                <div class="wf-line long"></div>
+              </div>
+            </div>
+            <div class="gc-info">
+              <div class="gc-top">
+                <span class="gc-badge gc-badge-tech">Skills-First</span>
+                <span class="gc-active-pill">ACTIVE</span>
+              </div>
+              <h4 class="gc-name">Tech Modern</h4>
+              <p class="gc-desc">Puts your Technical Skills Matrix & repositories upfront with modern section cards. Built for engineering screenings.</p>
+              <div class="gc-best-for"><strong>Best for:</strong> Software, Data Science, AI/ML & DevOps Engineers</div>
+            </div>
+          </div>
+
+          <!-- 3. Executive -->
+          <div class="gallery-card" data-tpl="executive">
+            <div class="gc-preview">
+              <div class="gc-wireframe wf-executive">
+                <div class="wf-exec-bar"></div>
+                <div class="wf-header center"></div>
+                <div class="wf-line full"></div>
+                <div class="wf-rule"></div>
+                <div class="wf-line long"></div>
+                <div class="wf-line med"></div>
+              </div>
+            </div>
+            <div class="gc-info">
+              <div class="gc-top">
+                <span class="gc-badge gc-badge-exec">Leadership</span>
+                <span class="gc-active-pill">ACTIVE</span>
+              </div>
+              <h4 class="gc-name">Executive Leadership</h4>
+              <p class="gc-desc">Centered distinguished header with formal accent bar. Highlights strategic leadership scope and career milestones.</p>
+              <div class="gc-best-for"><strong>Best for:</strong> Directors, VPs, Product Managers & C-Suite</div>
+            </div>
+          </div>
+
+          <!-- 4. Harvard Minimal -->
+          <div class="gallery-card" data-tpl="minimal">
+            <div class="gc-preview">
+              <div class="gc-wireframe wf-minimal">
+                <div class="wf-header center"></div>
+                <div class="wf-rule thin"></div>
+                <div class="wf-dense-row"></div>
+                <div class="wf-dense-row"></div>
+                <div class="wf-rule thin"></div>
+                <div class="wf-dense-row"></div>
+                <div class="wf-dense-row"></div>
+              </div>
+            </div>
+            <div class="gc-info">
+              <div class="gc-top">
+                <span class="gc-badge gc-badge-ivy">Ivy League</span>
+                <span class="gc-active-pill">ACTIVE</span>
+              </div>
+              <h4 class="gc-name">Harvard Minimal</h4>
+              <p class="gc-desc">Classic high-density academic and finance format. Minimalist serif elegance that packs maximum experience into 1 page.</p>
+              <div class="gc-best-for"><strong>Best for:</strong> Investment Banking, Private Equity, Consulting & Law</div>
+            </div>
+          </div>
+
+          <!-- 5. Nordic Clean (2-Col) -->
+          <div class="gallery-card" data-tpl="nordic">
+            <div class="gc-preview">
+              <div class="gc-wireframe wf-nordic">
+                <div class="wf-col-left">
+                  <div class="wf-dot"></div>
+                  <div class="wf-line short"></div>
+                  <div class="wf-line short"></div>
+                </div>
+                <div class="wf-col-right">
+                  <div class="wf-header"></div>
+                  <div class="wf-line full"></div>
+                  <div class="wf-line med"></div>
+                  <div class="wf-line long"></div>
+                </div>
+              </div>
+            </div>
+            <div class="gc-info">
+              <div class="gc-top">
+                <span class="gc-badge gc-badge-nordic">2-Column Sidebar</span>
+                <span class="gc-active-pill">ACTIVE</span>
+              </div>
+              <h4 class="gc-name">Nordic Clean</h4>
+              <p class="gc-desc">Contemporary Scandinavian 2-column architecture. Dedicated left sidebar for skills, contact and credentials.</p>
+              <div class="gc-best-for"><strong>Best for:</strong> Tech Startups, UI/UX, Product & Creative roles</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 12px 24px; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-close-gallery-footer">Close</button>
       </div>
     </div>
   </div>

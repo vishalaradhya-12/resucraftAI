@@ -3519,3 +3519,389 @@ html, body {
   }
 }
 
+
+/* ==========================================================================
+   Visual Resume Layout Switcher & Gallery Engine
+   ========================================================================== */
+
+#view-results .canvas-toolbar {
+  height: auto !important;
+  min-height: 44px !important;
+  max-height: none !important;
+  padding: 8px 16px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  gap: 10px 16px !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+  overflow: visible !important;
+}
+
+#view-results .toolbar-left {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  flex: 1 1 auto !important;
+}
+
+#view-results .toolbar-right {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+}
+
+.template-selector-zone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#view-results .template-picker-group {
+  display: flex !important;
+  align-items: center !important;
+  background: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 8px !important;
+  padding: 3px !important;
+  gap: 3px !important;
+}
+
+#view-results .tpl-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 10px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  color: #475569 !important;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+}
+
+#view-results .tpl-btn:hover {
+  color: #0F172A !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+#view-results .tpl-btn.active {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06) !important;
+}
+
+#view-results .tpl-btn.active .tpl-icon {
+  color: #0284C7 !important;
+}
+
+.tpl-icon {
+  flex-shrink: 0;
+  color: #64748B;
+  transition: color 0.15s ease;
+}
+
+.btn-browse-layouts {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #F0F9FF;
+  border: 1px solid #BAE6FD;
+  color: #0369A1;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-browse-layouts:hover {
+  background: #E0F2FE;
+  border-color: #7DD3FC;
+  color: #0284C7;
+}
+
+.toolbar-sep {
+  width: 1px;
+  height: 22px;
+  background: #E2E8F0;
+  flex-shrink: 0;
+}
+
+.color-picker-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+#view-results .color-picker-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  padding: 3px 6px !important;
+  border-radius: 20px !important;
+}
+
+#view-results .color-swatch {
+  width: 15px !important;
+  height: 15px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  position: relative !important;
+}
+
+#view-results .color-swatch:hover {
+  transform: scale(1.18) !important;
+}
+
+#view-results .color-swatch.active {
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 3.5px #0284C7 !important;
+  transform: scale(1.1) !important;
+}
+
+/* ==========================================================================
+   Visual Template Gallery Modal Styles
+   ========================================================================== */
+.modal-dialog-gallery {
+  max-width: 860px !important;
+  width: 95% !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.15) !important;
+}
+
+.template-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.gallery-card {
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: left;
+}
+
+.gallery-card:hover {
+  border-color: #0284C7;
+  background: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+}
+
+.gallery-card.active {
+  border-color: #0284C7;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2), 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.gc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.gc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gc-badge-ats { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+.gc-badge-tech { background: #F0F9FF; color: #0369A1; border: 1px solid #BAE6FD; }
+.gc-badge-exec { background: #F5F3FF; color: #6D28D9; border: 1px solid #DDD6FE; }
+.gc-badge-ivy { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+.gc-badge-nordic { background: #F0FDF4; color: #15803D; border: 1px solid #BBF7D0; }
+
+.gc-active-pill {
+  display: none;
+  font-size: 9.5px;
+  font-weight: 800;
+  background: #0284C7;
+  color: #FFFFFF;
+  padding: 2px 6px;
+  border-radius: 10px;
+  letter-spacing: 0.06em;
+}
+
+.gallery-card.active .gc-active-pill {
+  display: inline-block;
+}
+
+.gc-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 4px;
+}
+
+.gc-desc {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.gc-best-for {
+  font-size: 11px;
+  color: #64748B;
+  background: #F1F5F9;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+}
+
+.gc-best-for strong {
+  color: #0F172A;
+}
+
+/* Miniature Wireframe Visuals */
+.gc-preview {
+  height: 90px;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.gc-wireframe {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wf-header {
+  height: 7px;
+  width: 50%;
+  background: #0F172A;
+  border-radius: 2px;
+}
+.wf-header.center {
+  margin: 0 auto;
+}
+
+.wf-exec-bar {
+  height: 4px;
+  width: 100%;
+  background: #0284C7;
+  border-radius: 1px;
+  margin-bottom: 2px;
+}
+
+.wf-rule {
+  height: 1px;
+  background: #CBD5E1;
+  width: 100%;
+  margin: 2px 0;
+}
+.wf-rule.thin {
+  background: #E2E8F0;
+}
+
+.wf-line {
+  height: 4px;
+  background: #94A3B8;
+  border-radius: 1px;
+}
+.wf-line.full { width: 100%; }
+.wf-line.long { width: 85%; }
+.wf-line.med { width: 65%; }
+.wf-line.short { width: 45%; }
+
+.wf-skills-box {
+  display: flex;
+  gap: 3px;
+  margin: 2px 0;
+}
+
+.wf-chip {
+  height: 8px;
+  width: 22px;
+  background: #BAE6FD;
+  border-radius: 2px;
+}
+
+.wf-dense-row {
+  height: 3px;
+  background: #64748B;
+  border-radius: 1px;
+  width: 95%;
+}
+
+/* Nordic 2-column wireframe */
+.wf-nordic {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  height: 100%;
+}
+
+.wf-col-left {
+  width: 28%;
+  background: #F1F5F9;
+  border-radius: 3px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wf-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0284C7;
+  margin-bottom: 2px;
+}
+
+.wf-col-right {
+  width: 72%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

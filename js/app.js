@@ -153,16 +153,67 @@ class ResuCraftApp {
       });
     }
 
-    // Template Switcher Buttons
+    // Template Switcher Buttons with Gallery Sync
+    const applyTemplate = (tplName) => {
+      document.querySelectorAll('.tpl-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-tpl') === tplName);
+      });
+      document.querySelectorAll('.gallery-card').forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-tpl') === tplName);
+      });
+      window.resumeTemplates.setTemplate(tplName);
+      this.renderResumePreview();
+      this.resetCanvasScroll();
+    };
+
     document.querySelectorAll('.tpl-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.tpl-btn').forEach(b => b.classList.remove('active'));
-        const target = e.currentTarget;
-        target.classList.add('active');
-        const tplName = target.getAttribute('data-tpl');
-        window.resumeTemplates.setTemplate(tplName);
-        this.renderResumePreview();
-        this.resetCanvasScroll();
+        const tplName = e.currentTarget.getAttribute('data-tpl');
+        applyTemplate(tplName);
+      });
+    });
+
+    // Layout Gallery Modal Controls
+    const galleryModal = document.getElementById('modal-template-gallery');
+    const openGalleryBtn = document.getElementById('btn-open-template-gallery');
+    const closeGalleryBtn = document.getElementById('btn-close-gallery-modal');
+    const closeGalleryFooter = document.getElementById('btn-close-gallery-footer');
+
+    if (openGalleryBtn && galleryModal) {
+      openGalleryBtn.addEventListener('click', () => {
+        // Sync active state in modal
+        const currentTpl = window.resumeTemplates.currentTemplate || 'classic-ats';
+        document.querySelectorAll('.gallery-card').forEach(c => {
+          c.classList.toggle('active', c.getAttribute('data-tpl') === currentTpl);
+        });
+        galleryModal.style.display = 'flex';
+      });
+    }
+
+    const closeGallery = () => {
+      if (galleryModal) galleryModal.style.display = 'none';
+    };
+    if (closeGalleryBtn) closeGalleryBtn.addEventListener('click', closeGallery);
+    if (closeGalleryFooter) closeGalleryFooter.addEventListener('click', closeGallery);
+    if (galleryModal) {
+      galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) closeGallery();
+      });
+    }
+
+    document.querySelectorAll('.gallery-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const tplName = e.currentTarget.getAttribute('data-tpl');
+        applyTemplate(tplName);
+        closeGallery();
+        const friendlyNames = {
+          'classic-ats': 'Classic ATS (Single-Column)',
+          'tech': 'Tech Modern (Skills-First)',
+          'executive': 'Executive Leadership',
+          'minimal': 'Harvard Minimal',
+          'nordic': 'Nordic Clean (2-Column)'
+        };
+        this.showToast(`Applied ${friendlyNames[tplName] || tplName} layout`, 'success');
       });
     });
 
