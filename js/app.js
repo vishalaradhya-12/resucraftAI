@@ -2410,9 +2410,9 @@ class ResuCraftApp {
         if (ribImportBtn) ribImportBtn.innerText = 'Replace / Re-upload';
       } else if (isBlank) {
         ribBadge.className = 'rib-badge';
-        ribBadge.style.background = '#F4F3EE';
-        ribBadge.style.color = '#666562';
-        ribBadge.style.border = '1px solid #E5E5DF';
+        ribBadge.style.background = '#F1F5F9';
+        ribBadge.style.color = '#475569';
+        ribBadge.style.border = '1px solid #E2E8F0';
         ribBadge.innerText = 'Blank Template';
         ribTitle.innerText = 'Blank Resume Ready';
         ribDesc.innerText = 'Fill in your details below or upload your existing resume to auto-fill.';
