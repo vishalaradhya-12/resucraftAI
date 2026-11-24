@@ -56,7 +56,7 @@ class ResuCraftApp {
         }
         customOpt.disabled = false;
         customOpt.hidden = false;
-        customOpt.innerText = `👤 ${this.resumeData.name || 'My Resume'} (Imported)`;
+        customOpt.innerText = `${this.resumeData.name || 'My Resume'} (Imported)`;
       }
       profileSelect.value = this.currentProfileId;
     }
@@ -1269,14 +1269,14 @@ class ResuCraftApp {
         const projCount = data.projects ? data.projects.length : 0;
 
         previewStats.innerHTML = `
-          <span class="stat-pill">👤 Name: <strong>${this.escapeHtml(data.name || 'Candidate')}</strong></span>
-          ${data.targetTitle ? `<span class="stat-pill">🎯 Title: <strong>${this.escapeHtml(data.targetTitle)}</strong></span>` : ''}
-          <span class="stat-pill">💼 Roles: <strong>${expCount}</strong></span>
-          ${projCount > 0 ? `<span class="stat-pill">🚀 Projects: <strong>${projCount}</strong></span>` : ''}
-          <span class="stat-pill">⚡ Skills: <strong>${skillCount}</strong></span>
-          <span class="stat-pill">🎓 Education: <strong>${eduCount}</strong></span>
-          ${certCount > 0 ? `<span class="stat-pill">🏆 Certs: <strong>${certCount}</strong></span>` : ''}
-          ${data.email ? `<span class="stat-pill">✉️ ${this.escapeHtml(data.email)}</span>` : ''}
+          <span class="stat-pill">Name: <strong>${this.escapeHtml(data.name || 'Candidate')}</strong></span>
+          ${data.targetTitle ? `<span class="stat-pill">Title: <strong>${this.escapeHtml(data.targetTitle)}</strong></span>` : ''}
+          <span class="stat-pill">Roles: <strong>${expCount}</strong></span>
+          ${projCount > 0 ? `<span class="stat-pill">Projects: <strong>${projCount}</strong></span>` : ''}
+          <span class="stat-pill">Skills: <strong>${skillCount}</strong></span>
+          <span class="stat-pill">Education: <strong>${eduCount}</strong></span>
+          ${certCount > 0 ? `<span class="stat-pill">Certs: <strong>${certCount}</strong></span>` : ''}
+          ${data.email ? `<span class="stat-pill">${this.escapeHtml(data.email)}</span>` : ''}
         `;
       }
       if (submitBtn) submitBtn.disabled = false;
@@ -1293,10 +1293,10 @@ class ResuCraftApp {
         scannerDrop.style.display = 'none';
         scannerLoaded.style.display = 'flex';
         if (srlName) srlName.innerText = (data.name || 'Candidate Resume') + ' Loaded';
-        if (srlMeta) srlMeta.innerText = isAi ? '✨ Deep Extracted with Gemini 1.5 Flash AI' : (data.targetTitle || 'Parsed Resume');
+        if (srlMeta) srlMeta.innerText = isAi ? 'Extracted with Gemini 1.5 Flash AI' : (data.targetTitle || 'Parsed Resume');
         if (srlRoles) srlRoles.innerText = `${expCount} Roles`;
         if (srlSkills) srlSkills.innerText = `${skillCount} Skills`;
-        if (srlAiBadge) srlAiBadge.innerText = isAi ? '✨ Gemini 1.5 Flash Verified' : '✅ Ready to match';
+        if (srlAiBadge) srlAiBadge.innerText = isAi ? 'Gemini 1.5 Verified' : '✅ Ready to match';
       }
 
       // Store in current app state
@@ -1323,7 +1323,7 @@ class ResuCraftApp {
     const runAiDeepParse = async (customKey = '') => {
       const textToParse = lastExtractedRawText || (pasteTextarea ? pasteTextarea.value.trim() : '');
       if (!textToParse || textToParse.length < 20) {
-        const msg = '⚠️ Please upload a resume file or paste resume text first.';
+        const msg = 'Please upload a resume file or paste resume text first.';
         if (aiStatus) {
           aiStatus.style.display = 'block';
           aiStatus.style.background = 'rgba(239, 68, 68, 0.15)';
@@ -1347,13 +1347,13 @@ class ResuCraftApp {
         aiStatus.style.display = 'block';
         aiStatus.style.background = 'rgba(255, 255, 255, 0.08)';
         aiStatus.style.color = '#ffffff';
-        aiStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash</strong> is analyzing complex layouts, de-duplicating text, and structuring roles...';
+        aiStatus.innerHTML = '<strong>Gemini 1.5 Flash</strong> is analyzing complex layouts, de-duplicating text, and structuring roles...';
       }
       if (scannerBoxStatus) {
         scannerBoxStatus.style.display = 'block';
         scannerBoxStatus.style.background = 'rgba(255, 255, 255, 0.08)';
         scannerBoxStatus.style.color = '#ffffff';
-        scannerBoxStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash AI</strong> is analyzing your resume structure & extracting metrics...';
+        scannerBoxStatus.innerHTML = '<strong>Gemini 1.5 Flash</strong> is analyzing your resume structure & extracting metrics...';
       }
 
       try {
@@ -1366,7 +1366,7 @@ class ResuCraftApp {
 
         const badge = document.getElementById('preview-status-badge');
         if (badge) {
-          badge.innerHTML = '✨ AI Deep Parse Complete (Gemini 1.5 Flash — 99% Precision)';
+          badge.innerHTML = 'AI Deep Parse Complete (Gemini 1.5 Flash)';
           badge.style.color = '#ffffff';
         }
 
@@ -1374,25 +1374,25 @@ class ResuCraftApp {
           aiStatus.style.display = 'block';
           aiStatus.style.background = 'rgba(16, 185, 129, 0.15)';
           aiStatus.style.color = '#34d399';
-          aiStatus.innerHTML = '✅ <strong>Gemini 1.5 Flash extraction complete!</strong> Structured perfectly into 1-click ATS format.';
+          aiStatus.innerHTML = '<strong>Gemini 1.5 Flash extraction complete.</strong> Structured perfectly into 1-click ATS format.';
         }
         if (scannerBoxStatus) {
           scannerBoxStatus.style.display = 'block';
           scannerBoxStatus.style.background = 'rgba(16, 185, 129, 0.15)';
           scannerBoxStatus.style.color = '#34d399';
-          scannerBoxStatus.innerHTML = '✅ <strong>Gemini 1.5 Flash AI Extraction Complete!</strong> 99% accuracy precision.';
+          scannerBoxStatus.innerHTML = '<strong>Gemini 1.5 Flash extraction complete.</strong> 99% accuracy precision.';
           setTimeout(() => { if (scannerBoxStatus) scannerBoxStatus.style.display = 'none'; }, 4000);
         }
         if (fileStatus) {
-          fileStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash AI Parse Complete!</strong>';
+          fileStatus.innerHTML = '<strong>Gemini 1.5 Flash Parse Complete.</strong>';
         }
         if (scannerDropStatus) {
-          scannerDropStatus.innerHTML = '✨ <strong>Gemini 1.5 Flash AI Parse Complete!</strong>';
+          scannerDropStatus.innerHTML = '<strong>Gemini 1.5 Flash Parse Complete.</strong>';
         }
       } catch (err) {
         if (err.code === 'NO_API_KEY') {
           if (aiKeyBox) aiKeyBox.style.display = 'block';
-          const noKeyMsg = '🔑 <strong>Gemini API Key Required:</strong> Configure <code>GEMINI_API_KEY</code> in Netlify Environment Variables, or enter your free Google AI Studio key below:';
+          const noKeyMsg = '<strong>Gemini API Key Required:</strong> Configure <code>GEMINI_API_KEY</code> in Netlify Environment Variables, or enter your free Google AI Studio key below:';
           if (aiStatus) {
             aiStatus.style.display = 'block';
             aiStatus.style.background = 'rgba(245, 158, 11, 0.15)';
@@ -1406,7 +1406,7 @@ class ResuCraftApp {
             scannerBoxStatus.innerHTML = noKeyMsg;
           }
         } else {
-          const errMsg = `❌ AI Parsing Error: ${this.escapeHtml(err.message || 'Failed to parse with Gemini')}`;
+          const errMsg = `AI Parsing Error: ${this.escapeHtml(err.message || 'Failed to parse with Gemini')}`;
           if (aiStatus) {
             aiStatus.style.display = 'block';
             aiStatus.style.background = 'rgba(239, 68, 68, 0.15)';
@@ -1423,7 +1423,7 @@ class ResuCraftApp {
       } finally {
         if (aiDeepParseBtn) {
           aiDeepParseBtn.disabled = false;
-          aiDeepParseBtn.innerHTML = '<span>✨ AI Deep Parse (Gemini 1.5 Flash)</span>';
+          aiDeepParseBtn.innerHTML = '<span>AI Deep Parse (Gemini 1.5 Flash)</span>';
         }
       }
     };
@@ -1484,12 +1484,12 @@ class ResuCraftApp {
         }
         lastExtractedRawText = text;
         const parsed = window.resumeParser.parseText(text);
-        const successMsg = `✅ Successfully extracted text from <strong>${this.escapeHtml(file.name)}</strong>!`;
+        const successMsg = `Extracted text from <strong>${this.escapeHtml(file.name)}</strong>!`;
         if (fileStatus) fileStatus.innerHTML = successMsg;
         if (scannerDropStatus) scannerDropStatus.innerHTML = successMsg;
         const badge = document.getElementById('preview-status-badge');
         if (badge) {
-          badge.innerHTML = '✅ Instant Heuristic Parse';
+          badge.innerHTML = 'Document Parsed';
           badge.style.color = '#e5e5e5';
         }
         if (aiStatus) aiStatus.style.display = 'none';
@@ -1501,7 +1501,7 @@ class ResuCraftApp {
           runAiDeepParse();
         }
       } catch (err) {
-        const errText = `❌ Error: ${this.escapeHtml(err.message || 'Failed to read file')}`;
+        const errText = `Error: ${this.escapeHtml(err.message || 'Failed to read file')}`;
         if (fileStatus) fileStatus.innerHTML = errText;
         if (scannerDropStatus) scannerDropStatus.innerHTML = errText;
       }
@@ -1552,7 +1552,7 @@ class ResuCraftApp {
           const parsed = window.resumeParser.parseText(text);
           const badge = document.getElementById('preview-status-badge');
           if (badge) {
-            badge.innerHTML = '✅ Instant Heuristic Parse';
+            badge.innerHTML = 'Document Parsed';
             badge.style.color = '#e5e5e5';
           }
           if (aiStatus) aiStatus.style.display = 'none';
@@ -1589,7 +1589,7 @@ class ResuCraftApp {
           }
           customOpt.disabled = false;
           customOpt.hidden = false;
-          customOpt.innerText = `👤 ${currentParsedData.name || 'My Resume'} (Imported)`;
+          customOpt.innerText = `${currentParsedData.name || 'My Resume'} (Imported)`;
           select.value = 'custom';
         }
 
@@ -1601,7 +1601,7 @@ class ResuCraftApp {
         this.updateProfileStatusUI();
         this.updateGuidedStepper();
         this.saveSession();
-        this.showToast(`🎉 Loaded ${currentParsedData.name || 'your'}'s resume! Ready to tailor with JD.`);
+        this.showToast(`Loaded ${currentParsedData.name || 'your'}'s resume! Ready to tailor with JD.`);
       });
     }
   }
@@ -2295,19 +2295,19 @@ class ResuCraftApp {
           <div class="cpb-identity">
             <span class="cpb-dot-live" title="Active private session"></span>
             <div class="cpb-text">
-              <span class="cpb-tag cpb-tag-user">🟢 Your Active Resume</span>
+              <span class="cpb-tag cpb-tag-user">Active Resume</span>
               <span>Candidate: <strong>${this.escapeHtml(candidateName)}</strong> (Private)</span>
             </div>
           </div>
           <div class="cpb-actions">
             <button id="btn-cpb-change" class="btn-cpb-secondary" title="Upload a different resume">
-              <span>🔄 Replace / Upload New</span>
+              <span>Replace / Upload New</span>
             </button>
             <button id="btn-cpb-edit" class="btn-cpb-secondary" title="Edit your info in editor">
-              <span>✏️ Edit Info</span>
+              <span>Edit Info</span>
             </button>
             <button id="btn-cpb-sample" class="btn-cpb-secondary" title="View sample demo profile">
-              <span>👀 Try Demo</span>
+              <span>View Sample</span>
             </button>
           </div>
         `;
@@ -2323,16 +2323,16 @@ class ResuCraftApp {
           <div class="cpb-identity">
             <span class="cpb-dot-live"></span>
             <div class="cpb-text">
-              <span class="cpb-tag cpb-tag-user">✨ Blank Resume</span>
+              <span class="cpb-tag cpb-tag-user">Blank Resume</span>
               <span>Fill in your details in the Content Editor</span>
             </div>
           </div>
           <div class="cpb-actions">
             <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload existing PDF/Word">
-              <span>⚡ Upload Existing Resume</span>
+              <span>Upload Resume</span>
             </button>
             <button id="btn-cpb-sample" class="btn-cpb-secondary" title="Explore sample demo profile">
-              <span>👀 View Sample</span>
+              <span>View Sample</span>
             </button>
           </div>
         `;
@@ -2347,16 +2347,16 @@ class ResuCraftApp {
           <div class="cpb-identity">
             <span class="cpb-dot-demo"></span>
             <div class="cpb-text">
-              <span class="cpb-tag cpb-tag-demo">📂 Demo Mode</span>
+              <span class="cpb-tag cpb-tag-demo">Viewing Sample</span>
               <span>Viewing sample candidate: <strong>${this.escapeHtml(candidateName)}</strong></span>
             </div>
           </div>
           <div class="cpb-actions">
             <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload your PDF/Word to tailor your own resume">
-              <span>⚡ Put My Resume Here</span>
+              <span>Upload My Resume</span>
             </button>
             <button id="btn-cpb-blank" class="btn-cpb-secondary" title="Start with a blank clean resume">
-              <span>✨ Start Blank</span>
+              <span>Start Blank</span>
             </button>
           </div>
         `;
@@ -2370,7 +2370,7 @@ class ResuCraftApp {
     // 2. Update Header Button Text
     const headerBtnText = document.getElementById('btn-header-import-text');
     if (headerBtnText) {
-      headerBtnText.innerText = isCustom ? '🔄 Change Resume' : '📄 Use My Resume';
+      headerBtnText.innerText = isCustom ? 'Change Resume' : 'Use My Resume';
     }
 
     // 3. Update Dropdown Options
@@ -2401,25 +2401,31 @@ class ResuCraftApp {
     if (ribBadge && ribTitle && ribDesc) {
       if (isCustom) {
         ribBadge.className = 'rib-badge';
-        ribBadge.style.background = '#10b981';
-        ribBadge.innerText = '✅ Your Active Resume';
+        ribBadge.style.background = '#E8F5E9';
+        ribBadge.style.color = '#1B5E20';
+        ribBadge.style.border = '1px solid #C8E6C9';
+        ribBadge.innerText = 'Active Resume';
         ribTitle.innerText = `Editing: ${candidateName}`;
         ribDesc.innerText = 'All fields below are populated with your data. Changes reflect live on the preview canvas.';
-        if (ribImportBtn) ribImportBtn.innerText = '🔄 Replace / Re-upload';
+        if (ribImportBtn) ribImportBtn.innerText = 'Replace / Re-upload';
       } else if (isBlank) {
         ribBadge.className = 'rib-badge';
-        ribBadge.style.background = '#6366f1';
-        ribBadge.innerText = '✨ Clean Slate';
+        ribBadge.style.background = '#F4F3EE';
+        ribBadge.style.color = '#666562';
+        ribBadge.style.border = '1px solid #E5E5DF';
+        ribBadge.innerText = 'Blank Template';
         ribTitle.innerText = 'Blank Resume Ready';
         ribDesc.innerText = 'Fill in your details below or upload your existing resume to auto-fill.';
-        if (ribImportBtn) ribImportBtn.innerText = '📥 Upload / Paste Resume';
+        if (ribImportBtn) ribImportBtn.innerText = 'Upload / Paste Resume';
       } else {
         ribBadge.className = 'rib-badge';
-        ribBadge.style.background = '#6366f1';
-        ribBadge.innerText = '⚡ Quick Onboarding';
+        ribBadge.style.background = '#FEF3C7';
+        ribBadge.style.color = '#92400E';
+        ribBadge.style.border = '1px solid #FDE68A';
+        ribBadge.innerText = 'Sample Profile';
         ribTitle.innerText = 'Want to tailor your own resume?';
         ribDesc.innerText = 'Upload your existing PDF / Word resume or paste text to auto-fill all form fields in 2 seconds.';
-        if (ribImportBtn) ribImportBtn.innerText = '📥 Upload / Paste Resume';
+        if (ribImportBtn) ribImportBtn.innerText = 'Upload / Paste Resume';
       }
     }
 

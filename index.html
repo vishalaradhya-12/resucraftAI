@@ -24,14 +24,14 @@
     content="See your resume's ATS score, find missing keywords, and auto-tailor your resume for any job in one click. No signup needed. 100% private.">
   <meta name="twitter:image" content="https://resucraftaai.netlify.app/og-preview.png">
   <!-- Canonical & Theme -->
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#FAF9F5">
   <link rel="canonical" href="https://resucraftaai.netlify.app">
 
-  <!-- Google Fonts Preconnect -->
+  <!-- Google Fonts Preconnect & Anthropic/Claude Editorial Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Space+Grotesk:wght@500;600&display=swap"
     rel="stylesheet">
 
   <!-- Stylesheets -->
@@ -40,6 +40,7 @@
 
   <style>
     .quickstart-guide {
+      display: none !important;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
@@ -85,13 +86,18 @@
 
 <body>
 
-  <!-- Top App Navigation & Master Controls -->
+  <!-- Top App Navigation (Claude-Clean Editorial Bar) -->
   <header class="app-header">
     <div class="brand-wrapper">
-      <div class="brand-logo-icon">⚡</div>
+      <div class="brand-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2.1 2.1m-8.8 8.8-2.1 2.1m0-13 2.1 2.1m8.8 8.8 2.1 2.1"></path>
+        </svg>
+      </div>
       <div class="brand-text">
-        <h1>ResuCraft AI</h1>
-        <span class="brand-tag">Tailor Resume for Any Job</span>
+        <span class="brand-title">ResuCraft</span>
+        <span class="brand-tag">Resume Engine</span>
       </div>
     </div>
 
@@ -100,19 +106,19 @@
       <div class="hj-step active" id="step-nav-resume" title="Step 1: Your resume">
         <span class="hj-num" id="cg-num-1">1</span>
         <div class="hj-text">
-          <span class="hj-title">Your Resume</span>
+          <span class="hj-title">Resume</span>
           <span class="hj-sub" id="cg-desc-resume">Uploaded</span>
         </div>
       </div>
-      <div class="hj-arrow">➔</div>
+      <div class="hj-arrow">→</div>
       <div class="hj-step active" id="step-nav-jd" title="Step 2: Match to job description">
         <span class="hj-num" id="cg-num-2">2</span>
         <div class="hj-text">
-          <span class="hj-title">Match to Job</span>
+          <span class="hj-title">Target Role</span>
           <span class="hj-sub" id="cg-desc-jd">Tailored</span>
         </div>
       </div>
-      <div class="hj-arrow">➔</div>
+      <div class="hj-arrow">→</div>
       <div class="hj-step active" id="step-nav-tailor" title="Step 3: Tailor & Download PDF">
         <span class="hj-num" id="cg-num-3">3</span>
         <div class="hj-text">
@@ -122,58 +128,65 @@
       </div>
     </div>
 
-    <!-- Right: High-Priority Actions -->
+    <!-- Right: Clean Minimal Actions -->
     <div class="header-actions">
       <!-- Try Demo Button -->
       <button type="button" class="btn btn-secondary btn-sm" id="btn-header-demo-top" title="Explore with a sample resume and job description">
-        <span>👀 Try Demo</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>Sample Profile</span>
       </button>
 
       <!-- Results View PDF Download Button (shown in results view) -->
       <button id="btn-print-pdf" class="btn btn-primary btn-sm" style="display: none;"
         title="Download your tailored resume as PDF">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <polyline points="6 9 6 2 18 2 18 9"></polyline>
-          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-          <rect x="6" y="14" width="12" height="8"></rect>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
         <span>Download PDF</span>
       </button>
 
       <!-- Utilities Popover Menu (More Options) -->
       <div class="header-utils-wrap">
-        <button type="button" class="btn btn-secondary btn-sm btn-icon" id="btn-header-more" title="More Options">
-          •••
+        <button type="button" class="btn btn-secondary btn-sm btn-icon" id="btn-header-more" title="More Options" aria-label="More Options">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+          </svg>
         </button>
         <div class="header-utils-dropdown" id="header-utils-dropdown" style="display: none;">
           <div class="hud-item">
-            <label for="sample-profile-select" style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Sample Profiles:</label>
+            <label for="sample-profile-select" style="font-size: 11px; color: var(--text-secondary); display: block; margin-bottom: 5px; font-weight: 500;">Sample Profiles</label>
             <select id="sample-profile-select" class="form-select form-select-sm" style="width: 100%;">
-              <optgroup label="Sample Demo Resumes" id="optgroup-sample-profiles">
+              <optgroup label="Sample Profiles" id="optgroup-sample-profiles">
                 <option value="vishal_aradhya" selected>Vishal Aradhya (Business Analyst)</option>
                 <option value="software_engineer">Alex Morgan (Software Engineer)</option>
                 <option value="ai_ml_engineer">Dr. Elena Rostova (AI / ML Engineer)</option>
                 <option value="product_manager">Marcus Vance (Product Manager)</option>
-                <option value="blank">✨ Start Blank Resume</option>
+                <option value="blank">Start Blank Resume</option>
               </optgroup>
             </select>
           </div>
           <div class="hud-divider"></div>
           <button id="btn-copy-ats" class="hud-btn" title="Copy plain text for forms">
-            📋 Copy Plain Text
+            Copy Plain Text
           </button>
           <button id="btn-header-restore" class="hud-btn" title="Reset all changes">
-            ↺ Reset to Original
+            Reset to Original
           </button>
           <button id="btn-header-how-it-works" class="hud-btn" title="How It Works">
-            ❓ How It Works
+            How It Works
           </button>
           <div class="hud-divider"></div>
           <button id="btn-export-json" class="hud-btn">
-            💾 Save Backup (JSON)
+            Save Backup (JSON)
           </button>
           <label for="import-json-file" class="hud-btn" style="cursor: pointer; margin: 0;">
-            📂 Load Backup (JSON)
+            Load Backup (JSON)
             <input type="file" id="import-json-file" accept=".json" style="display: none;">
           </label>
         </div>
@@ -182,16 +195,20 @@
   </header>
 
 
-  <!-- ================= VIEW 1: 2-BOX SCANNER (OPTION A) ================= -->
+  <!-- ================= VIEW 1: 2-BOX SCANNER (CLAUDE-STYLE EDITORIAL CANVAS) ================= -->
   <section class="app-scanner-view" id="view-scanner">
     
     <!-- Hero Value Proposition -->
     <div class="scanner-hero">
       <div class="scanner-hero-badge">
-        <span>🚀 Powered by Google Gemini 1.5 Flash AI</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+        </svg>
+        <span>Powered by Google Gemini 1.5</span>
       </div>
-      <h1>Tailor Your Resume to Any Job in Seconds</h1>
-      <p>Drop your resume, paste the job posting, and get an ATS-optimized resume ready to apply.</p>
+      <h1>Tailor your resume for any role.</h1>
+      <p>Evaluate keyword coverage, uncover qualification gaps, and optimize your bullets with algorithmic precision.</p>
     </div>
 
     <!-- The 2-Box Core Scanner Grid -->
@@ -201,23 +218,28 @@
       <div class="scanner-card" id="box-resume-card">
         <div class="scanner-card-header">
           <div class="scanner-card-title">
-            <span class="scanner-card-num">1</span>
-            <span>Your Resume</span>
+            <span>Resume</span>
           </div>
-          <span class="scanner-card-meta">PDF, Word, or Text</span>
+          <span class="scanner-card-meta">PDF, Word, or plain text</span>
         </div>
 
         <!-- Initial Dropzone State -->
         <div class="scanner-dropzone-box" id="scanner-dropzone">
           <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
-          <div class="scanner-dropzone-icon">☁️</div>
+          <div class="scanner-dropzone-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
           <div class="scanner-dropzone-title">Drop your resume here</div>
           <div class="scanner-dropzone-desc">Supports PDF &amp; Word (.docx)</div>
-          <button type="button" class="btn btn-primary btn-sm" id="btn-browse-resume-file" style="margin-bottom: 8px;">
-            📂 Browse Files
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file" style="margin-bottom: 8px;">
+            Browse files
           </button>
-          <button type="button" class="btn-micro" id="btn-toggle-paste-view" style="color: #a3a3a3; text-decoration: underline;">
-            or paste text instead
+          <button type="button" class="btn-micro btn-text-subtle" id="btn-toggle-paste-view">
+            or paste resume text
           </button>
           <div id="scanner-dropzone-file-status" class="dropzone-status" style="margin-top: 10px;"></div>
         </div>
@@ -228,9 +250,9 @@
             placeholder="Paste your complete resume text here (experience, skills, education)..."></textarea>
           <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center; justify-content: space-between;">
             <button type="button" class="btn btn-primary btn-sm" id="btn-parse-pasted-resume">
-              ✨ Parse Resume with AI
+              Extract with Gemini AI
             </button>
-            <button type="button" class="btn-micro" id="btn-back-to-dropzone" style="color: #a3a3a3; text-decoration: underline;">
+            <button type="button" class="btn-micro btn-text-subtle" id="btn-back-to-dropzone">
               ← Upload a file instead
             </button>
           </div>
@@ -240,24 +262,31 @@
         <div class="scanner-resume-loaded" id="scanner-resume-loaded" style="display: none;">
           <div>
             <div class="srl-top">
-              <span class="srl-icon">📄</span>
+              <span class="srl-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </span>
               <div>
                 <div class="srl-name" id="srl-candidate-name">Candidate Resume Loaded</div>
-                <div class="srl-meta" id="srl-candidate-meta">Auto-extracted by Gemini AI</div>
+                <div class="srl-meta" id="srl-candidate-meta">Structured by Gemini 1.5 Flash AI</div>
               </div>
             </div>
             <div class="srl-stats" id="srl-stats-pills">
               <span class="srl-pill" id="srl-pill-roles">3 Roles</span>
               <span class="srl-pill" id="srl-pill-skills">18 Skills</span>
-              <span class="srl-pill" id="srl-pill-ai-badge">✨ Gemini 1.5 Flash Verified</span>
+              <span class="srl-pill srl-pill-verified" id="srl-pill-ai-badge">Gemini 1.5 Verified</span>
             </div>
           </div>
           <div style="display: flex; gap: 8px; margin-top: 12px;">
             <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-replace-resume" style="flex: 1;">
               Replace File
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-ai-deep-read" title="Run deep AI extraction with Gemini 1.5">
-              ✨ AI Re-Scan
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-ai-deep-read" title="Re-evaluate with Gemini 1.5">
+              Re-scan with AI
             </button>
           </div>
         </div>
@@ -270,21 +299,20 @@
       <div class="scanner-card" id="box-jd-card">
         <div class="scanner-card-header">
           <div class="scanner-card-title">
-            <span class="scanner-card-num">2</span>
             <span>Job Description</span>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button type="button" id="btn-load-matched-jd" class="btn-micro" style="color: #ffffff; border-color: rgba(255,255,255,0.25);" title="Load a sample job posting">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button type="button" id="btn-load-matched-jd" class="btn-link-action" title="Load sample requirements">
               Try Sample Job
             </button>
-            <button type="button" id="btn-clear-jd" class="btn-micro btn-danger" title="Clear job posting">
+            <button type="button" id="btn-clear-jd" class="btn-link-action btn-link-muted" title="Clear job posting">
               Clear
             </button>
           </div>
         </div>
 
         <textarea id="jd-input-text" class="scanner-jd-textarea"
-          placeholder="Paste the job description you're applying for here (requirements, qualifications, responsibilities)..."></textarea>
+          placeholder="Paste the qualifications, requirements, and responsibilities for the target role..."></textarea>
       </div>
 
     </div>
@@ -292,47 +320,59 @@
     <!-- The Primary Action Button -->
     <div class="scanner-action-bar">
       <button type="button" class="btn-scan-hero" id="btn-match-and-tailor">
-        <span>✨ Match &amp; Tailor My Resume</span>
-        <span>➔</span>
+        <span>Evaluate &amp; Tailor Resume</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
       </button>
       <div class="scanner-trust-text">
-        🔒 100% Free • Private (Runs in Your Browser) • Powered by Gemini 1.5 Flash
+        Private and client-side. Your resume data remains in your browser.
       </div>
     </div>
 
   </section>
 
-  <!-- ================= VIEW 2: TAILORED RESULTS & DOWNLOAD (OPTION A) ================= -->
+  <!-- ================= VIEW 2: TAILORED RESULTS & DOWNLOAD (CLAUDE-STYLE EDITORIAL STUDIO) ================= -->
   <div id="view-results" style="display: none;">
     <!-- Single Results Header Bar -->
     <header class="results-header-bar">
       <div style="display: flex; align-items: center; gap: 14px;">
         <div class="brand-wrapper" id="btn-results-brand-home" style="cursor: pointer;" title="Back to Scanner">
-          <div class="brand-logo-icon" style="width: 26px; height: 26px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round" class="brand-svg">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          <div class="brand-logo-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
             </svg>
           </div>
-          <span style="font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">ResuCraft AI</span>
+          <span class="brand-title">ResuCraft</span>
         </div>
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-back-to-scanner" style="padding: 4px 10px; font-size: 11.5px;">
-          ← Back to Scanner
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-back-to-scanner">
+          ← Scanner
         </button>
       </div>
 
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span id="results-score-badge" class="badge badge-success" style="font-size: 12.5px; font-weight: 800; padding: 4px 12px; border-radius: 20px;">
+        <span id="results-score-badge" class="badge-results-score">
           97% Match • ATS Ready
         </span>
       </div>
 
       <div style="display: flex; align-items: center; gap: 8px;">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-ats-results" style="padding: 6px 12px; font-size: 12px;" title="Copy plaintext for application forms">
-          📋 Copy Plain Text
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-ats-results" title="Copy plaintext for application forms">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copy Plain Text</span>
         </button>
-        <button type="button" class="btn btn-primary btn-sm" id="btn-print-pdf-results" style="padding: 6px 14px; font-size: 12px; font-weight: 700;" title="Download tailored PDF">
-          📥 Download PDF
+        <button type="button" class="btn btn-primary btn-sm" id="btn-print-pdf-results" title="Download tailored PDF">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download PDF</span>
         </button>
       </div>
     </header>
@@ -372,11 +412,11 @@
       <!-- Panel Tabs: Focused 2-Tab Workflow -->
       <nav class="cockpit-tabs-nav" aria-label="Panel Tabs">
         <button class="nav-tab active" data-tab="jd-analyzer" id="tab-btn-jd">
-          🎯 Match &amp; Tailor to Job
+          Match &amp; Tailor
           <span class="tab-badge" id="tab-match-badge">Live</span>
         </button>
         <button class="nav-tab" data-tab="content-editor" id="tab-btn-editor">
-          ✏️ Edit Resume Content
+          Edit Resume Content
         </button>
         <!-- Keep bullet-tailorer accessible for internal routing without clutter -->
         <button class="nav-tab" data-tab="bullet-tailorer" id="tab-btn-tailor" style="display: none;">
@@ -406,7 +446,7 @@
               <button type="button" class="btn btn-primary btn-micro" id="btn-card-ai-rescan"
                 style="width: 100%; padding: 8px 12px; font-size: 12px; font-weight: 700;"
                 title="Re-analyze this resume with Google Gemini 1.5 Flash for 99% accuracy">
-                ✨ AI Smart Read with Gemini 1.5 Flash (99% Accuracy)
+                Deep AI Read (Gemini 1.5 Flash)
               </button>
             </div>
           </div>
@@ -541,7 +581,7 @@
           <div class="section-block">
             <div class="section-block-header">
               <span class="section-block-title">
-                Keywords from This Job Found in Your Resume ✅
+                Matched Job Keywords
               </span>
             </div>
             <div class="keyword-cloud-box" id="matched-keywords-container">
@@ -553,7 +593,7 @@
           <div class="section-block">
             <div class="section-block-header">
               <span class="section-block-title">
-                Keywords Missing from Your Resume ⚠️
+                Missing Job Keywords
               </span>
               <div style="display: flex; gap: 6px;">
                 <button id="btn-missing-add-all-skills" class="btn-micro"
@@ -607,7 +647,7 @@
             </div>
 
             <button id="btn-generate-bullets" class="btn btn-primary" style="width: 100%;">
-              ✨ Rewrite This Bullet
+              Enhance Bullet
             </button>
           </div>
 
@@ -625,16 +665,16 @@
           <!-- Universal Onboarding Banner -->
           <div class="resume-import-banner">
             <div class="rib-content">
-              <span class="rib-badge">📄 Use Your Own Resume</span>
+              <span class="rib-badge">Custom Resume</span>
               <h4>Currently viewing a sample. Add your real resume to get started.</h4>
               <p>Drop your PDF, Word file, or paste your resume text — we'll fill in all the fields automatically in seconds.</p>
             </div>
             <div class="rib-actions">
               <button type="button" class="btn btn-primary btn-sm" id="btn-banner-import-resume">
-                📥 Upload My Resume
+                Upload Resume
               </button>
               <button type="button" class="btn btn-secondary btn-sm" id="btn-banner-blank-resume">
-                ✨ Start Blank
+                Start Blank
               </button>
             </div>
           </div>
@@ -701,7 +741,7 @@
               <div class="accordion-header-right">
                 <button id="btn-ai-summary" class="btn-micro"
                   title="Auto-craft tailored summary weaving target JD keywords" onclick="event.stopPropagation();">
-                  ✨ Rewrite for This Job
+                  Tailor for Job
                 </button>
                 <span class="accordion-chevron">▾</span>
               </div>
@@ -896,12 +936,12 @@
 
           <!-- Typography Style Selector -->
           <select id="font-family-select" class="form-select font-family-select" style="width: auto; padding: 4px 8px; font-size: 11px; font-weight: 500;" title="Select Resume Typography Style">
-            <option value="sora" selected>💎 Sora (Luxury Tech / AI Studio)</option>
-            <option value="space">🚀 Space Grotesk (Architectural Tech)</option>
-            <option value="garamond">🏛️ EB Garamond (Ivy League Serif)</option>
-            <option value="playfair">👑 Playfair Display (Luxury Executive)</option>
-            <option value="merriweather">📰 Merriweather (Executive Editorial)</option>
-            <option value="inter">✨ Inter (Silicon Valley Modern)</option>
+            <option value="sora" selected>Sora — Clean Geometric</option>
+            <option value="space">Space Grotesk — Technical Sans</option>
+            <option value="garamond">EB Garamond — Classic Editorial</option>
+            <option value="playfair">Playfair Display — Refined Serif</option>
+            <option value="merriweather">Merriweather — Formal Executive</option>
+            <option value="inter">Inter — Neutral Sans</option>
           </select>
 
           <!-- Font Size Scaling -->
@@ -929,10 +969,10 @@
         </div>
         <div class="cpb-actions" id="cpb-actions">
           <button id="btn-cpb-upload" class="btn-cpb-primary" title="Upload your PDF/Word resume to replace sample">
-            <span>📄 Use My Resume</span>
+            <span>Use My Resume</span>
           </button>
           <button id="btn-cpb-blank" class="btn-cpb-secondary" title="Start with a blank clean resume">
-            <span>✨ Start Blank</span>
+            <span>Start Blank</span>
           </button>
         </div>
       </div>
@@ -957,10 +997,10 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title-wrap">
-          <span class="modal-title-icon">📄</span>
+          
           <div>
             <h3>Upload Your Resume</h3>
-            <p class="modal-subtitle">Upload your PDF/Word document or paste text. Includes <strong>✨ Gemini 1.5 Flash AI Deep Parse</strong> for 99% accuracy on complex layouts.</p>
+            <p class="modal-subtitle">Upload your PDF/Word document or paste text. Includes <strong>Gemini 1.5 Flash AI Deep Parse</strong> for 99% accuracy on complex layouts.</p>
           </div>
         </div>
         <button type="button" class="modal-close-btn" id="btn-close-import-modal" title="Close">&times;</button>
@@ -970,20 +1010,20 @@
         <div class="import-engine-choice" style="margin: 0 0 14px;">
           <div class="engine-radio-card active" id="engine-card-ai" data-engine="ai" title="Recommended for modern, Canva, and multi-column resumes">
             <span class="erc-badge">RECOMMENDED</span>
-            <div class="erc-title">✨ AI Deep Parse (Gemini 1.5)</div>
+            <div class="erc-title">AI Deep Parse (Gemini 1.5)</div>
             <div class="erc-desc">Deeply reads 2-column, Canva, and scanned resumes with 99% accuracy.</div>
           </div>
           <div class="engine-radio-card" id="engine-card-local" data-engine="local" title="Fast local client extraction">
             <span class="erc-badge">OFFLINE</span>
-            <div class="erc-title">⚡ Fast Local Scan</div>
+            <div class="erc-title">Standard Document Scan</div>
             <div class="erc-desc">Instant 10ms extraction for standard simple single-column documents.</div>
           </div>
         </div>
 
         <!-- Modal Tabs -->
       <div class="modal-tabs">
-        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">📁 Upload a File (PDF, Word, or TXT)</button>
-        <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">📋 Paste Resume Text Instead</button>
+        <button type="button" class="modal-tab-btn active" data-tab="file" id="modal-tab-file">Upload a File (PDF, Word, or TXT)</button>
+        <button type="button" class="modal-tab-btn" data-tab="paste" id="modal-tab-paste">Paste Resume Text Instead</button>
       </div>
 
       <div class="modal-body">
@@ -991,16 +1031,22 @@
         <div class="modal-tab-content active" id="modal-content-file">
           <div class="file-dropzone" id="resume-file-dropzone">
             <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
-            <div class="dropzone-icon">☁️</div>
+            <div class="dropzone-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted); margin-bottom: 8px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
             <h4>Drag & Drop Your Resume Here</h4>
             <p>Supports <strong>PDF, Word (.docx), Plain Text (.txt, .md)</strong></p>
-            <div style="margin: 8px 0; display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); padding: 5px 14px; border-radius: 20px; font-size: 11.5px; border: 1px solid rgba(255, 255, 255, 0.18); color: #ffffff;">
-              <span>✨ AI Smart Reading available after upload</span>
+            <div style="margin: 8px 0; display: inline-flex; align-items: center; gap: 6px; background: #F4F3EE; padding: 4px 12px; border-radius: 20px; font-size: 11.5px; border: 1px solid #E5E5DF; color: #666562;">
+              <span>High-precision parsing for complex or multi-column layouts</span>
             </div>
             <div>
               <button type="button" class="btn btn-primary btn-sm" id="btn-browse-resume-file"
                 style="margin-top: 8px;">
-                📂 Choose File from Your Device
+                Choose File from Device
               </button>
             </div>
             <div id="dropzone-file-status" class="dropzone-status"></div>
@@ -1019,31 +1065,31 @@
 
           <!-- Quick scan summary -->
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-            <span class="preview-badge-status" id="preview-status-badge">⚡ Quick Scan Done</span>
+            <span class="preview-badge-status" id="preview-status-badge">Document Parsed</span>
             <span style="font-size: 11px; color: var(--text-muted);">Scroll down to see what was read</span>
           </div>
           <div class="import-preview-stats" id="import-preview-stats"></div>
 
           <!-- AI Smart Read — prominent CTA -->
-          <div style="margin-top: 14px; padding: 14px 16px; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;">
-            <div style="font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">✨ Get Better Accuracy with AI Smart Read</div>
+          <div style="margin-top: 14px; padding: 14px 16px; background: #FAF9F5; border: 1px solid #E5E5DF; border-radius: 8px;">
+            <div style="font-size: 13px; font-weight: 600; color: #1F1E1D; margin-bottom: 4px;">Enhance Extraction with AI Smart Read</div>
             <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.5;">
-              The quick scan above works for most standard resumes. But if yours has a <strong style="color:#fff;">Canva design, two columns, or was scanned as an image</strong> — click below and AI will re-read it perfectly.
+              The quick scan above works for most standard resumes. But if yours has a <strong style="color:#1F1E1D;">Canva design, two columns, or was scanned as an image</strong> — click below and AI will re-read it perfectly.
             </p>
             <button type="button" class="btn btn-primary btn-sm" id="btn-ai-deep-parse"
               style="width: 100%; font-size: 13px; padding: 10px 16px;"
               title="Use Gemini AI to deeply read complex, multi-column, or Canva resumes with 99% accuracy">
-              ✨ AI Smart Read My Resume (99% Accuracy)
+              Run AI Smart Read (Gemini 1.5)
             </button>
           </div>
 
           <div id="ai-deep-parse-status" style="display: none; margin-top: 10px; font-size: 11.5px; padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1);"></div>
 
           <!-- API key config (shown only if no key set) -->
-          <div id="ai-key-config-box" style="display: none; margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px;">
-            <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">🔑 One-time Setup: Add Your Free Google AI Key</div>
+          <div id="ai-key-config-box" style="display: none; margin-top: 12px; padding: 12px; background: #FAF9F5; border: 1px solid #E5E5DF; border-radius: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: #1F1E1D; margin-bottom: 4px;">Google Gemini API Key Setup</div>
             <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4;">
-              Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #ffffff; text-decoration: underline;">Google AI Studio</a> (60 seconds, no credit card). Paste it below — saved only in your browser:
+              Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #1F1E1D; text-decoration: underline;">Google AI Studio</a> (60 seconds, no credit card). Paste it below — saved only in your browser:
             </p>
             <div style="display: flex; gap: 8px;">
               <input type="password" id="input-user-gemini-key" class="form-input" style="flex: 1; padding: 6px 10px; font-size: 12px;" placeholder="Paste your key here (AIzaSy...)">
@@ -1056,7 +1102,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-import">Cancel</button>
         <button type="button" class="btn btn-primary btn-sm" id="btn-submit-import" disabled>
-          <span>✅ Load This Resume</span>
+          <span>Apply Parsed Resume</span>
         </button>
       </div>
     </div>
@@ -1066,7 +1112,7 @@
   <div class="modal-backdrop" id="modal-welcome-onboarding" style="display: none;">
     <div class="modal-dialog modal-dialog-welcome">
       <div class="welcome-header">
-        <div class="welcome-badge">🚀 Tailor Your Resume for Any Job</div>
+        <div class="welcome-badge">Resume Engine</div>
         <h2>Welcome to ResuCraft AI</h2>
         <p class="welcome-subtitle">Upload your resume, paste the job you want, and get a tailored resume ready to send — in under 2 minutes. Free, private, no account needed.</p>
       </div>
@@ -1079,7 +1125,7 @@
             <span>Upload or use sample</span>
           </div>
         </div>
-        <div class="wso-arrow">➔</div>
+        <div class="wso-arrow">→</div>
         <div class="wso-step">
           <span class="wso-num">2</span>
           <div>
@@ -1087,7 +1133,7 @@
             <span>Paste the job posting</span>
           </div>
         </div>
-        <div class="wso-arrow">➔</div>
+        <div class="wso-arrow">→</div>
         <div class="wso-step">
           <span class="wso-num">3</span>
           <div>
@@ -1100,7 +1146,7 @@
       <div class="welcome-options-container">
         <!-- Option 1: Primary Action -->
         <button type="button" class="welcome-card welcome-card-primary" id="btn-welcome-upload">
-          <div class="wc-icon">📄</div>
+          <div class="wc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
           <div class="wc-info">
             <div class="wc-title-row">
               <span class="wc-title">Upload My Resume</span>
@@ -1108,13 +1154,13 @@
             </div>
             <p class="wc-desc">Drop your PDF, Word file, or paste your resume — we'll read it and fill everything in automatically.</p>
           </div>
-          <div class="wc-arrow">➔</div>
+          <div class="wc-arrow">→</div>
         </button>
 
         <div class="welcome-secondary-row">
           <!-- Option 2: Blank Resume -->
           <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-blank">
-            <div class="wc-icon">✨</div>
+            <div class="wc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
             <div class="wc-info">
               <span class="wc-title">Start from Scratch</span>
               <p class="wc-desc">Fill in your details manually using simple forms.</p>
@@ -1123,7 +1169,7 @@
 
           <!-- Option 3: Explore Demo -->
           <button type="button" class="welcome-card welcome-card-sub" id="btn-welcome-demo">
-            <div class="wc-icon">👀</div>
+            <div class="wc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
             <div class="wc-info">
               <span class="wc-title">Try it with a Sample Resume</span>
               <p class="wc-desc">See how everything works using a pre-filled example resume.</p>
@@ -1133,7 +1179,7 @@
       </div>
 
       <div class="welcome-footer">
-        <span>🔒 <strong>100% Private</strong> — your resume never leaves your device.</span>
+        <span><strong>Client-Side Privacy</strong> — your resume data stays securely in your browser.</span>
         <button type="button" class="btn-micro" id="btn-welcome-dismiss">Skip for Now</button>
       </div>
     </div>
