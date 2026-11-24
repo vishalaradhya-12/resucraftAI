@@ -822,12 +822,95 @@ class ResumeParser {
    * @param {Array} [options.images] Optional base64 images for visual/scanned PDF parsing
    * @returns {Promise<Object>} ResuCraft-structured resume object
    */
+  /**
+   * Direct Client-Side Gemini Fallback (0 Netlify Function Credits Used)
+   * Connects directly from the browser to Google Gemini API
+   */
+  async parseDirectWithGemini(rawText, apiKey, images = []) {
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    
+    const systemPrompt = `You are an expert ATS Resume Parsing Engine. Extract all information from the provided raw resume into a strictly structured JSON object.
+Rules:
+1. Fix OCR and kerning errors.
+2. Extract all experiences with exact job title, company name, location, and dates.
+3. Every bullet must be a clean, complete individual statement.
+4. Categorize skills into technical, domain, tools, soft.
+5. Extract projects, education, and certifications.
+Output ONLY a raw JSON object with keys: name, targetTitle, email, phone, location, linkedin, github, portfolio, summary, skills (object with technical, domain, tools, soft arrays), experience (array of objects with title, company, location, period, bullets), projects (array with name, role, tech, bullets), education (array with degree, school, location, year), certifications (array with name, issuer, year).`;
+
+    const parts = [
+      { text: systemPrompt },
+      { text: `Resume content to parse:\n\n${rawText}` }
+    ];
+
+    if (Array.isArray(images) && images.length > 0) {
+      for (const img of images.slice(0, 3)) {
+        if (img && img.data && img.mimeType) {
+          parts.push({
+            inline_data: {
+              mime_type: img.mimeType,
+              data: img.data.replace(/^data:[^;]+;base64,/, '')
+            }
+          });
+        }
+      }
+    }
+
+    const payload = {
+      contents: [{ role: 'user', parts: parts }],
+      generationConfig: {
+        responseMimeType: 'application/json',
+        temperature: 0.1,
+        maxOutputTokens: 8192
+      }
+    };
+
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      const errBody = await resp.json().catch(() => ({}));
+      const msg = errBody?.error?.message || `Google Gemini API returned status ${resp.status}`;
+      throw new Error(msg);
+    }
+
+    const jsonResp = await resp.json();
+    const textOutput = jsonResp?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    let parsedObj;
+    try {
+      parsedObj = JSON.parse(textOutput);
+    } catch (e) {
+      // Strip markdown code fences if any
+      const cleaned = textOutput.replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
+      parsedObj = JSON.parse(cleaned);
+    }
+
+    return this.normalizeGeminiOutput(parsedObj);
+  }
+
+  /**
+   * AI Deep Parse using Google Gemini 1.5 Flash
+   * Automatically prioritizes direct browser call when API key is present to save Netlify credits!
+   */
   async parseWithGemini(rawText, options = {}) {
     if (!rawText || rawText.trim().length < 15) {
       throw new Error('Resume content is too short for AI parsing.');
     }
 
     const apiKey = options.apiKey || localStorage.getItem('resucraft_gemini_key') || '';
+
+    // Direct Client-Side First: If user entered an API key, call Gemini directly (0 Netlify credits used!)
+    if (apiKey) {
+      try {
+        return await this.parseDirectWithGemini(rawText, apiKey, options.images);
+      } catch (directErr) {
+        console.warn('Direct client Gemini call failed, attempting serverless fallback:', directErr);
+      }
+    }
+
     const payload = {
       text: rawText,
       apiKey: apiKey || undefined,
@@ -857,8 +940,21 @@ class ResumeParser {
           body: JSON.stringify(payload)
         });
       } catch (err2) {
+        if (apiKey) {
+          return await this.parseDirectWithGemini(rawText, apiKey, options.images);
+        }
         throw new Error('Network error reaching resume parsing service. Please check your internet connection.');
       }
+    }
+
+    // If Netlify credit limit is reached (402 Payment Required or 429)
+    if (response.status === 402 || response.status === 429) {
+      if (apiKey) {
+        return await this.parseDirectWithGemini(rawText, apiKey, options.images);
+      }
+      const customErr = new Error('Netlify credit limit reached. Please enter your free Google Gemini API key to parse resumes directly with 0 server costs.');
+      customErr.code = 'NO_API_KEY';
+      throw customErr;
     }
 
     const result = await response.json().catch(() => ({}));
@@ -868,6 +964,9 @@ class ResumeParser {
         const customErr = new Error(result.message || 'Gemini API key is required.');
         customErr.code = 'NO_API_KEY';
         throw customErr;
+      }
+      if (apiKey) {
+        return await this.parseDirectWithGemini(rawText, apiKey, options.images);
       }
       throw new Error(result.message || `AI parsing failed (HTTP ${response.status}).`);
     }
