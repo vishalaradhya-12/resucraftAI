@@ -827,7 +827,12 @@ class ResumeParser {
    * Connects directly from the browser to Google Gemini API
    */
   async parseDirectWithGemini(rawText, apiKey, images = []) {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const modelUrls = [
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent'
+    ];
     
     const systemPrompt = `You are an expert ATS Resume Parsing Engine. Extract all information from the provided raw resume into a strictly structured JSON object.
 Rules:
@@ -865,16 +870,25 @@ Output ONLY a raw JSON object with keys: name, targetTitle, email, phone, locati
       }
     };
 
-    const resp = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    let resp = null;
+    let lastErrMsg = '';
+    for (const baseUrl of modelUrls) {
+      const r = await fetch(`${baseUrl}?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (r.ok) {
+        resp = r;
+        break;
+      }
+      const errBody = await r.json().catch(() => ({}));
+      lastErrMsg = errBody?.error?.message || `HTTP ${r.status}`;
+      if (r.status !== 404) break;
+    }
 
-    if (!resp.ok) {
-      const errBody = await resp.json().catch(() => ({}));
-      const msg = errBody?.error?.message || `Google Gemini API returned status ${resp.status}`;
-      throw new Error(msg);
+    if (!resp) {
+      throw new Error(lastErrMsg || 'All Gemini model endpoints failed.');
     }
 
     const jsonResp = await resp.json();

@@ -6,6 +6,7 @@
 class ResuCraftApp {
   constructor() {
     this.currentProfileId = 'vishal_aradhya';
+    this.hasUserLoadedResume = false;
     this.resumeData = JSON.parse(JSON.stringify(SAMPLE_PROFILES.vishal_aradhya));
     this.jdText = this.resumeData.matchingJD ? this.resumeData.matchingJD.text : "";
     this.atsResult = null;
@@ -109,49 +110,61 @@ class ResuCraftApp {
       });
     }
 
-    // JD Textarea Input
+    // Sync helper for both Scanner JD and Results JD textareas
+    const syncJdValue = (val, sourceId = null) => {
+      this.jdText = val;
+      const rJd = document.getElementById('jd-input-text');
+      const sJd = document.getElementById('scanner-jd-input');
+      if (rJd && sourceId !== 'jd-input-text') rJd.value = val;
+      if (sJd && sourceId !== 'scanner-jd-input') sJd.value = val;
+    };
+
+    // Results JD Textarea Input
     const jdInput = document.getElementById('jd-input-text');
     if (jdInput) {
       jdInput.value = this.jdText;
       jdInput.addEventListener('input', () => {
-        this.jdText = jdInput.value;
+        syncJdValue(jdInput.value, 'jd-input-text');
         this.runATSAnalysis();
         this.renderResumePreview();
       });
     }
 
-    // Load matching JD button
-    const loadJdBtn = document.getElementById('btn-load-matched-jd');
-    if (loadJdBtn) {
-      loadJdBtn.addEventListener('click', () => {
-        const profile = SAMPLE_PROFILES[this.currentProfileId];
-        if (profile && profile.matchingJD) {
-          const jdField = document.getElementById('jd-input-text');
-          if (jdField) {
-            jdField.value = profile.matchingJD.text;
-            this.jdText = profile.matchingJD.text;
-            this.showToast(`Loaded benchmark JD for ${profile.matchingJD.title}`);
-            this.runATSAnalysis();
-            this.renderResumePreview();
-          }
-        }
+    // Scanner JD Textarea Input
+    const scannerJdInput = document.getElementById('scanner-jd-input');
+    if (scannerJdInput) {
+      scannerJdInput.value = this.jdText;
+      scannerJdInput.addEventListener('input', () => {
+        syncJdValue(scannerJdInput.value, 'scanner-jd-input');
       });
     }
 
-    // Clear JD button
+    // Load matching JD buttons (Results + Scanner)
+    const handleLoadSampleJd = () => {
+      const profile = SAMPLE_PROFILES[this.currentProfileId] || SAMPLE_PROFILES['vishal_aradhya'];
+      if (profile && profile.matchingJD) {
+        syncJdValue(profile.matchingJD.text);
+        this.showToast(`Loaded sample job posting: ${profile.matchingJD.title}`, 'success');
+        this.runATSAnalysis();
+        this.renderResumePreview();
+      }
+    };
+    const loadJdBtn = document.getElementById('btn-load-matched-jd');
+    if (loadJdBtn) loadJdBtn.addEventListener('click', handleLoadSampleJd);
+    const scannerLoadJdBtn = document.getElementById('btn-scanner-load-jd');
+    if (scannerLoadJdBtn) scannerLoadJdBtn.addEventListener('click', handleLoadSampleJd);
+
+    // Clear JD buttons (Results + Scanner)
+    const handleClearJd = () => {
+      syncJdValue('');
+      this.showToast('Job description cleared', 'info');
+      this.runATSAnalysis();
+      this.renderResumePreview();
+    };
     const clearJdBtn = document.getElementById('btn-clear-jd');
-    if (clearJdBtn) {
-      clearJdBtn.addEventListener('click', () => {
-        const jdField = document.getElementById('jd-input-text');
-        if (jdField) {
-          jdField.value = '';
-          this.jdText = '';
-          this.showToast('Job description cleared', 'info');
-          this.runATSAnalysis();
-          this.renderResumePreview();
-        }
-      });
-    }
+    if (clearJdBtn) clearJdBtn.addEventListener('click', handleClearJd);
+    const scannerClearJdBtn = document.getElementById('btn-scanner-clear-jd');
+    if (scannerClearJdBtn) scannerClearJdBtn.addEventListener('click', handleClearJd);
 
     // Template Switcher Buttons with Gallery Sync
     const applyTemplate = (tplName) => {
@@ -514,13 +527,114 @@ class ResuCraftApp {
       });
     }
 
+    // Scanner Box 1 File Upload & Drag-and-Drop
+    const scannerFileInput = document.getElementById('scanner-resume-file-input');
+    const scannerBrowseBtn = document.getElementById('btn-scanner-browse-file');
+    const scannerDropStatus = document.getElementById('scanner-dropzone-file-status');
+    const scannerPasteTextarea = document.getElementById('scanner-paste-textarea');
+    const scannerParsePasteBtn = document.getElementById('btn-parse-pasted-resume');
+
+    const applyParsedToScanner = (parsed, sourceLabel = 'Parsed Document') => {
+      if (!parsed) return;
+      this.resumeData = parsed;
+      this.currentProfileId = 'custom_user';
+      this.hasUserLoadedResume = true;
+      this.originalResumeSnapshot = JSON.parse(JSON.stringify(parsed));
+
+      const srlName = document.getElementById('srl-candidate-name');
+      const srlMeta = document.getElementById('srl-candidate-meta');
+      const srlRoles = document.getElementById('srl-pill-roles');
+      const srlSkills = document.getElementById('srl-pill-skills');
+      const srlBadge = document.getElementById('srl-pill-ai-badge');
+
+      const expCount = (parsed.experience || []).length;
+      const skillCount = ['technical', 'domain', 'tools', 'soft'].reduce(
+        (sum, k) => sum + ((parsed.skills && parsed.skills[k]) ? parsed.skills[k].length : 0), 0
+      );
+
+      if (srlName) srlName.innerText = parsed.name || 'Resume Loaded';
+      if (srlMeta) srlMeta.innerText = parsed.targetTitle || sourceLabel;
+      if (srlRoles) srlRoles.innerText = `${expCount} Role${expCount === 1 ? '' : 's'}`;
+      if (srlSkills) srlSkills.innerText = `${skillCount} Skills`;
+      if (srlBadge) srlBadge.innerText = sourceLabel;
+
+      if (dropzoneBox) dropzoneBox.style.display = 'none';
+      if (pasteBox) pasteBox.style.display = 'none';
+      if (loadedBox) loadedBox.style.display = 'flex';
+
+      this.populateEditor();
+      this.updateProfileStatusUI();
+      this.runATSAnalysis();
+      this.renderResumePreview();
+    };
+
+    const handleScannerFile = async (file) => {
+      if (!file) return;
+      if (scannerDropStatus) {
+        scannerDropStatus.style.display = 'block';
+        scannerDropStatus.innerText = `Reading ${file.name}...`;
+      }
+      try {
+        const rawText = await window.resumeParser.extractFileText(file);
+        const parsed = window.resumeParser.parseText(rawText);
+        applyParsedToScanner(parsed, 'Ready to Tailor');
+        if (scannerDropStatus) scannerDropStatus.innerText = '';
+        this.showToast(`Loaded ${parsed.name || file.name}. Click "Evaluate & Tailor Resume" to continue.`, 'success');
+      } catch (err) {
+        if (scannerDropStatus) scannerDropStatus.innerText = err.message || 'Could not read file.';
+        this.showToast(err.message || 'Failed to parse file', 'error');
+      }
+    };
+
+    if (scannerBrowseBtn && scannerFileInput) {
+      scannerBrowseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        scannerFileInput.click();
+      });
+    }
+    if (dropzoneBox && scannerFileInput) {
+      dropzoneBox.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        scannerFileInput.click();
+      });
+      dropzoneBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzoneBox.classList.add('dragover');
+      });
+      dropzoneBox.addEventListener('dragleave', () => dropzoneBox.classList.remove('dragover'));
+      dropzoneBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzoneBox.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleScannerFile(e.dataTransfer.files[0]);
+        }
+      });
+      scannerFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) handleScannerFile(e.target.files[0]);
+      });
+    }
+
+    if (scannerParsePasteBtn && scannerPasteTextarea) {
+      scannerParsePasteBtn.addEventListener('click', () => {
+        const txt = scannerPasteTextarea.value.trim();
+        if (txt.length < 20) {
+          this.showToast('Please paste your resume text first.', 'error');
+          return;
+        }
+        const parsed = window.resumeParser.parseText(txt);
+        applyParsedToScanner(parsed, 'Parsed Text');
+        this.showToast(`Loaded ${parsed.name || 'your resume'}.`, 'success');
+      });
+    }
+
     // Replace Resume in Box 1
     if (replaceResumeBtn && dropzoneBox && loadedBox) {
       replaceResumeBtn.addEventListener('click', () => {
         loadedBox.style.display = 'none';
         dropzoneBox.style.display = 'flex';
-        const fileInput = document.getElementById('resume-file-input');
-        if (fileInput) fileInput.value = '';
+        this.hasUserLoadedResume = false;
+        if (scannerFileInput) scannerFileInput.value = '';
+        if (scannerDropStatus) scannerDropStatus.innerText = '';
       });
     }
 
@@ -573,27 +687,44 @@ class ResuCraftApp {
     // The Big Hero Match & Tailor Action
     if (btnMatchTailor && viewScanner && viewResults) {
       btnMatchTailor.addEventListener('click', () => {
-        const jdField = document.getElementById('jd-input-text');
-        if (!jdField || !jdField.value.trim()) {
-          // If empty, auto-load sample JD so user gets instant value
-          this.loadBenchmarkJd();
-        } else {
-          this.jdText = jdField.value.trim();
+        // 1. If user pasted resume text in Box 1 without clicking extract, parse it automatically
+        const sPaste = document.getElementById('scanner-paste-textarea');
+        if (!this.hasUserLoadedResume && sPaste && sPaste.value.trim().length > 20) {
+          const parsed = window.resumeParser.parseText(sPaste.value.trim());
+          applyParsedToScanner(parsed, 'Parsed Text');
         }
 
-        // Run ATS evaluation
-        this.runATSAnalysis();
+        // 2. Guard: Require an uploaded/pasted resume before tailoring
+        if (!this.hasUserLoadedResume) {
+          this.showToast('Please upload or paste your resume first — or click "Sample Profile" to try a demo.', 'info');
+          const boxResume = document.getElementById('box-resume-card');
+          if (boxResume) {
+            boxResume.style.borderColor = '#0284C7';
+            setTimeout(() => { boxResume.style.borderColor = ''; }, 1800);
+          }
+          return;
+        }
 
-        // Auto tailor all keywords into resume
+        // 3. Read JD from Scanner Box 2 (or load sample JD if blank)
+        const sJd = document.getElementById('scanner-jd-input');
+        const rJd = document.getElementById('jd-input-text');
+        if (!sJd || !sJd.value.trim()) {
+          this.loadBenchmarkJd();
+        } else {
+          this.jdText = sJd.value.trim();
+          if (rJd) rJd.value = this.jdText;
+        }
+
+        // 4. Run ATS evaluation & auto-tailor
+        this.runATSAnalysis();
         this.autoTailorAll();
 
-        // Update score badge
+        // 5. Update score badge
         if (resultsScoreBadge) {
           const score = this.atsResult && this.atsResult.overallScore ? this.atsResult.overallScore : 97;
           resultsScoreBadge.innerText = `${score}% Match • ATS Ready`;
         }
 
-        // Switch to Results View (Hiding app-header for clean zero-deadspace layout)
         transitionToResults();
       });
     }
@@ -601,6 +732,7 @@ class ResuCraftApp {
     // Top Bar Try Demo Button
     if (btnHeaderDemo) {
       btnHeaderDemo.addEventListener('click', () => {
+        this.hasUserLoadedResume = true;
         this.loadSampleProfile('vishal_aradhya');
         this.loadBenchmarkJd();
         this.runATSAnalysis();
@@ -710,13 +842,31 @@ class ResuCraftApp {
   }
 
   updateScoreUI() {
-    const score = this.atsResult ? this.atsResult.overallScore : 0;
+    const hasJd = this.jdText && this.jdText.trim().length >= 15;
+    const score = hasJd && this.atsResult ? this.atsResult.overallScore : 0;
     const scoreValElem = document.getElementById('ats-score-value');
     const scoreCircle = document.getElementById('ats-progress-svg-circle');
     const scoreBadge = document.getElementById('ats-score-rating');
+    const resultsScoreBadge = document.getElementById('results-score-badge');
+
+    if (!hasJd) {
+      if (scoreValElem) scoreValElem.innerText = '—';
+      if (scoreCircle) {
+        scoreCircle.style.strokeDashoffset = 264;
+        scoreCircle.style.stroke = '#CBD5E1';
+      }
+      if (scoreBadge) {
+        scoreBadge.innerHTML = '<span class="badge badge-primary">Paste a Job Description Below</span>';
+      }
+      if (resultsScoreBadge) resultsScoreBadge.innerText = 'Waiting for Job Description';
+      return;
+    }
 
     if (scoreValElem) {
       scoreValElem.innerText = `${score}%`;
+    }
+    if (resultsScoreBadge) {
+      resultsScoreBadge.innerText = score >= 85 ? `${score}% Match • ATS Ready` : `${score}% Match`;
     }
 
     if (scoreCircle) {
@@ -1304,20 +1454,21 @@ class ResuCraftApp {
       currentParsedData = data;
       if (!data) return;
 
+      const expCount = data.experience ? data.experience.length : 0;
+      let skillCount = 0;
+      if (data.skills) {
+        if (Array.isArray(data.skills)) {
+          skillCount = data.skills.length;
+        } else {
+          Object.values(data.skills).forEach(arr => skillCount += (Array.isArray(arr) ? arr.length : 0));
+        }
+      }
+      const eduCount = data.education ? data.education.length : 0;
+      const certCount = data.certifications ? data.certifications.length : 0;
+      const projCount = data.projects ? data.projects.length : 0;
+
       if (previewBox && previewStats) {
         previewBox.style.display = 'block';
-        const expCount = data.experience ? data.experience.length : 0;
-        let skillCount = 0;
-        if (data.skills) {
-          if (Array.isArray(data.skills)) {
-            skillCount = data.skills.length;
-          } else {
-            Object.values(data.skills).forEach(arr => skillCount += (Array.isArray(arr) ? arr.length : 0));
-          }
-        }
-        const eduCount = data.education ? data.education.length : 0;
-        const certCount = data.certifications ? data.certifications.length : 0;
-        const projCount = data.projects ? data.projects.length : 0;
 
         previewStats.innerHTML = `
           <span class="stat-pill">Name: <strong>${this.escapeHtml(data.name || 'Candidate')}</strong></span>
@@ -1347,14 +1498,15 @@ class ResuCraftApp {
         if (srlMeta) srlMeta.innerText = isAi ? 'Extracted with Gemini 1.5 Flash AI' : (data.targetTitle || 'Parsed Resume');
         if (srlRoles) srlRoles.innerText = `${expCount} Roles`;
         if (srlSkills) srlSkills.innerText = `${skillCount} Skills`;
-        if (srlAiBadge) srlAiBadge.innerText = isAi ? 'Gemini 1.5 Verified' : '✅ Ready to match';
+        if (srlAiBadge) srlAiBadge.innerText = isAi ? 'Gemini 1.5 Verified' : 'Ready to Match';
       }
 
       // Store in current app state
       this.resumeData = JSON.parse(JSON.stringify(data));
       this.isCustomResume = true;
+      this.hasUserLoadedResume = true;
       this.currentProfileId = 'custom';
-      this.syncActiveProfileUI();
+      this.updateProfileStatusUI();
     };
 
     // AI Deep Parse Controls

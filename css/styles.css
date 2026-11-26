@@ -980,27 +980,7 @@ h1, h2, h3, h4, h5, h6,
   white-space: nowrap;
 }
 
-.btn-primary {
-  background: #ffffff;
-  color: #000000 !important;
-  border: 1px solid #ffffff;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
-}
-.btn-primary:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background: var(--bg-surface-elevated);
-  color: var(--text-main);
-  border-color: var(--border-subtle);
-}
-.btn-secondary:hover {
-  background: #222222;
-  border-color: rgba(255, 255, 255, 0.15);
-}
+/* Primary & Secondary button styles defined cleanly in header/core section */
 
 .btn-sm {
   padding: 6px 12px;
@@ -1285,14 +1265,14 @@ input:checked + .slider:before {
 }
 
 .toast {
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  color: #ffffff;
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  color: #FFFFFF;
   padding: 10px 16px;
   border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.22);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -3904,4 +3884,32 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+/* Prevent toolbar-right clipping at 1280px desktop split-screen */
+#view-results .toolbar-right {
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+}
+#view-results #font-family-select {
+  max-width: 155px;
+  text-overflow: ellipsis;
+}
+#view-results .toggle-wrapper {
+  font-size: 11px;
+  gap: 6px;
+}
+#view-results .zoom-controls-group {
+  gap: 2px;
+}
+
+/* Compact right toolbar items so 1 Page Fit badge never clips at 1280px */
+#view-results #btn-zoom-fit {
+  display: none;
+}
+#view-results #font-family-select {
+  max-width: 130px;
+}
+#view-results #font-size-select {
+  max-width: 105px;
 }

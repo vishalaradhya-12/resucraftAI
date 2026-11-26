@@ -225,7 +225,7 @@
 
         <!-- Initial Dropzone State -->
         <div class="scanner-dropzone-box" id="scanner-dropzone">
-          <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
+          <input type="file" id="scanner-resume-file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
           <div class="scanner-dropzone-icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -235,7 +235,7 @@
           </div>
           <div class="scanner-dropzone-title">Drop your resume here</div>
           <div class="scanner-dropzone-desc">Supports PDF &amp; Word (.docx)</div>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-browse-resume-file" style="margin-bottom: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-scanner-browse-file" style="margin-bottom: 8px;">
             Browse files
           </button>
           <button type="button" class="btn-micro btn-text-subtle" id="btn-toggle-paste-view">
@@ -246,7 +246,7 @@
 
         <!-- Optional Paste View inside Box 1 -->
         <div id="scanner-paste-box" style="display: none; flex-direction: column; flex: 1;">
-          <textarea id="import-paste-textarea" class="scanner-jd-textarea" style="min-height: 190px;"
+          <textarea id="scanner-paste-textarea" class="scanner-jd-textarea" style="min-height: 190px;"
             placeholder="Paste your complete resume text here (experience, skills, education)..."></textarea>
           <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center; justify-content: space-between;">
             <button type="button" class="btn btn-primary btn-sm" id="btn-parse-pasted-resume">
@@ -302,16 +302,16 @@
             <span>Job Description</span>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
-            <button type="button" id="btn-load-matched-jd" class="btn-link-action" title="Load sample requirements">
+            <button type="button" id="btn-scanner-load-jd" class="btn-link-action" title="Load sample requirements">
               Try Sample Job
             </button>
-            <button type="button" id="btn-clear-jd" class="btn-link-action btn-link-muted" title="Clear job posting">
+            <button type="button" id="btn-scanner-clear-jd" class="btn-link-action btn-link-muted" title="Clear job posting">
               Clear
             </button>
           </div>
         </div>
 
-        <textarea id="jd-input-text" class="scanner-jd-textarea"
+        <textarea id="scanner-jd-input" class="scanner-jd-textarea"
           placeholder="Paste the qualifications, requirements, and responsibilities for the target role..."></textarea>
       </div>
 
@@ -566,7 +566,7 @@
               </span>
               <div style="display: flex; gap: 6px;">
                 <button id="btn-load-matched-jd" class="btn-micro"
-                  style="color: #ffffff; border-color: rgba(255, 255, 255, 0.25); font-weight: 700;"
+                  style="color: #0F172A; border-color: #CBD5E1; font-weight: 600;"
                   title="Load your matching benchmark JD (Senior Business Analyst – Retail & E-Commerce)">Load Sample JD</button>
                 <button id="btn-clear-jd" class="btn-micro btn-danger"
                   title="Clear to paste your own job description">Clear</button>

@@ -877,6 +877,11 @@ mark.kw-matched {
   }
 
   .app-header,
+  .results-header-bar,
+  #view-scanner,
+  .mobile-segmented-bar,
+  .mobile-back-bar,
+  .modal-backdrop,
   .left-cockpit,
   .canvas-toolbar,
   #toast-container {
