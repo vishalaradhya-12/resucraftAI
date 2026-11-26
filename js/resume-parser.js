@@ -828,10 +828,10 @@ class ResumeParser {
    */
   async parseDirectWithGemini(rawText, apiKey, images = []) {
     const modelUrls = [
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-      'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent'
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent'
     ];
     
     const systemPrompt = `You are an expert ATS Resume Parsing Engine. Extract all information from the provided raw resume into a strictly structured JSON object.
@@ -884,7 +884,34 @@ Output ONLY a raw JSON object with keys: name, targetTitle, email, phone, locati
       }
       const errBody = await r.json().catch(() => ({}));
       lastErrMsg = errBody?.error?.message || `HTTP ${r.status}`;
-      if (r.status !== 404) break;
+      if (r.status !== 404 && r.status !== 400) break;
+    }
+
+    // Dynamic ListModels fallback if hardcoded model names rotate
+    if (!resp) {
+      try {
+        const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          const avail = (listData.models || []).filter(m =>
+            (m.supportedGenerationMethods || []).includes('generateContent') &&
+            m.name && m.name.includes('gemini')
+          );
+          avail.sort((a, b) => (b.name.includes('flash') ? 1 : 0) - (a.name.includes('flash') ? 1 : 0));
+          for (const m of avail.slice(0, 3)) {
+            const dynUrl = `https://generativelanguage.googleapis.com/v1beta/${m.name}:generateContent?key=${encodeURIComponent(apiKey)}`;
+            const r = await fetch(dynUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (r.ok) {
+              resp = r;
+              break;
+            }
+          }
+        }
+      } catch (listErr) {}
     }
 
     if (!resp) {

@@ -146,14 +146,22 @@ class ResuCraftHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             }
 
             candidate_endpoints = [
-                'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
                 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent',
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-                'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent'
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent',
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent'
             ]
+            try:
+                list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={urllib.parse.quote(api_key.strip())}"
+                with urllib.request.urlopen(list_url, timeout=10) as lr:
+                    ldata = json.loads(lr.read().decode('utf-8'))
+                    for m in ldata.get('models', []):
+                        if 'generateContent' in m.get('supportedGenerationMethods', []) and 'flash' in m.get('name', ''):
+                            u = f"https://generativelanguage.googleapis.com/v1beta/{m['name']}:generateContent"
+                            if u not in candidate_endpoints:
+                                candidate_endpoints.append(u)
+            except Exception:
+                pass
 
             parsed_resume = None
             used_model = "gemini-1.5-flash"
