@@ -967,15 +967,22 @@ Output ONLY a raw JSON object with keys: name, targetTitle, email, phone, locati
 
     let response;
     try {
-      response = await fetch('/.netlify/functions/parse-resume', {
+      response = await fetch('/api/parse-resume', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(payload)
       });
+      if (response.status === 404) {
+        response = await fetch('/.netlify/functions/parse-resume', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(payload)
+        });
+      }
     } catch (netErr) {
-      // Fallback to /api/parse-resume
+      // Fallback to Netlify function endpoint if /api/parse-resume failed on network
       try {
-        response = await fetch('/api/parse-resume', {
+        response = await fetch('/.netlify/functions/parse-resume', {
           method: 'POST',
           headers: headers,
           body: JSON.stringify(payload)
