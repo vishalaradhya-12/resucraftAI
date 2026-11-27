@@ -815,7 +815,7 @@ class ResumeParser {
   }
 
   /**
-   * AI Deep Parse using Google Gemini 1.5 Flash via Netlify Serverless Function
+   * AI Deep Parse using Google Gemini Flash via Netlify Serverless Function
    * @param {string} rawText Raw text of the resume
    * @param {Object} [options]
    * @param {string} [options.apiKey] Optional user-provided Gemini API key
@@ -938,7 +938,7 @@ Output ONLY a raw JSON object with keys: name, targetTitle, email, phone, locati
   }
 
   /**
-   * AI Deep Parse using Google Gemini 1.5 Flash
+   * AI Deep Parse using Google Gemini Flash
    * Automatically prioritizes direct browser call when API key is present to save Netlify credits!
    */
   async parseWithGemini(rawText, options = {}) {

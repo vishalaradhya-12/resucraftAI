@@ -1495,10 +1495,10 @@ class ResuCraftApp {
         scannerDrop.style.display = 'none';
         scannerLoaded.style.display = 'flex';
         if (srlName) srlName.innerText = (data.name || 'Candidate Resume') + ' Loaded';
-        if (srlMeta) srlMeta.innerText = isAi ? 'Extracted with Gemini 1.5 Flash AI' : (data.targetTitle || 'Parsed Resume');
+        if (srlMeta) srlMeta.innerText = isAi ? 'Extracted with Gemini Flash AI' : (data.targetTitle || 'Parsed Resume');
         if (srlRoles) srlRoles.innerText = `${expCount} Roles`;
         if (srlSkills) srlSkills.innerText = `${skillCount} Skills`;
-        if (srlAiBadge) srlAiBadge.innerText = isAi ? 'Gemini 1.5 Verified' : 'Ready to Match';
+        if (srlAiBadge) srlAiBadge.innerText = isAi ? 'Gemini AI Verified' : 'Ready to Match';
       }
 
       // Store in current app state
@@ -1544,19 +1544,19 @@ class ResuCraftApp {
 
       if (aiDeepParseBtn) {
         aiDeepParseBtn.disabled = true;
-        aiDeepParseBtn.innerHTML = '<span>⏳ Deep Parsing with Gemini 1.5 Flash...</span>';
+        aiDeepParseBtn.innerHTML = '<span>Deep Parsing with Gemini Flash...</span>';
       }
       if (aiStatus) {
         aiStatus.style.display = 'block';
         aiStatus.style.background = 'rgba(255, 255, 255, 0.08)';
         aiStatus.style.color = '#ffffff';
-        aiStatus.innerHTML = '<strong>Gemini 1.5 Flash</strong> is analyzing complex layouts, de-duplicating text, and structuring roles...';
+        aiStatus.innerHTML = '<strong>Gemini Flash</strong> is analyzing complex layouts, de-duplicating text, and structuring roles...';
       }
       if (scannerBoxStatus) {
         scannerBoxStatus.style.display = 'block';
         scannerBoxStatus.style.background = 'rgba(255, 255, 255, 0.08)';
         scannerBoxStatus.style.color = '#ffffff';
-        scannerBoxStatus.innerHTML = '<strong>Gemini 1.5 Flash</strong> is analyzing your resume structure & extracting metrics...';
+        scannerBoxStatus.innerHTML = '<strong>Gemini Flash</strong> is analyzing your resume structure & extracting metrics...';
       }
 
       try {
@@ -1569,7 +1569,7 @@ class ResuCraftApp {
 
         const badge = document.getElementById('preview-status-badge');
         if (badge) {
-          badge.innerHTML = 'AI Deep Parse Complete (Gemini 1.5 Flash)';
+          badge.innerHTML = 'AI Deep Parse Complete (Gemini Flash)';
           badge.style.color = '#ffffff';
         }
 
@@ -1577,20 +1577,20 @@ class ResuCraftApp {
           aiStatus.style.display = 'block';
           aiStatus.style.background = 'rgba(16, 185, 129, 0.15)';
           aiStatus.style.color = '#34d399';
-          aiStatus.innerHTML = '<strong>Gemini 1.5 Flash extraction complete.</strong> Structured perfectly into 1-click ATS format.';
+          aiStatus.innerHTML = '<strong>Gemini Flash extraction complete.</strong> Structured perfectly into 1-click ATS format.';
         }
         if (scannerBoxStatus) {
           scannerBoxStatus.style.display = 'block';
           scannerBoxStatus.style.background = 'rgba(16, 185, 129, 0.15)';
           scannerBoxStatus.style.color = '#34d399';
-          scannerBoxStatus.innerHTML = '<strong>Gemini 1.5 Flash extraction complete.</strong> 99% accuracy precision.';
+          scannerBoxStatus.innerHTML = '<strong>Gemini Flash extraction complete.</strong> 99% accuracy precision.';
           setTimeout(() => { if (scannerBoxStatus) scannerBoxStatus.style.display = 'none'; }, 4000);
         }
         if (fileStatus) {
-          fileStatus.innerHTML = '<strong>Gemini 1.5 Flash Parse Complete.</strong>';
+          fileStatus.innerHTML = '<strong>Gemini Flash Parse Complete.</strong>';
         }
         if (scannerDropStatus) {
-          scannerDropStatus.innerHTML = '<strong>Gemini 1.5 Flash Parse Complete.</strong>';
+          scannerDropStatus.innerHTML = '<strong>Gemini Flash Parse Complete.</strong>';
         }
       } catch (err) {
         if (err.code === 'NO_API_KEY') {
@@ -1626,7 +1626,7 @@ class ResuCraftApp {
       } finally {
         if (aiDeepParseBtn) {
           aiDeepParseBtn.disabled = false;
-          aiDeepParseBtn.innerHTML = '<span>AI Deep Parse (Gemini 1.5 Flash)</span>';
+          aiDeepParseBtn.innerHTML = '<span>AI Deep Parse (Gemini Flash)</span>';
         }
       }
     };
