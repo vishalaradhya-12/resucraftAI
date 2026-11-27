@@ -3361,9 +3361,9 @@ html, body {
   max-height: none !important;
   background: #F8FAFC !important;
   border-bottom: 1px solid #E2E8F0 !important;
-  display: grid !important;
-  grid-template-columns: 540px 1fr auto !important;
+  display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
   padding: 0 20px 0 18px !important;
   position: sticky !important;
   top: 0 !important;
@@ -3377,9 +3377,13 @@ html, body {
 }
 
 .rhb-center {
+  position: absolute;
+  left: calc(540px + (100% - 540px) / 2);
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 
 .rhb-right {
@@ -3389,8 +3393,15 @@ html, body {
 }
 
 @media (max-width: 1200px) {
-  .results-header-bar {
-    grid-template-columns: 480px 1fr auto !important;
+  .rhb-center {
+    left: calc(480px + (100% - 480px) / 2);
+  }
+}
+
+@media (max-width: 1080px) {
+  .rhb-center {
+    position: static;
+    transform: none;
   }
 }
 
@@ -3404,6 +3415,8 @@ html, body {
     padding: 8px 12px !important;
   }
   .rhb-center {
+    position: static;
+    transform: none;
     order: 3;
     width: 100%;
     justify-content: center;
