@@ -353,9 +353,41 @@
       </div>
 
       <div class="rhb-center">
-        <span id="results-score-badge" class="badge-results-score">
-          97% Match • ATS Ready
-        </span>
+        <!-- Compact Horizontal Match Score Strip -->
+        <div class="rhb-score-strip" id="ats-master-header-strip">
+          <div class="rhb-dial-wrap">
+            <svg class="score-svg-sm" viewBox="0 0 96 96">
+              <circle class="score-circle-bg" cx="48" cy="48" r="42"></circle>
+              <circle class="score-circle-progress" id="ats-progress-svg-circle" cx="48" cy="48" r="42"></circle>
+            </svg>
+            <span class="rhb-score-num" id="ats-score-value">88%</span>
+          </div>
+
+          <div class="rhb-score-meta">
+            <div class="rhb-score-title-row">
+              <span class="rhb-score-title">Job Match</span>
+              <span id="ats-score-rating"><span class="badge badge-success">ATS Ready • Top 5% Applicant</span></span>
+            </div>
+            <div class="rhb-metrics-row">
+              <div class="rhb-metric">
+                <div class="rhb-metric-top"><span>Keywords</span><strong id="cov-score-val">85%</strong></div>
+                <div class="meter-track"><div class="meter-fill" id="cov-score-bar" style="width: 85%;"></div></div>
+              </div>
+              <div class="rhb-metric">
+                <div class="rhb-metric-top"><span>Skills</span><strong id="tech-score-val">90%</strong></div>
+                <div class="meter-track"><div class="meter-fill" id="tech-score-bar" style="width: 90%;"></div></div>
+              </div>
+              <div class="rhb-metric">
+                <div class="rhb-metric-top"><span>Metrics</span><strong id="quant-score-val">82%</strong></div>
+                <div class="meter-track"><div class="meter-fill" id="quant-score-bar" style="width: 82%;"></div></div>
+              </div>
+              <div class="rhb-metric">
+                <div class="rhb-metric-top"><span>Action</span><strong id="verb-score-val">88%</strong></div>
+                <div class="meter-track"><div class="meter-fill" id="verb-score-bar" style="width: 88%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="rhb-right">
@@ -465,73 +497,7 @@
             </div>
           </div>
 
-          <div class="ats-master-card">
-            <div class="ats-score-row">
-              <div class="score-dial-wrapper">
-                <svg class="score-svg" viewBox="0 0 96 96">
-                  <circle class="score-circle-bg" cx="48" cy="48" r="42"></circle>
-                  <circle class="score-circle-progress" id="ats-progress-svg-circle" cx="48" cy="48" r="42"></circle>
-                </svg>
-                <div class="score-inner-text">
-                  <div class="score-number" id="ats-score-value">88%</div>
-                  <div class="score-label">Job Match</div>
-                </div>
-              </div>
-
-              <div class="ats-meta-col">
-                <h3>Your Match Score</h3>
-                <div class="ats-badge-row" id="ats-score-rating">
-                  <span class="badge badge-success">ATS Ready • Top 5% Applicant</span>
-                </div>
-                <p class="desktop-only" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
-                  Scored on keyword match, skills overlap, measurable results, and strong action words.
-                </p>
-              </div>
-            </div>
-
-            <!-- Detailed Breakdown Bars -->
-            <div class="ats-breakdown-grid">
-              <div class="meter-item">
-                <div class="meter-header">
-                  <span>Keyword Match</span>
-                  <span id="cov-score-val">85%</span>
-                </div>
-                <div class="meter-track">
-                  <div class="meter-fill" id="cov-score-bar" style="width: 85%;"></div>
-                </div>
-              </div>
-
-              <div class="meter-item">
-                <div class="meter-header">
-                  <span>Skills Match</span>
-                  <span id="tech-score-val">90%</span>
-                </div>
-                <div class="meter-track">
-                  <div class="meter-fill" id="tech-score-bar" style="width: 90%;"></div>
-                </div>
-              </div>
-
-              <div class="meter-item">
-                <div class="meter-header">
-                  <span>Measurable Results</span>
-                  <span id="quant-score-val">82%</span>
-                </div>
-                <div class="meter-track">
-                  <div class="meter-fill" id="quant-score-bar" style="width: 82%;"></div>
-                </div>
-              </div>
-
-              <div class="meter-item">
-                <div class="meter-header">
-                  <span>Strong Action Words</span>
-                  <span id="verb-score-val">88%</span>
-                </div>
-                <div class="meter-track">
-                  <div class="meter-fill" id="verb-score-bar" style="width: 88%;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- ATS Match Score Strip is now pinned cleanly in the top header banner -->
 
           <!-- One-Click Auto-Tailor Action Command Bar -->
           <div class="auto-tailor-banner" id="auto-tailor-banner">
