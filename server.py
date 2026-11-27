@@ -156,7 +156,8 @@ class ResuCraftHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with urllib.request.urlopen(list_url, timeout=10) as lr:
                     ldata = json.loads(lr.read().decode('utf-8'))
                     for m in ldata.get('models', []):
-                        if 'generateContent' in m.get('supportedGenerationMethods', []) and 'flash' in m.get('name', ''):
+                        mname = m.get('name', '').lower()
+                        if 'generateContent' in m.get('supportedGenerationMethods', []) and 'flash' in mname and not any(x in mname for x in ('-tts', '-image', '-audio', 'robotics', 'embedding', 'aqa')):
                             u = f"https://generativelanguage.googleapis.com/v1beta/{m['name']}:generateContent"
                             if u not in candidate_endpoints:
                                 candidate_endpoints.append(u)

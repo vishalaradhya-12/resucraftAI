@@ -171,7 +171,15 @@ exports.handler = async function(event, context) {
       if (listRes.ok) {
         const listData = await listRes.json();
         const dynModels = (listData.models || [])
-          .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && m.name && m.name.includes('gemini'))
+          .filter(m => {
+            const name = (m.name || '').toLowerCase();
+            const methods = m.supportedGenerationMethods || [];
+            return methods.includes('generateContent') &&
+              name.includes('gemini') &&
+              !/-(tts|image|audio|robotics|computer-use|live)/.test(name) &&
+              !name.includes('embedding') &&
+              !name.includes('aqa');
+          })
           .sort((a, b) => (b.name.includes('flash') ? 1 : 0) - (a.name.includes('flash') ? 1 : 0))
           .slice(0, 3)
           .map(m => `https://generativelanguage.googleapis.com/v1beta/${m.name}:generateContent`);
