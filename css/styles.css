@@ -3358,16 +3358,60 @@ html, body {
 .results-header-bar {
   height: 50px !important;
   min-height: 50px !important;
-  max-height: 50px !important;
+  max-height: none !important;
   background: #F8FAFC !important;
   border-bottom: 1px solid #E2E8F0 !important;
-  display: flex !important;
+  display: grid !important;
+  grid-template-columns: 540px 1fr auto !important;
   align-items: center !important;
-  justify-content: space-between !important;
-  padding: 0 20px !important;
+  padding: 0 20px 0 18px !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 100 !important;
+}
+
+.rhb-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rhb-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhb-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 1200px) {
+  .results-header-bar {
+    grid-template-columns: 480px 1fr auto !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .results-header-bar {
+    height: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+  }
+  .rhb-center {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding-top: 2px;
+  }
+  .rhb-right .btn span {
+    font-size: 11px;
+  }
 }
 
 .badge-results-score {
