@@ -8,21 +8,22 @@ class ResuCraftApp {
     this.currentProfileId = 'vishal_aradhya';
     this.hasUserLoadedResume = false;
     this.resumeData = JSON.parse(JSON.stringify(SAMPLE_PROFILES.vishal_aradhya));
-    this.jdText = this.resumeData.matchingJD ? this.resumeData.matchingJD.text : "";
+    this.jdText = "";
     this.atsResult = null;
     this.activeTab = 'jd-analyzer';
     this.zoomLevel = 100;
     this.lastReplacedBullet = null;
 
-    // Auto-restore session from localStorage
+    // Auto-restore only custom user sessions from localStorage (never pre-fill old sample JDs on fresh launch)
     try {
       const saved = localStorage.getItem('resucraft_session');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.resumeData && parsed.jdText !== undefined) {
+        if (parsed && parsed.resumeData && parsed.currentProfileId === 'custom') {
           this.resumeData = parsed.resumeData;
-          this.jdText = parsed.jdText;
-          this.currentProfileId = parsed.currentProfileId || 'vishal_aradhya';
+          this.jdText = parsed.jdText || "";
+          this.currentProfileId = 'custom';
+          this.hasUserLoadedResume = true;
         }
       }
     } catch(e) { /* localStorage unavailable or corrupt — continue with defaults */ }
@@ -744,6 +745,65 @@ class ResuCraftApp {
         }
 
         transitionToResults();
+      });
+    }
+
+    // Privacy Modal & 1-Click Erase Local Data
+    const eraseAllLocalData = () => {
+      try {
+        localStorage.removeItem('resucraft_session');
+        localStorage.removeItem('resucraft_gemini_key');
+        localStorage.removeItem('resucraft_welcome_seen');
+      } catch (e) {}
+      this.hasUserLoadedResume = false;
+      this.isCustomResume = false;
+      this.currentProfileId = 'vishal_aradhya';
+      this.resumeData = JSON.parse(JSON.stringify(SAMPLE_PROFILES.vishal_aradhya));
+      this.jdText = '';
+      const sJd = document.getElementById('scanner-jd-input');
+      const rJd = document.getElementById('jd-input-text');
+      const sPaste = document.getElementById('scanner-paste-textarea');
+      if (sJd) sJd.value = '';
+      if (rJd) rJd.value = '';
+      if (sPaste) sPaste.value = '';
+      const sLoaded = document.getElementById('scanner-resume-loaded');
+      const sDrop = document.getElementById('scanner-dropzone');
+      if (sLoaded) sLoaded.style.display = 'none';
+      if (sDrop) sDrop.style.display = 'flex';
+      this.populateEditor();
+      this.runATSAnalysis();
+      this.renderResumePreview();
+      this.updateProfileStatusUI();
+      this.showToast('All local browser data erased.', 'success');
+    };
+
+    const privacyModal = document.getElementById('modal-privacy-security');
+    const openPrivacyBtn = document.getElementById('btn-open-privacy-modal');
+    const closePrivacyBtn = document.getElementById('btn-close-privacy-modal');
+    const closePrivacyFooter = document.getElementById('btn-close-privacy-footer');
+    const clearLocalBtn = document.getElementById('btn-clear-local-data');
+    const modalEraseBtn = document.getElementById('btn-modal-erase-data');
+
+    if (openPrivacyBtn && privacyModal) {
+      openPrivacyBtn.addEventListener('click', () => { privacyModal.style.display = 'flex'; });
+    }
+    const closePrivacy = () => { if (privacyModal) privacyModal.style.display = 'none'; };
+    if (closePrivacyBtn) closePrivacyBtn.addEventListener('click', closePrivacy);
+    if (closePrivacyFooter) closePrivacyFooter.addEventListener('click', closePrivacy);
+    if (privacyModal) {
+      privacyModal.addEventListener('click', (e) => { if (e.target === privacyModal) closePrivacy(); });
+    }
+    if (clearLocalBtn) {
+      clearLocalBtn.addEventListener('click', () => {
+        eraseAllLocalData();
+        const dd = document.getElementById('header-utils-dropdown');
+        if (dd) dd.style.display = 'none';
+      });
+    }
+    if (modalEraseBtn) {
+      modalEraseBtn.addEventListener('click', () => {
+        eraseAllLocalData();
+        closePrivacy();
       });
     }
 

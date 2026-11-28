@@ -181,6 +181,9 @@
           <button id="btn-header-how-it-works" class="hud-btn" title="How It Works">
             How It Works
           </button>
+          <button id="btn-clear-local-data" class="hud-btn" style="color: #B91C1C;" title="Erase saved resume, JD, and API key from this browser">
+            Erase Local Data
+          </button>
           <div class="hud-divider"></div>
           <button id="btn-export-json" class="hud-btn">
             Save Backup (JSON)
@@ -328,6 +331,7 @@
       </button>
       <div class="scanner-trust-text">
         Private and client-side. Your resume data remains in your browser.
+        <button type="button" id="btn-open-privacy-modal" class="btn-link-action" style="margin-left: 6px; font-size: 12px;">How your data is handled</button>
       </div>
     </div>
 
@@ -1364,6 +1368,43 @@
       </div>
       <div class="modal-footer" style="padding: 12px 24px; display: flex; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary btn-sm" id="btn-close-gallery-footer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DATA SECURITY & PRIVACY MODAL ================= -->
+  <div class="modal-backdrop" id="modal-privacy-security" style="display: none;">
+    <div class="modal-dialog" style="max-width: 560px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div>
+            <h3>Data Security &amp; Privacy Architecture</h3>
+            <p class="modal-subtitle">How ResuCraft protects your resume, job descriptions, and personal information.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-privacy-modal" title="Close">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 18px 24px; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #334155; line-height: 1.55;">
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px 14px;">
+          <strong style="color: #0F172A; display: block; margin-bottom: 3px;">1. 100% Client-Side Parsing, ATS Scoring &amp; PDF Export</strong>
+          Uploading PDF/Word files (<code>pdf.js</code> / <code>mammoth.js</code>), keyword matching, bullet tailoring, and PDF generation all execute strictly inside your browser. Zero bytes are sent to any server during normal use.
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px 14px;">
+          <strong style="color: #0F172A; display: block; margin-bottom: 3px;">2. Zero Database &amp; Zero File Storage</strong>
+          ResuCraft has no backend database, no user accounts, and no server-side file storage. Drafts are stored only in your own browser's <code>localStorage</code> so you don't lose work on refresh.
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px 14px;">
+          <strong style="color: #0F172A; display: block; margin-bottom: 3px;">3. Optional AI Deep Read (Stateless HTTPS)</strong>
+          Only when you explicitly click <em>Deep AI Read</em>, your resume text is transmitted over encrypted HTTPS via a stateless serverless proxy (or directly from your browser if using your own key) to Google's Gemini API and immediately discarded.
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 12px 24px; display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-erase-data" style="color: #B91C1C; border-color: #FECACA;">
+          Erase All Local Data
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-close-privacy-footer">
+          Got It
+        </button>
       </div>
     </div>
   </div>
